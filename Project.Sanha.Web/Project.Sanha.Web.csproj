@@ -9,6 +9,10 @@
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="Services\" />
+    <Folder Include="Views\Information\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Views\Information\" />
+  </ItemGroup>
 </Project>
