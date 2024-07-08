@@ -15,6 +15,10 @@ namespace Project.Sanha.Web.Controllers
         {
             return View();
         }
+        public IActionResult UsingCode()
+        {
+            return View();
+        }
     }
 }
 
