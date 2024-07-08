@@ -31,9 +31,10 @@ namespace Project.Sanha.Web.Controllers
                 Name = Name,
                 HouseNo = HouseNo,
                 TransferDate = dateObject,
+                ListShopService = shopServices
             };
 
-            return View();
+            return View(InfoDetail);
         }
         public IActionResult UsingCode()
         {

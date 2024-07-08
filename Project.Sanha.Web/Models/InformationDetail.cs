@@ -8,7 +8,7 @@ namespace Project.Sanha.Web.Models
 		public string HouseNo { get; set; } = default!;
 		public DateTime TransferDate { get; set; }
 
-		List<ShopService>? ListShopService { get; set; }
+		public List<ShopService>? ListShopService { get; set; }
 	}
 	public class ShopService
 	{
