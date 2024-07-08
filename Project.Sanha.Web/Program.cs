@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-//builder.Services.AddDbContext<>(options =>
+//builder.Services.AddDbContext<SanhaDbContext>(options =>
 //options.UseSqlServer(builder.Configuration.GetConnectionString("AFSConn")));
 
 var app = builder.Build();

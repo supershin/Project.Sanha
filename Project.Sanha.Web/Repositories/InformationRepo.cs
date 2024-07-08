@@ -17,10 +17,14 @@ namespace Project.Sanha.Web.Repositories
 			List<ShopService> lists = new List<ShopService>();
 
 			// 1. Query Shopservice
-			var query = ( from i in _context.sh_Shopservice.Where(o => o.FlagActive))
-			
-            // 2. Query ProjectShopservice
-            var query = (from i in _context.sh_ProjectShopservice.Where(o => o.FlagActive))
+			//var query = ( from i in _context.sh_Shopservice.Where(o => o.FlagActive))
+
+			//// 2. Query ProjectShopservice
+			//var query = (from i in _context.sh_ProjectShopservice.Where(o => o.FlagActive)
+			//			 select new
+			//			 {
+							 
+			//			 });
 
             // 3. Make Resp for return
 
