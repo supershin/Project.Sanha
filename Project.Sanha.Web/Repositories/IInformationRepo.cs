@@ -5,7 +5,7 @@ namespace Project.Sanha.Web.Repositories
 {
 	public interface IInformationRepo
 	{
-		List<ShopService> ListShopServices();
+		InformationDetail InfoDetail(string projectId, string unitId, string contractNo);
 	}
 }
 

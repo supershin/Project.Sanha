@@ -3,42 +3,74 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
+using Humanizer.Localisation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project.Sanha.Web.Models;
+using Project.Sanha.Web.Services;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Project.Sanha.Web.Controllers
 {
-    public class InformationController : Controller
+    public class InformationController : BaseController
     {
-        // GET: /<controller>/
-        [HttpGet]
-        public IActionResult Index(Guid Id, String Name, String HouseNo, string TransferDate)
+        private readonly IInformationService _informationService;
+        private readonly IServiceUnitSave _serviceUnitSave;
+        
+        public InformationController(IInformationService informationService,
+            IServiceUnitSave serviceUnitSave)
         {
-            List<ShopService> shopServices = new List<ShopService>()
-            {
-
-            };
-
-            string format = "yyyy-MM-dd HH:mm:ss";
-            DateTime dateObject = DateTime.ParseExact(TransferDate, format, CultureInfo.InvariantCulture);
-
-            InformationDetail InfoDetail = new InformationDetail()
-            {
-                ID = Id,
-                Name = Name,
-                HouseNo = HouseNo,
-                TransferDate = dateObject,
-                ListShopService = shopServices
-            };
-
-            return View(InfoDetail);
+            _informationService = informationService;
+            _serviceUnitSave = serviceUnitSave;
         }
-        public IActionResult UsingCode()
+
+        // GET
+        [HttpGet]
+        public IActionResult Index(string projectid, string unitid, string contractno)
         {
-            return View();
+            InformationDetail informationDetail = _informationService.InfoDetailService(projectid, unitid, contractno);
+            return View(informationDetail);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UsingCode(UsingCodeModel request)
+        {
+            return View(request);
+        }
+
+        public ActionResult SaveUnitEquipmentSign(CreateTransactionModel model)
+        {
+            try
+            {
+                model.ApplicationPath = AppDomain.CurrentDomain.BaseDirectory;
+
+                validateUnitEquipmentSign(model);
+                
+                _serviceUnitSave.SaveUnitEquipmentSign(model);
+                return Json(new
+                {
+                    message = "Error Summit Form",
+                    success = true
+                    });
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = ex.Message
+                }) ;
+            }
+
+        }
+
+        private void validateUnitEquipmentSign(CreateTransactionModel model)
+        {
+            if (string.IsNullOrEmpty(model.Sign)
+                || string.IsNullOrEmpty(model.SignJM))
+                throw new Exception("โปรดระบุลายเซ็นต์");
         }
     }
 }

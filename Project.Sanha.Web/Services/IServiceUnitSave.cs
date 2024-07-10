@@ -1,0 +1,15 @@
+﻿using System;
+using Humanizer.Localisation;
+using Project.Sanha.Web.Models;
+
+namespace Project.Sanha.Web.Services
+{
+	public interface IServiceUnitSave
+	{
+        public void SaveUnitEquipmentSign(CreateTransactionModel model);
+
+        //private void ConvertByteToImage(Resources item);
+
+    }
+}
+

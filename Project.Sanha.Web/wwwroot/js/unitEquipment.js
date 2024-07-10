@@ -22,7 +22,9 @@ var unitEquipment = {
             return false;
         });
         $("#btn-save-unit-equipment").click(() => {
+            console.log("click");
             unitEquipment.saveUnitEquipmentSign();
+            
             return false;
         });
     },
@@ -62,33 +64,43 @@ var unitEquipment = {
     },
     saveUnitEquipmentSign: () => {
         var data = {
-            ProjectID: projectID,
-            UnitID: unitID,
-            UnitCode: unitCode,
-            DocumentTypeID: documentTypeID,
+            ProjectId: $("#ProjectId").val(),
+            UnitId: $("#UnitId").val(),
+            ShopId: $("#ShopId").val(),
+            CustomerName: $("#CustomerName").val(),
+            CustomerMobile: $("#CustomerMobile").val(),
+            CustomerEmail: $("#CustomerEmail").val(),
+            StaffName: $("#StaffName").val(),
+            Date: $("#Date").val(),
+            StratTime: $("#StratTime").val(),
+            EndTime: $("#EndTime").val(),
+            Remark: $("#Remark").val(),
+            Images: $("#Images").val(),
             Sign: unitEquipment.getSignatureData(),
             SignJM: unitEquipment.getSignatureDataJM()
         };
-        Application.LoadWait(true);
+        console.log(JSON.stringify(data));
+        //Application.LoadWait(true);
         $.ajax({
-            url: baseUrl + 'Document/SaveUnitEquipmentSign',
+            url: baseUrl + 'Information/SaveUnitEquipmentSign',
             type: 'post',
             dataType: 'json',
-            contentType: 'application/json; charset=utf-8',
+            //contentType: 'application/json; charset=utf-8',
             success: function (res) {
-                if (res.success) {                    
-                    Application.PNotify(res.message, "success");                    
-                    window.location.reload();
-                }
-                else {
-                    Application.PNotify(res.message, "error");
-                }
-                Application.LoadWait(false);
+                // add ajax upload image 
+                //if (res.success) {                    
+                //    Application.PNotify(res.message, "success");                    
+                //    window.location.reload();
+                //}
+                //else {
+                //    Application.PNotify(res.message, "error");
+                //}
+                //Application.LoadWait(false);
             },
             error: function (xhr, status, error) {
                 window.location.reload();
             },
-            data: JSON.stringify(data)
+            data: data
         });
         return false;
     },
@@ -102,10 +114,7 @@ var unitEquipment = {
             contentType = parts[0].split(":")[1];
             storage = parts[1];
         }
-        return {
-            MimeType: contentType,
-            StorageBase64: storage
-        };
+        return storage;
     },
     getSignatureDataJM: () => {
         let dataURL;
@@ -117,9 +126,6 @@ var unitEquipment = {
             contentType = parts[0].split(":")[1];
             storage = parts[1];
         }
-        return {
-            MimeType: contentType,
-            StorageBase64: storage
-        };
+        return storage
     }
 }
