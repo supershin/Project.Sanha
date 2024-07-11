@@ -14,6 +14,8 @@ namespace Project.Sanha.Web.Models
 		public string? TransferDate { get; set; }
 
 		public List<ShopService>? ListShopService { get; set; }
+
+		public bool CheckFormat { get;set; }
 	}
 	public class ShopService
 	{

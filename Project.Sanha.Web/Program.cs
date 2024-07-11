@@ -18,6 +18,9 @@ builder.Services.AddScoped<IInformationRepo, InformationRepo>();
 
 builder.Services.AddScoped<IServiceUnitSave, ServiceUnitSave>();
 
+builder.Services.AddScoped<ISearchUnitService, SearchUnitService>();
+builder.Services.AddScoped<ISearchUnitRepo, SearchUnitRepo>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -19,6 +19,20 @@ namespace Project.Sanha.Web.Services
 
 			return information;
 		}
-	}
+
+        public InformationDetail InfoProjectName(string projectId)
+		{
+			InformationDetail information = _informationRepo.InfoProjectName(projectId);
+
+			return information;
+		}
+
+		public CreateUnitShopModel CreateUnitShop(string projectId, string unitId, string contractNo)
+		{
+			CreateUnitShopModel createUnitShop = _informationRepo.createUnitShop(projectId, unitId, contractNo);
+
+			return createUnitShop;
+        }
+    }
 }
 

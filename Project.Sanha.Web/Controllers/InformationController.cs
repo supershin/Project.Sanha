@@ -18,25 +18,42 @@ namespace Project.Sanha.Web.Controllers
     {
         private readonly IInformationService _informationService;
         private readonly IServiceUnitSave _serviceUnitSave;
-        
+        private readonly ISearchUnitService _searchUnitService;
         public InformationController(IInformationService informationService,
-            IServiceUnitSave serviceUnitSave)
+            IServiceUnitSave serviceUnitSave,
+            ISearchUnitService searchUnitService)
         {
             _informationService = informationService;
             _serviceUnitSave = serviceUnitSave;
+            _searchUnitService = searchUnitService;
         }
 
         // GET
         [HttpGet]
-        public IActionResult Index(string projectid, string unitid, string contractno)
+        public IActionResult Index(string projectid, string? unitid, string? contractno)
         {
-            InformationDetail informationDetail = _informationService.InfoDetailService(projectid, unitid, contractno);
+            InformationDetail informationDetail = null;
+            CreateUnitShopModel createUnitShop = null;
+
+            if (!string.IsNullOrWhiteSpace(unitid) && !string.IsNullOrWhiteSpace(contractno))
+            {
+                createUnitShop = _informationService.CreateUnitShop(projectid, unitid, contractno);
+
+                informationDetail = _informationService.InfoDetailService(createUnitShop.ProjectId, createUnitShop.UnitId, createUnitShop.ContractNo);
+            }
+            else
+            {
+                informationDetail = _informationService.InfoProjectName(projectid);
+            }
+
             return View(informationDetail);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult UsingCode(UsingCodeModel request)
         {
+            //coupon
             return View(request);
         }
 
@@ -51,7 +68,7 @@ namespace Project.Sanha.Web.Controllers
                 _serviceUnitSave.SaveUnitEquipmentSign(model);
                 return Json(new
                 {
-                    message = "Error Summit Form",
+                    message = "Success Summit Form",
                     success = true
                     });
             }
@@ -71,6 +88,33 @@ namespace Project.Sanha.Web.Controllers
             if (string.IsNullOrEmpty(model.Sign)
                 || string.IsNullOrEmpty(model.SignJM))
                 throw new Exception("โปรดระบุลายเซ็นต์");
+        }
+
+        [HttpPost]
+        public JsonResult SearchUnit(SearchUnitReq req)
+        {
+            try
+            {
+                SearchUnitModel searchUnit = _searchUnitService.searchUnitService(req.ProjectId, req.Address);
+                if (searchUnit == null) throw new Exception("ไม่พบข้อมูลบ้านเลขที่");
+
+                return Json(
+                    new
+                    {
+                        success = true,
+                        data = searchUnit
+                    });
+            }
+            catch(Exception ex)
+            {
+                return Json(
+                    new
+                    {
+                        success = false,
+                        message = ex.Message
+                    });
+            }
+
         }
     }
 }
