@@ -35,12 +35,17 @@ namespace Project.Sanha.Web.Controllers
             InformationDetail informationDetail = null;
             CreateUnitShopModel createUnitShop = null;
 
+            // landing by have account 
             if (!string.IsNullOrWhiteSpace(unitid) && !string.IsNullOrWhiteSpace(contractno))
             {
+                // if - first landing to insert data
+                // if - not first to return data 
                 createUnitShop = _informationService.CreateUnitShop(projectid, unitid, contractno);
 
+                // get data detail for return to page
                 informationDetail = _informationService.InfoDetailService(createUnitShop.ProjectId, createUnitShop.UnitId, createUnitShop.ContractNo);
             }
+            // landing by dont have account 
             else
             {
                 informationDetail = _informationService.InfoProjectName(projectid);
@@ -50,7 +55,6 @@ namespace Project.Sanha.Web.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult UsingCode(UsingCodeModel request)
         {
             //coupon
@@ -70,7 +74,7 @@ namespace Project.Sanha.Web.Controllers
                 {
                     message = "Success Summit Form",
                     success = true
-                    });
+                });
             }
             catch (Exception ex)
             {
@@ -114,7 +118,6 @@ namespace Project.Sanha.Web.Controllers
                         message = ex.Message
                     });
             }
-
         }
     }
 }

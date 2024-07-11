@@ -60,140 +60,156 @@
                 <div class="card-header">
                     <h5 class="card-title">แบบฟอร์ม</h5>
                 </div>
-                    <div class="card-body">
-                            <div class="header-font">
-                                ข้อมูลการใช้บริการ
+                <div class="card-body">
+                    <div class="header-font">
+                        ข้อมูลการใช้บริการ
+                    </div>
+                    <hr />
+                    <div class="mb-3">
+                        <label class="form-label">ชื่อโครงการ</label>
+                        <input type="text" class="form-control" readonly value="@Model.ProjectName">
+                    </div>
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="mb-3 col-lg-6">
+                                <label class="form-label">เลขที่บ้าน</label>
+                                <input type="text" class="form-control" readonly value="@Model.Address">
                             </div>
-                            <hr />
-                            <div class="mb-3">
-                                <label class="form-label">ชื่อโครงการ</label>
-                                <input type="text" class="form-control" readonly value="@Model.ProjectName">
-                            </div>
-                            <div class="mb-3">
-                                <div class="row">
-                                    <div class="mb-3 col-lg-6">
-                                        <label class="form-label">เลขที่บ้าน</label>
-                                        <input type="text" class="form-control" readonly value="@Model.AddressNo">
-                                    </div>
 
-                                    <div class="col-lg-6">
-                                        <label class="form-label">วันที่โอน</label>
-                                        <input type="text" class="form-control" readonly value="@Model.TransferDate">
-                                    </div>
-                                </div>
-                            </div>
-                            <hr />
-                            <input type="hidden" id="ProjectId" value="@Model.ProjectId" />
-                            <input type="hidden" id="UnitId" value="@Model.UnitId" />
-                            <input type="hidden" id="ShopId" value="@Model.ShopService.ShopID" />
-                            <div class="col-12 header-font">
-                                ข้อมูลลูกค้า
-                            </div>
-                            <hr />
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="mb-3">
-                                        <label class="form-label">ชื่อ-นามสกุล</label>
-                                        <input type="text" class="form-control" placeholder="กรุณาใส ชื่อ-นามสกุล" id="CustomerName" value="@Model.CustomerName">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">เบอร์โทรศัพท์</label>
-                                        <input type="text" class="form-control" placeholder="กรุณากรอกข้อมูล หมายเลขโทรศัพท์" value="@Model.CustomerMobile" id="CustomerMobile">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">อีเมลล์</label>
-                                        <input type="text" class="form-control" placeholder="กรุณากรอกข้อมูล อีเมลล์" value="@Model.CustomerEmail" id="CustomerEmail">
-                                    </div>
-                                </div>
-                            </div>
-                            <hr />
-                            <div class="col-12 header-font">
-                                เจ้าหน้าที่
-                            </div>
-                            <hr />
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="mb-3">
-                                        <label class="form-label">ชื่อ-นามสกุล</label>
-                                        <input type="text" class="form-control" placeholder="กรุณาใส ชื่อ-นามสกุล" id="StaffName">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">วันที่เข้าทำงาน</label>
-                                        <input class="form-control" type="date" value="@currentDate" id="Date">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <label class="form-label">ช่วงเวลาที่เข้าทำงาน</label>
-                                <div class="col-lg-6">
-                                    <div class="mb-3">
-                                        <input class="form-control" type="time" value="@currentTime" id="StartTime">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="mb-3">
-                                        <input class="form-control" type="time" value="@currentTime" id="EndTime">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="mb-3">
-                                        <label class="form-label">หมายเหตุ</label>
-                                        <textarea class="form-control" rows="4" placeholder="หมายเหตุ..." id="Remark"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="mb-3">
-                                        <label class="form-label">อัพโหลดรูปภาพ</label>
-                                        <input class="form-control" type="file" id="Images" multiple>  @*IFormFileMultiple*@
-                                    </div>
-                                </div>
-                            </div>
-                            <hr />
-                            <div class="col-12 header-font">
-                                หลักฐานการยืนยัน
-                            </div>
-                            <hr />
-                            <div class="row">
-                                <div class="col-lg-3">
-                                    <div class="mb-3">
-                                        <label class="form-label">ลายเซ็นต์ลูกค้า</label>
-                                        <a href="#" class="btn btn-primary form-control" data-bs-toggle="modal" data-bs-target="#modal-sign">
-                                            ยืนยัน
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="mb-3">
-                                        <label class="form-label">ลายเซ็นต์เจ้าหน้าที่</label>
-                                        <a href="#" class="btn btn-primary form-control" data-bs-toggle="modal" data-bs-target="#modal-sign-jm">
-                                            ยืนยัน
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr />
-                            <div class="text-end">
-                                <a href="#" class="btn btn-warning me-2">Cancel</a>
-                                <button id="btn-save-unit-equipment" type="button" class="btn btn-success">
-                                    <i class="fa-solid fa-plus"></i>
-                                    Summit Form
-                                </button>
+                            <div class="col-lg-6">
+                                <label class="form-label">วันที่โอน</label>
+                                <input type="text" class="form-control" readonly value="@Model.TransferDate">
                             </div>
                         </div>
+                    </div>
+                    <hr />
+                    <input type="hidden" id="ProjectId" value="@Model.ProjectId" />
+                    <input type="hidden" id="UnitId" value="@Model.UnitId" />
+                    <input type="hidden" id="ShopId" value="@Model.ShopId" />
+                    <div class="col-12 header-font">
+                        ข้อมูลลูกค้า
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">ชื่อ-นามสกุล</label>
+                                <input type="text" class="form-control" placeholder="กรุณาใส ชื่อ-นามสกุล" id="CustomerName" value="@Model.CustomerName">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">ความสัมพันธ์</label>
+                                <select class="form-control" id="RelationShip" name="RelationShip">
+                                    <option value="1">เจ้าของห้อง</option>
+                                    <option value="2">ผู้เช่า</option>
+                                    <option value="3">ญาติ</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">เบอร์โทรศัพท์</label>
+                                <input type="text" class="form-control" placeholder="กรุณากรอกข้อมูล หมายเลขโทรศัพท์" value="@Model.CustomerMobile" id="CustomerMobile">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">อีเมลล์</label>
+                                <input type="text" class="form-control" placeholder="กรุณากรอกข้อมูล อีเมลล์" value="@Model.CustomerEmail" id="CustomerEmail">
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="col-12 header-font">
+                        เจ้าหน้าที่
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="mb-3">
+                                <label class="form-label">ชื่อ-นามสกุล</label>
+                                <input type="text" class="form-control" placeholder="กรุณาใส ชื่อ-นามสกุล" id="StaffName">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">จำนวนการใช้สิทธิ์</label>
+                                <input class="form-control" type="text" id="UsingQuota">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">วันที่เข้าทำงาน</label>
+                                <input class="form-control" type="date" value="@currentDate" id="Date">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="form-label">ช่วงเวลาที่เข้าทำงาน</label>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <input class="form-control" type="time" value="@currentTime" id="StartTime">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <input class="form-control" type="time" value="@currentTime" id="EndTime">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="mb-3">
+                                <label class="form-label">หมายเหตุ</label>
+                                <textarea class="form-control" rows="4" placeholder="หมายเหตุ..." id="Remark"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="mb-3">
+                                <label class="form-label">อัพโหลดรูปภาพ</label>
+                                <input class="form-control" type="file" id="Images" multiple>  @*IFormFileMultiple*@
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="col-12 header-font">
+                        หลักฐานการยืนยัน
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="mb-3">
+                                <label class="form-label">ลายเซ็นต์ลูกค้า</label>
+                                <a href="#" class="btn btn-primary form-control" data-bs-toggle="modal" data-bs-target="#modal-sign">
+                                    ยืนยัน
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="mb-3">
+                                <label class="form-label">ลายเซ็นต์เจ้าหน้าที่</label>
+                                <a href="#" class="btn btn-primary form-control" data-bs-toggle="modal" data-bs-target="#modal-sign-jm">
+                                    ยืนยัน
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="text-end">
+                        <a href="#" class="btn btn-warning me-2">Cancel</a>
+                        <button id="btn-save-unit-equipment" type="button" class="btn btn-success">
+                            <i class="fa-solid fa-plus"></i>
+                            Summit Form
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>        
@@ -205,8 +221,9 @@
         <link href="~/css/signature-pad-master/css/signature-pad.css" />
         <script src="~/css/signature-pad-master/js/signature_pad.umd.js"></script>
         <script src="~/js/unitEquipment.js"></script>
-        <script src="https://kit.fontawesome.com/21fea36ed8.js" crossorigin="anonymous"></script>
-        <script>$(document).ready(() => {
+        <script>
+            $(document).ready(() => {
                 unitEquipment.init();
-            });</script>
+            });
+        </script>
     }

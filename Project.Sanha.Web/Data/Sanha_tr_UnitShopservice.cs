@@ -22,7 +22,7 @@ namespace Project.Sanha.Web.Data
         public DateTime? StartDate { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? EndDate { get; set; }
-        public int? Quata { get; set; }
+        public int? Used_Quota { get; set; }
         public bool? FlagActive { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? CreateDate { get; set; }

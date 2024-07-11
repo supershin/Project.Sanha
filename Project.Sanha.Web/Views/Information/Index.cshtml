@@ -13,7 +13,7 @@
                         <div class="card-body">
                             <h5 class="card-main-font">ชื่อโครงการ: @Model.ProjectName</h5>
                             <h5 class="card-sub-font">เลขที่บ้าน: @Model.AddressNo</h5>
-                            <h5 class="card-sub-font">วันที่โอน: @Model.TransferDate</h5>
+                            <h5 class="card-sub-font">วันที่โอน: @Model.TransferDate</h5>                        
                         </div>
                     </div>
                 </div>
@@ -24,6 +24,7 @@
                 {
                     @foreach (var shop in Model.ListShopService)
                     {
+                        <input type="hidden" id="shop" value="@shop" />
                         <div class="row mb-4">
                             <div class=" col-lg-12 col-md-12 col-sm-12">
                                 <div class="card" style="width: 100%; height: 100%;">
@@ -35,21 +36,23 @@
                                             <div class="card-body">
                                                 <h5 class="card-title">@shop.Name</h5>
                                                 <p class="card-text">@shop.Description</p>
-                                                <p class="card-text">หมดอายุ: @shop.Exp</p>
-                                                <p class="card-text">จำนวน:@shop.Quota</p>
+                                                <p class="card-text" >หมดอายุ: @shop.Exp</p>
+                                                <p class="card-text" >จำนวนคงเหลือ:@shop.Quota</p>
                                                 <div class="d-flex justify-content-end">
-                                                    <form asp-controller="Information" asp-action="UsingCode">
-                                                        <input type="hidden" asp-for="@Model.ProjectId" />
-                                                        <input type="hidden" asp-for="@Model.UnitId" />
-                                                        <input type="hidden" asp-for="@shop.ShopID" />
-                                                        <input type="hidden" asp-for="@Model.ContractNumber" />
-                                                        <input type="hidden" asp-for="@Model.ProjectName" />
-                                                        <input type="hidden" asp-for="@Model.CustomerName" />
-                                                        <input type="hidden" asp-for="@Model.CustomerMobile" />
-                                                        <input type="hidden" asp-for="@Model.CustomerEmail" />
-                                                        <input type="hidden" asp-for="@Model.AddressNo" />
-                                                        <input type="hidden" asp-for="@Model.TransferDate" />
-                                                        <input type="hidden" asp-for="@shop" />
+                                                    <form asp-controller="Information" asp-action="UsingCode" method="post">
+                                                        <input type="hidden" name="InfoId" value="@shop.UnitShopId" />
+                                                        <input type="hidden" name="ProjectId" value="@Model.ProjectId" />
+                                                        <input type="hidden" name="UnitId" value="@Model.UnitId" />
+                                                        <input type="hidden" name="ProjectName" value="@Model.ProjectName" />
+                                                        <input type="hidden" name="Address" value="@Model.AddressNo" />
+                                                        <input type="hidden" name="TransferDate" value="@Model.TransferDate" />
+                                                        <input type="hidden" name="CustomerName" value="@Model.CustomerName" />
+                                                        <input type="hidden" name="CustomerMobile" value="@Model.CustomerMobile" />
+                                                        <input type="hidden" name="CustomerEmail" value="@Model.CustomerEmail" />
+                                                        <input type="hidden" name="ShopId" value="@shop.ShopID" />
+                                                        <input type="hidden" name="Exp" value="@shop.Exp" />
+                                                        <input type="hidden" name="Quota" value="@shop.Quota" />
+
                                                         <button type="submit" class="btn btn-primary">ใช้คูปอง</button>
                                                     </form>
                                                 </div>
@@ -160,7 +163,6 @@
 
 @section scripts{
     <script src="~/js/Information.js?version=@DateTime.Now.Ticks.ToString()"></script>
-    <script src="https://kit.fontawesome.com/21fea36ed8.js" crossorigin="anonymous"></script>
     <script>
         $(document).ready(() => {
 
