@@ -18,25 +18,50 @@ namespace Project.Sanha.Web.Controllers
     {
         private readonly IInformationService _informationService;
         private readonly IServiceUnitSave _serviceUnitSave;
-        
+        private readonly ISearchUnitService _searchUnitService;
+        private readonly IHostEnvironment _hosting;
         public InformationController(IInformationService informationService,
-            IServiceUnitSave serviceUnitSave)
+            IServiceUnitSave serviceUnitSave,
+            ISearchUnitService searchUnitService,
+            IHostEnvironment hostEnvironment
+            )
         {
             _informationService = informationService;
             _serviceUnitSave = serviceUnitSave;
+            _searchUnitService = searchUnitService;
+            _hosting = hostEnvironment;
         }
 
         // GET
         [HttpGet]
-        public IActionResult Index(string projectid, string unitid, string contractno)
+        public IActionResult Index(string projectid, string? unitid, string? contractno)
         {
-            InformationDetail informationDetail = _informationService.InfoDetailService(projectid, unitid, contractno);
+            InformationDetail informationDetail = null;
+            CreateUnitShopModel createUnitShop = null;
+
+            // landing by have account 
+            if (!string.IsNullOrWhiteSpace(unitid) && !string.IsNullOrWhiteSpace(contractno))
+            {
+                // if - first landing to insert data
+                // if - not first to return data 
+                createUnitShop = _informationService.CreateUnitShop(projectid, unitid, contractno);
+
+                // get data detail for return to page
+                informationDetail = _informationService.InfoDetailService(createUnitShop.ProjectId, createUnitShop.UnitId, createUnitShop.ContractNo);
+            }
+            // landing by dont have account 
+            else
+            {
+                informationDetail = _informationService.InfoProjectName(projectid);
+            }
+
             return View(informationDetail);
         }
+
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult UsingCode(UsingCodeModel request)
         {
+            //coupon
             return View(request);
         }
 
@@ -44,16 +69,17 @@ namespace Project.Sanha.Web.Controllers
         {
             try
             {
-                model.ApplicationPath = AppDomain.CurrentDomain.BaseDirectory;
+                //model.ApplicationPath = AppDomain.CurrentDomain.BaseDirectory;
+                model.ApplicationPath = _hosting.ContentRootPath;
 
                 validateUnitEquipmentSign(model);
                 
                 _serviceUnitSave.SaveUnitEquipmentSign(model);
                 return Json(new
                 {
-                    message = "Error Summit Form",
+                    message = "Success Summit Form",
                     success = true
-                    });
+                });
             }
             catch (Exception ex)
             {
@@ -71,6 +97,32 @@ namespace Project.Sanha.Web.Controllers
             if (string.IsNullOrEmpty(model.Sign)
                 || string.IsNullOrEmpty(model.SignJM))
                 throw new Exception("โปรดระบุลายเซ็นต์");
+        }
+
+        [HttpPost]
+        public JsonResult SearchUnit(SearchUnitReq req)
+        {
+            try
+            {
+                SearchUnitModel searchUnit = _searchUnitService.searchUnitService(req.ProjectId, req.Address);
+                if (searchUnit == null) throw new Exception("ไม่พบข้อมูลบ้านเลขที่");
+
+                return Json(
+                    new
+                    {
+                        success = true,
+                        data = searchUnit
+                    });
+            }
+            catch(Exception ex)
+            {
+                return Json(
+                    new
+                    {
+                        success = false,
+                        message = ex.Message
+                    });
+            }
         }
     }
 }

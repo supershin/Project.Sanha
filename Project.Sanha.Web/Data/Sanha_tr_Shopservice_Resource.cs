@@ -9,8 +9,9 @@ namespace Project.Sanha.Web.Data
     public partial class Sanha_tr_Shopservice_Resource
     {
         [Key]
-        public int ID { get; set; }
-        public int EventID { get; set; }
+        public Guid ID { get; set; }
+        public int TransID { get; set; }
+        public int? ResourceType { get; set; }
         [StringLength(500)]
         public string? FileName { get; set; }
         [StringLength(500)]

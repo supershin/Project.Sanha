@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Project.Sanha.Web.Data
 {
-    public partial class Sanha_tr_UnitShopservice
+    public partial class Sanha_tm_UnitQuota_Mapping
     {
         [Key]
         public int ID { get; set; }
@@ -14,15 +14,8 @@ namespace Project.Sanha.Web.Data
         [Unicode(false)]
         public string ProjectID { get; set; } = null!;
         public int UnitID { get; set; }
-        public int ShopID { get; set; }
-        [StringLength(255)]
-        [Unicode(false)]
-        public string? ContractNumber { get; set; }
-        [Column(TypeName = "datetime")]
-        public DateTime? StartDate { get; set; }
-        [Column(TypeName = "datetime")]
-        public DateTime? EndDate { get; set; }
-        public int? Used_Quota { get; set; }
+        public int? ShopID { get; set; }
+        public int Quota { get; set; }
         public bool? FlagActive { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? CreateDate { get; set; }

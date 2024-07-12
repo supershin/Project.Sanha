@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Project.Sanha.Web.Data
 {
-    public partial class Sanha_tr_ProjectShopservice
+    public partial class Sanha_tm_ProjectShopservice
     {
         [Key]
         public int ID { get; set; }
@@ -14,7 +14,7 @@ namespace Project.Sanha.Web.Data
         [Unicode(false)]
         public string ProjectID { get; set; } = null!;
         public int ShopID { get; set; }
-        public int? Quata { get; set; }
+        public int? Quota { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? DefaultStartDate { get; set; }
         [Column(TypeName = "datetime")]
@@ -27,5 +27,7 @@ namespace Project.Sanha.Web.Data
         [Column(TypeName = "datetime")]
         public DateTime? UpdateDate { get; set; }
         public int? UpdateBy { get; set; }
+        public int? Min_Quota { get; set; }
+        public int? Max_Quota { get; set; }
     }
 }

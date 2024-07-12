@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddDbContext<TitleDbContext>(options =>
+builder.Services.AddDbContext<SanhaDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("AFSConn")));
 
 builder.Services.AddControllers().AddJsonOptions(opts => opts.JsonSerializerOptions.PropertyNamingPolicy = null);
@@ -17,6 +17,9 @@ builder.Services.AddScoped<IInformationService, InformationService>();
 builder.Services.AddScoped<IInformationRepo, InformationRepo>();
 
 builder.Services.AddScoped<IServiceUnitSave, ServiceUnitSave>();
+
+builder.Services.AddScoped<ISearchUnitService, SearchUnitService>();
+builder.Services.AddScoped<ISearchUnitRepo, SearchUnitRepo>();
 
 var app = builder.Build();
 

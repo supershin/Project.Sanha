@@ -6,9 +6,9 @@ namespace Project.Sanha.Web.Repositories
 {
 	public class CreateTransactionRepo : ICreateTransactionRepo
 	{
-        private readonly TitleDbContext _context;
+        private readonly SanhaDbContext _context;
 
-        public CreateTransactionRepo(TitleDbContext context)
+        public CreateTransactionRepo(SanhaDbContext context)
 		{
 			_context = context;
 		}

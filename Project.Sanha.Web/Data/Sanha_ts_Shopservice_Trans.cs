@@ -10,47 +10,41 @@ namespace Project.Sanha.Web.Data
     {
         [Key]
         public int ID { get; set; }
-        [StringLength(20)]
+        public int? EventID { get; set; }
+        [StringLength(250)]
         [Unicode(false)]
-        public string ProjectID { get; set; } = null!;
-        public int UnitID { get; set; }
-        public int ShopID { get; set; }
-        [StringLength(50)]
-        [Unicode(false)]
-        public string? CustomerFirstName { get; set; }
-        [StringLength(50)]
-        [Unicode(false)]
-        public string? CustomerLastName { get; set; }
+        public string? CustomerName { get; set; }
         [StringLength(50)]
         [Unicode(false)]
         public string? CustomerMobile { get; set; }
         [StringLength(50)]
         [Unicode(false)]
         public string? CustomerEmail { get; set; }
-        [Column(TypeName = "text")]
-        public string? CustomerSignature { get; set; }
+        public int? CustomerRelationID { get; set; }
+        [StringLength(250)]
+        [Unicode(false)]
+        public string? StaffName { get; set; }
+        [Column(TypeName = "datetime")]
+        public DateTime? WorkDate { get; set; }
         [StringLength(50)]
         [Unicode(false)]
-        public string? StaffFirstName { get; set; }
-        [StringLength(50)]
-        [Unicode(false)]
-        public string? StaffLastName { get; set; }
-        [Column(TypeName = "datetime")]
-        public DateTime? StartWorkDate { get; set; }
-        [Column(TypeName = "datetime")]
-        public DateTime? EndWorkDate { get; set; }
-        [Column(TypeName = "text")]
-        public string? StaffSignature { get; set; }
-        [StringLength(255)]
+        public string? WorkTime { get; set; }
         [Unicode(false)]
         public string? Remark { get; set; }
         public bool? FlagActive { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? CreateDate { get; set; }
-        public int? CreateBy { get; set; }
+        [StringLength(250)]
+        [Unicode(false)]
+        public string? CreateBy { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? UpdateDate { get; set; }
-        public int? UpdateBy { get; set; }
+        [StringLength(250)]
+        [Unicode(false)]
+        public string? UpdateBy { get; set; }
+        [StringLength(50)]
+        [Unicode(false)]
+        public string? OrderNo { get; set; }
         public int? Status { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? AuditDate { get; set; }

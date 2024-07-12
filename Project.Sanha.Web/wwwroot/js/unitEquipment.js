@@ -22,15 +22,12 @@ var unitEquipment = {
             return false;
         });
         $("#btn-save-unit-equipment").click(() => {
-            console.log("click");
             unitEquipment.saveUnitEquipmentSign();
-            
             return false;
         });
     },
     initSignaturePad: () => {
         $('#modal-sign').on('shown.bs.modal', function (e) {
-            console.log("click pad 1");
             let canvas = $("#signature-pad canvas");
             let parentWidth = $(canvas).parent().outerWidth();
             let parentHeight = $(canvas).parent().outerHeight();
@@ -56,7 +53,6 @@ var unitEquipment = {
             signaturePad_JM = new SignaturePad(canvas[0], {
                 backgroundColor: 'rgb(255, 255, 255)'
             });
-            console.log("click pad 2")
         });
         $(document).on('click', '#modal-sign-jm .clear', function () {            
             signaturePad_JM.clear();
@@ -75,11 +71,12 @@ var unitEquipment = {
             StratTime: $("#StratTime").val(),
             EndTime: $("#EndTime").val(),
             Remark: $("#Remark").val(),
+
             Images: $("#Images").val(),
             Sign: unitEquipment.getSignatureData(),
             SignJM: unitEquipment.getSignatureDataJM()
         };
-        console.log(JSON.stringify(data));
+        console.log(data);
         //Application.LoadWait(true);
         $.ajax({
             url: baseUrl + 'Information/SaveUnitEquipmentSign',

@@ -11,11 +11,13 @@
     <Folder Include="Services\" />
     <Folder Include="Views\Information\" />
     <Folder Include="Repositories\" />
+    <Folder Include="Upload\" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="Views\Information\" />
     <None Remove="Repositories\" />
+    <None Remove="Upload\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.31" />

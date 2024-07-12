@@ -3,19 +3,18 @@ namespace Project.Sanha.Web.Models
 {
 	public class UsingCodeModel
 	{
-        public string ProjectId { get; set; } = default!;
+        public int InfoId { get; set; }
+        public string ProjectId { get; set; }
         public int UnitId { get; set; }
+        public string ProjectName { get; set; }
+        public string Address { get; set; }
+        public string TransferDate { get; set; }
+        public string CustomerName { get; set; }
+        public string CustomerMobile { get; set; }
+        public string CustomerEmail { get; set; }
         public int ShopId { get; set; }
-        public string ContractNumber { get; set; } = default!;
-        public string ProjectName { get; set; } = default!;
-        public string CustomerName { get; set; } = default!;
-        public string CustomerMobile { get; set; } = default!;
-        public string CustomerEmail { get; set; } = default!;
-        public string AddressNo { get; set; } = default!;
-        public string? TransferDate { get; set; }
-
-        public ShopService ShopService = new ShopService();
-
+        public string Exp { get; set; }
+        public int Quota { get; set; }
     }
 }
 

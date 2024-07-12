@@ -8,8 +8,6 @@ namespace Project.Sanha.Web.Services
 	{
         public void SaveUnitEquipmentSign(CreateTransactionModel model);
 
-        //private void ConvertByteToImage(Resources item);
-
     }
 }
 
