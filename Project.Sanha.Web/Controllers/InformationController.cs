@@ -20,6 +20,7 @@ namespace Project.Sanha.Web.Controllers
         private readonly IServiceUnitSave _serviceUnitSave;
         private readonly ISearchUnitService _searchUnitService;
         private readonly IHostEnvironment _hosting;
+        
         public InformationController(IInformationService informationService,
             IServiceUnitSave serviceUnitSave,
             ISearchUnitService searchUnitService,
@@ -75,10 +76,14 @@ namespace Project.Sanha.Web.Controllers
                 validateUnitEquipmentSign(model);
                 
                 _serviceUnitSave.SaveUnitEquipmentSign(model);
+
+                SearchUnitModel returnData = _serviceUnitSave.UnitModel(model.UnitId);
+
                 return Json(new
                 {
                     message = "Success Summit Form",
-                    success = true
+                    success = true,
+                    data = returnData
                 });
             }
             catch (Exception ex)

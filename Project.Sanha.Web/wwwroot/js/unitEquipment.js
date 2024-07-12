@@ -23,6 +23,7 @@ var unitEquipment = {
         });
         $("#btn-save-unit-equipment").click(() => {
             unitEquipment.saveUnitEquipmentSign();
+            $('.loading').show();
             return false;
         });
     },
@@ -59,45 +60,53 @@ var unitEquipment = {
         });
     },
     saveUnitEquipmentSign: () => {
-        var data = {
-            ProjectId: $("#ProjectId").val(),
-            UnitId: $("#UnitId").val(),
-            ShopId: $("#ShopId").val(),
-            CustomerName: $("#CustomerName").val(),
-            CustomerMobile: $("#CustomerMobile").val(),
-            CustomerEmail: $("#CustomerEmail").val(),
-            StaffName: $("#StaffName").val(),
-            Date: $("#Date").val(),
-            StratTime: $("#StratTime").val(),
-            EndTime: $("#EndTime").val(),
-            Remark: $("#Remark").val(),
+        var formData = new FormData();
 
-            Images: $("#Images").val(),
-            Sign: unitEquipment.getSignatureData(),
-            SignJM: unitEquipment.getSignatureDataJM()
-        };
-        console.log(data);
+        formData.append('UnitShopId', $("#UnitShopId").val());
+        formData.append('ProjectId', $("#ProjectId").val());
+        formData.append('UnitId', $("#UnitId").val());
+        formData.append('ShopId', $("#ShopId").val());
+        formData.append('CustomerName', $("#CustomerName").val());
+        formData.append('RelationShip', $("#RelationShip").val());
+        formData.append('CustomerMobile', $("#CustomerMobile").val());
+        formData.append('CustomerEmail', $("#CustomerEmail").val());
+        formData.append('StaffName', $("#StaffName").val());
+        formData.append('UsingQuota', $("#UsingQuota").val());
+        formData.append('Date', $("#Date").val());
+        formData.append('StartTime', $("#StartTime").val());
+        formData.append('EndTime', $("#EndTime").val());
+        formData.append('Remark', $("#Remark").val());
+        formData.append('Sign', unitEquipment.getSignatureData());
+        formData.append('SignJM', unitEquipment.getSignatureDataJM());
+
+        var files = document.getElementById('Images').files;
+        for (var i = 0; i < files.length; i++) {
+            formData.append('Images', files[i]);
+        }
+        //console.log(formData);
         //Application.LoadWait(true);
         $.ajax({
             url: baseUrl + 'Information/SaveUnitEquipmentSign',
             type: 'post',
             dataType: 'json',
-            //contentType: 'application/json; charset=utf-8',
-            success: function (res) {
-                // add ajax upload image 
-                //if (res.success) {                    
-                //    Application.PNotify(res.message, "success");                    
-                //    window.location.reload();
-                //}
-                //else {
-                //    Application.PNotify(res.message, "error");
-                //}
-                //Application.LoadWait(false);
+            processData: false,
+            contentType: false,
+            success: function (resp) {
+                if (resp.success) {
+                    $('.loading').hide();
+                    window.location.href = baseUrl + 'Information?projectid=' + resp.data.ProjectId + '&unitid=' + (resp.data.UnitId || '') + '&contractno=' + (resp.data.ContractNo || '');
+                    console.log(window.location.href);
+                }
+                else {
+                    $('.loading').hide();
+                    $('#errorModalMessage').text("กรุณาตรวจสอบข้อมูลให้ถูกต้อง");
+                    $('#errorModal').modal('show');
+                }
             },
             error: function (xhr, status, error) {
-                window.location.reload();
+                $('#errorModal').modal('show');
             },
-            data: data
+            data: formData
         });
         return false;
     },
@@ -124,5 +133,23 @@ var unitEquipment = {
             storage = parts[1];
         }
         return storage
-    }
+    },
+    validateUsingQuota: () => {
+        $('#UsingQuota').on('input', function () {
+            var input = $(this);
+            var min = 1;
+            var max = parseInt($("#Quota").val());
+            var value = parseInt(input.val());
+            console.log("input", input);
+            console.log("min" ,min);
+            console.log("max" ,max);
+            console.log("value" ,value);
+            if (value < min || value > max) {
+                console.log("Error");   
+                input.after('<div id="error-message" style="color: red;">กรุณากรอกค่าระหว่าง 1 ถึง ' + max + '</div>');
+            } else {
+                $('#error-message').remove();
+            }
+        });
+    },
 }

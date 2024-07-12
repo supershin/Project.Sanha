@@ -83,6 +83,7 @@
                         </div>
                     </div>
                     <hr />
+                    <input type="hidden" id="UnitShopId" value="@Model.InfoId" />
                     <input type="hidden" id="ProjectId" value="@Model.ProjectId" />
                     <input type="hidden" id="UnitId" value="@Model.UnitId" />
                     <input type="hidden" id="ShopId" value="@Model.ShopId" />
@@ -94,16 +95,19 @@
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <label class="form-label">ชื่อ-นามสกุล</label>
-                                <input type="text" class="form-control" placeholder="กรุณาใส ชื่อ-นามสกุล" id="CustomerName" value="@Model.CustomerName">
+                                <input type="text" class="form-control" placeholder="กรุณาใส ชื่อ-นามสกุล" id="CustomerName" value="@Model.CustomerName" required>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <label class="form-label">ความสัมพันธ์</label>
                                 <select class="form-control" id="RelationShip" name="RelationShip">
-                                    <option value="1">เจ้าของห้อง</option>
-                                    <option value="2">ผู้เช่า</option>
-                                    <option value="3">ญาติ</option>
+                                    <option value="5">เจ้าของห้อง</option>
+                                    <option value="3">คู่สมรส</option>
+                                    <option value="1">ญาติ</option>
+                                    <option value="7">ผู้เช่า</option>
+                                    <option value="2">พี่-น้อง</option>
+                                    <option value="4">อื่นๆ</option>
                                 </select>
                             </div>
                         </div>
@@ -112,13 +116,13 @@
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <label class="form-label">เบอร์โทรศัพท์</label>
-                                <input type="text" class="form-control" placeholder="กรุณากรอกข้อมูล หมายเลขโทรศัพท์" value="@Model.CustomerMobile" id="CustomerMobile">
+                                <input type="text" class="form-control" placeholder="กรุณากรอกข้อมูล หมายเลขโทรศัพท์" value="@Model.CustomerMobile" id="CustomerMobile" required>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <label class="form-label">อีเมลล์</label>
-                                <input type="text" class="form-control" placeholder="กรุณากรอกข้อมูล อีเมลล์" value="@Model.CustomerEmail" id="CustomerEmail">
+                                <input type="text" class="form-control" placeholder="กรุณากรอกข้อมูล อีเมลล์" value="@Model.CustomerEmail" id="CustomerEmail" required>
                             </div>
                         </div>
                     </div>
@@ -131,7 +135,7 @@
                         <div class="col-lg-12">
                             <div class="mb-3">
                                 <label class="form-label">ชื่อ-นามสกุล</label>
-                                <input type="text" class="form-control" placeholder="กรุณาใส ชื่อ-นามสกุล" id="StaffName">
+                                <input type="text" class="form-control" placeholder="กรุณาใส ชื่อ-นามสกุล" id="StaffName" required>
                             </div>
                         </div>
                     </div>
@@ -139,13 +143,15 @@
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <label class="form-label">จำนวนการใช้สิทธิ์</label>
-                                <input class="form-control" type="text" id="UsingQuota">
+                                <input class="form-control" type="text" id="UsingQuota" required >
+                                <input type="hidden" value="@Model.Quota" id="Quota"/>
+                                <div id="error-message" style="color: red; display: none;">กรุณากรอกค่าระหว่าง 1 ถึง @Model.Quota</div>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <label class="form-label">วันที่เข้าทำงาน</label>
-                                <input class="form-control" type="date" value="@currentDate" id="Date">
+                                <input class="form-control" type="date" value="@currentDate" id="Date" required>
                             </div>
                         </div>
                     </div>
@@ -153,12 +159,12 @@
                         <label class="form-label">ช่วงเวลาที่เข้าทำงาน</label>
                         <div class="col-lg-6">
                             <div class="mb-3">
-                                <input class="form-control" type="time" value="@currentTime" id="StartTime">
+                                <input class="form-control" type="time" value="@currentTime" id="StartTime" required>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="mb-3">
-                                <input class="form-control" type="time" value="@currentTime" id="EndTime">
+                                <input class="form-control" type="time" value="@currentTime" id="EndTime" required>
                             </div>
                         </div>
                     </div>
@@ -174,7 +180,7 @@
                         <div class="col-lg-12">
                             <div class="mb-3">
                                 <label class="form-label">อัพโหลดรูปภาพ</label>
-                                <input class="form-control" type="file" id="Images" multiple>  @*IFormFileMultiple*@
+                                <input class="form-control" type="file" id="Images" multiple required>  @*IFormFileMultiple*@
                             </div>
                         </div>
                     </div>
@@ -212,18 +218,20 @@
                 </div>
             </div>
         </div>
-    </div>        
+    </div>
 </div>
+<div class="loading" style="display:none">กำลังโหลด &#8230;</div>
 <partial name="Partial_Modal_Sign" />
 <partial name="Partial_Modal_Sign_Mech">
+    <partial name="Partial_Valid_Form" />
 
     @section scripts{
         <link href="~/css/signature-pad-master/css/signature-pad.css" />
         <script src="~/css/signature-pad-master/js/signature_pad.umd.js"></script>
-        <script src="~/js/unitEquipment.js"></script>
-        <script>
-            $(document).ready(() => {
+        <script src="~/js/unitEquipment.js?version=@DateTime.Now.Ticks.ToString()"></script>
+
+        <script>$(document).ready(() => {
+                unitEquipment.validateUsingQuota();
                 unitEquipment.init();
-            });
-        </script>
+            });</script>
     }

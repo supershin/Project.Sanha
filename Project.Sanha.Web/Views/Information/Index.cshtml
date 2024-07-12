@@ -23,7 +23,9 @@
                 @if (@Model.CheckFormat)
                 {
                     @foreach (var shop in Model.ListShopService)
-                    {
+                     {
+                        var remainingQuota = shop.Quota - shop.Used_Quota;
+                        var isDisabled = shop.Quota <= shop.Used_Quota ? "disabled" : "";
                         <input type="hidden" id="shop" value="@shop" />
                         <div class="row mb-4">
                             <div class=" col-lg-12 col-md-12 col-sm-12">
@@ -37,7 +39,7 @@
                                                 <h5 class="card-title">@shop.Name</h5>
                                                 <p class="card-text">@shop.Description</p>
                                                 <p class="card-text" >หมดอายุ: @shop.Exp</p>
-                                                <p class="card-text" >จำนวนคงเหลือ:@shop.Quota</p>
+                                                <p class="card-text">จำนวนคงเหลือ: @(remainingQuota < 0 ? 0 : remainingQuota)</p>
                                                 <div class="d-flex justify-content-end">
                                                     <form asp-controller="Information" asp-action="UsingCode" method="post">
                                                         <input type="hidden" name="InfoId" value="@shop.UnitShopId" />
@@ -51,9 +53,10 @@
                                                         <input type="hidden" name="CustomerEmail" value="@Model.CustomerEmail" />
                                                         <input type="hidden" name="ShopId" value="@shop.ShopID" />
                                                         <input type="hidden" name="Exp" value="@shop.Exp" />
-                                                        <input type="hidden" name="Quota" value="@shop.Quota" />
-
-                                                        <button type="submit" class="btn btn-primary">ใช้คูปอง</button>
+                                                        <input type="hidden" name="Quota" value="@(shop.Quota - shop.Used_Quota)" />
+                                                        <input type="hidden" name="Used_Quota" vale="@shop.Used_Quota" />
+                                                            
+                                                        <button type="submit" class="btn btn-primary" @isDisabled>ใช้คูปอง</button>
                                                     </form>
                                                 </div>
                                             </div>
