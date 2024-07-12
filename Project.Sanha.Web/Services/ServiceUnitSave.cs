@@ -71,7 +71,7 @@ namespace Project.Sanha.Web.Services
                 resource.PhysicalPathServer = appPath;
                 resource.ResourceStorageBase64 = model;
                 resource.ResourceStoragePath = filepath;
-                resource.Directory =Path.Combine(appPath, dirPath);
+                resource.Directory = Path.Combine(appPath, dirPath);
                 ConvertByteToImage(resource);
             }
 

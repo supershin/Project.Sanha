@@ -19,13 +19,17 @@ namespace Project.Sanha.Web.Controllers
         private readonly IInformationService _informationService;
         private readonly IServiceUnitSave _serviceUnitSave;
         private readonly ISearchUnitService _searchUnitService;
+        private readonly IHostEnvironment _hosting;
         public InformationController(IInformationService informationService,
             IServiceUnitSave serviceUnitSave,
-            ISearchUnitService searchUnitService)
+            ISearchUnitService searchUnitService,
+            IHostEnvironment hostEnvironment
+            )
         {
             _informationService = informationService;
             _serviceUnitSave = serviceUnitSave;
             _searchUnitService = searchUnitService;
+            _hosting = hostEnvironment;
         }
 
         // GET
@@ -65,7 +69,8 @@ namespace Project.Sanha.Web.Controllers
         {
             try
             {
-                model.ApplicationPath = AppDomain.CurrentDomain.BaseDirectory;
+                //model.ApplicationPath = AppDomain.CurrentDomain.BaseDirectory;
+                model.ApplicationPath = _hosting.ContentRootPath;
 
                 validateUnitEquipmentSign(model);
                 

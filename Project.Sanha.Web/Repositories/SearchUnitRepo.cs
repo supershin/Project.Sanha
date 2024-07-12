@@ -6,8 +6,9 @@ namespace Project.Sanha.Web.Repositories
 {
 	public class SearchUnitRepo : ISearchUnitRepo
 	{
-        private readonly TitleDbContext _context;
-        public SearchUnitRepo(TitleDbContext context)
+        private readonly SanhaDbContext _context;
+
+        public SearchUnitRepo(SanhaDbContext context)
 		{
 			_context = context;
 		}

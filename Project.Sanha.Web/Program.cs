@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddDbContext<TitleDbContext>(options =>
+builder.Services.AddDbContext<SanhaDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("AFSConn")));
 
 builder.Services.AddControllers().AddJsonOptions(opts => opts.JsonSerializerOptions.PropertyNamingPolicy = null);

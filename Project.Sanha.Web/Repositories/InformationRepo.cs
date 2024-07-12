@@ -10,9 +10,9 @@ namespace Project.Sanha.Web.Repositories
 {
 	public class InformationRepo : IInformationRepo
     {
-		private readonly TitleDbContext _context;
+		private readonly SanhaDbContext _context;
 		
-		public InformationRepo(TitleDbContext context)
+		public InformationRepo(SanhaDbContext context)
 		{
 			_context = context;
 		}
@@ -150,8 +150,10 @@ namespace Project.Sanha.Web.Repositories
         {
             CreateUnitShopModel data = new CreateUnitShopModel();
 
+            var masterProeject = _context.master_project.Where(o => o.project_id == projectId).FirstOrDefault();
+
             var masterUnit = (from mu in _context.master_unit
-                             .Where(o => o.project_id == projectId && o.unit_id == unitId && o.contract_number == contractNo)
+                             .Where(o => o.project_id == masterProeject.id.ToString() && o.unit_id == unitId && o.contract_number == contractNo)
                               select new
                               {
                                   mu.project_id,
@@ -161,7 +163,7 @@ namespace Project.Sanha.Web.Repositories
                               }).FirstOrDefault();
 
             var projectShop = (from ps in _context.Sanha_tm_ProjectShopservice
-                               .Where(o => o.ProjectID == projectId && o.FlagActive == true)
+                               .Where(o => o.ProjectID == masterUnit.project_id && o.FlagActive == true)
                                select new
                                {
                                    ps.ID,

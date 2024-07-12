@@ -71,6 +71,7 @@ var unitEquipment = {
             StratTime: $("#StratTime").val(),
             EndTime: $("#EndTime").val(),
             Remark: $("#Remark").val(),
+
             Images: $("#Images").val(),
             Sign: unitEquipment.getSignatureData(),
             SignJM: unitEquipment.getSignatureDataJM()
