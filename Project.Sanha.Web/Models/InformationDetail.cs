@@ -26,8 +26,7 @@ namespace Project.Sanha.Web.Models
 		public string Description { get; set; } = default!;
 		public string Exp { get; set; } = default!;
 		public int? Quota { get; set; }
-		public int? Min_Quota { get; set; }
-		public int? Max_Quota { get; set; }
+		public int? Used_Quota { get; set; }
     }
 }
 

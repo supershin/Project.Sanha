@@ -23,7 +23,12 @@
                 @if (@Model.CheckFormat)
                 {
                     @foreach (var shop in Model.ListShopService)
-                    {
+                        {
+                            var expDate = DateTime.ParseExact(shop.Exp, "dd-MM-yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                            var remainingQuota = shop.Quota - shop.Used_Quota;
+                            var isVisible = shop.Quota <= shop.Used_Quota || expDate <= DateTime.Now;
+                            var isExp = expDate <= DateTime.Now ? "คูปองหมดอายุ" : null;
+
                         <input type="hidden" id="shop" value="@shop" />
                         <div class="row mb-4">
                             <div class=" col-lg-12 col-md-12 col-sm-12">
@@ -37,7 +42,7 @@
                                                 <h5 class="card-title">@shop.Name</h5>
                                                 <p class="card-text">@shop.Description</p>
                                                 <p class="card-text" >หมดอายุ: @shop.Exp</p>
-                                                <p class="card-text" >จำนวนคงเหลือ:@shop.Quota</p>
+                                                <p class="card-text">จำนวนคงเหลือ: @(remainingQuota < 0 ? 0 : remainingQuota)</p>
                                                 <div class="d-flex justify-content-end">
                                                     <form asp-controller="Information" asp-action="UsingCode" method="post">
                                                         <input type="hidden" name="InfoId" value="@shop.UnitShopId" />
@@ -51,9 +56,15 @@
                                                         <input type="hidden" name="CustomerEmail" value="@Model.CustomerEmail" />
                                                         <input type="hidden" name="ShopId" value="@shop.ShopID" />
                                                         <input type="hidden" name="Exp" value="@shop.Exp" />
-                                                        <input type="hidden" name="Quota" value="@shop.Quota" />
+                                                        <input type="hidden" name="Quota" value="@(shop.Quota - shop.Used_Quota)" />
+                                                        <input type="hidden" name="Used_Quota" vale="@shop.Used_Quota" />
 
-                                                        <button type="submit" class="btn btn-primary">ใช้คูปอง</button>
+                                                        @if (!isVisible)
+                                                        {
+                                                            <button type="submit" class="btn btn-primary" >ใช้คูปอง</button>
+                                                        }
+                                                        
+                                                        <div id="IsExp" class="text-danger mt-2">@isExp</div>
                                                     </form>
                                                 </div>
                                             </div>
@@ -132,27 +143,7 @@
     .fix-icon {
         align-content: center;
     }
-/*    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgb(0,0,0);
-        background-color: rgba(0,0,0,0.4);
-        padding-top: 60px;
-    }
 
-    .modal-content {
-        background-color: #fefefe;
-        margin: 5% auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%;
-    }*/
 </style>
 
 @section scripts{

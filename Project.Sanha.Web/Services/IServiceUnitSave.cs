@@ -8,6 +8,7 @@ namespace Project.Sanha.Web.Services
 	{
         public void SaveUnitEquipmentSign(CreateTransactionModel model);
 
+        SearchUnitModel UnitModel(int id);
     }
 }
 

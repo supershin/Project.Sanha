@@ -17,9 +17,11 @@ builder.Services.AddScoped<IInformationService, InformationService>();
 builder.Services.AddScoped<IInformationRepo, InformationRepo>();
 
 builder.Services.AddScoped<IServiceUnitSave, ServiceUnitSave>();
+builder.Services.AddScoped<ICreateTransactionRepo, CreateTransactionRepo>();
 
 builder.Services.AddScoped<ISearchUnitService, SearchUnitService>();
 builder.Services.AddScoped<ISearchUnitRepo, SearchUnitRepo>();
+
 
 var app = builder.Build();
 

@@ -24,7 +24,7 @@ var information = {
                 if (resp.success) {
                     console.log(resp.data);
                     $("#infoModal").modal('hide');
-                    window.location.href = baseUrl + 'Information/Index?projectid=' + resp.data.ProjectId + '&unitid=' + (resp.data.UnitId || '') + '&contractno=' + (resp.data.ContractNo || '');
+                    window.location.href = baseUrl + 'Information?projectid=' + resp.data.ProjectId + '&unitid=' + (resp.data.UnitId || '') + '&contractno=' + (resp.data.ContractNo || '');
                 } else {
                     $("#addressError").text(resp.message);
                 }

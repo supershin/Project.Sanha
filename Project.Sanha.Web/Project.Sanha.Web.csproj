@@ -11,13 +11,12 @@
     <Folder Include="Services\" />
     <Folder Include="Views\Information\" />
     <Folder Include="Repositories\" />
-    <Folder Include="Upload\" />
+    <Folder Include="wwwroot\lib\loading\" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="Views\Information\" />
     <None Remove="Repositories\" />
-    <None Remove="Upload\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.31" />
@@ -36,5 +35,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\lib\loading\" />
   </ItemGroup>
 </Project>
