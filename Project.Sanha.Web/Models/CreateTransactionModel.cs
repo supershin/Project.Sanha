@@ -25,6 +25,8 @@ namespace Project.Sanha.Web.Models
         public string SignJM { get; set; }
 
         public string ApplicationPath { get; set; }
+
+        public bool Cancel { get; set; }
     }
 }
     

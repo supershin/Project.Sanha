@@ -152,6 +152,8 @@ namespace Project.Sanha.Web.Repositories
                                   mu.transfer_date
                               }).FirstOrDefault();
 
+            if (masterUnit == null) throw new Exception("ข้อมูลไม่ถูกต้อง");
+
             var projectShop = (from ps in _context.Sanha_tm_ProjectShopservice
                                .Where(o => o.ProjectID == masterUnit.project_id && o.FlagActive == true)
                                select new
@@ -164,7 +166,7 @@ namespace Project.Sanha.Web.Repositories
                                    ps.DefaultEndDate,
                                    ps.ExpireDate
                                }).ToList();
-
+            
             if (masterUnit != null)
             {
                 foreach( var project in projectShop.ToList())

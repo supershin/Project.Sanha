@@ -21,6 +21,11 @@ var unitEquipment = {
             $('#modal-sign-jm').modal('hide');
             return false;
         });
+        $("#btn-cancel-form").click(() => {
+            unitEquipment.cancelForm();
+            $('.loading').show();
+            return false;
+        });
         $("#btn-save-unit-equipment").click(() => {
             unitEquipment.saveUnitEquipmentSign();
             $('.loading').show();
@@ -29,14 +34,16 @@ var unitEquipment = {
     },
     initSignaturePad: () => {
         $('#modal-sign').on('shown.bs.modal', function (e) {
-            let canvas = $("#signature-pad canvas");
-            let parentWidth = $(canvas).parent().outerWidth();
-            let parentHeight = $(canvas).parent().outerHeight();
-            canvas.attr("width", parentWidth + 'px')
-                .attr("height", parentHeight + 'px');
-            signaturePad = new SignaturePad(canvas[0], {
-                backgroundColor: 'rgb(255, 255, 255)'
-            });
+            if (signaturePad == null) {
+                let canvas = $("#signature-pad canvas");
+                let parentWidth = $(canvas).parent().outerWidth();
+                let parentHeight = $(canvas).parent().outerHeight();
+                canvas.attr("width", parentWidth + 'px')
+                    .attr("height", parentHeight + 'px');
+                signaturePad = new SignaturePad(canvas[0], {
+                    backgroundColor: 'rgb(255, 255, 255)'
+                });
+            }
         });
        
         $(document).on('click', '#modal-sign .clear', function () {
@@ -46,14 +53,16 @@ var unitEquipment = {
     },
     initSignaturePad_JM: () => {
         $('#modal-sign-jm').on('shown.bs.modal', function (e) {
-            let canvas = $("#signature-pad-jm canvas");
-            let parentWidth = $(canvas).parent().outerWidth();
-            let parentHeight = $(canvas).parent().outerHeight();
-            canvas.attr("width", parentWidth + 'px')
-                .attr("height", parentHeight + 'px');
-            signaturePad_JM = new SignaturePad(canvas[0], {
-                backgroundColor: 'rgb(255, 255, 255)'
-            });
+            if (signaturePad_JM == null) {
+                let canvas = $("#signature-pad-jm canvas");
+                let parentWidth = $(canvas).parent().outerWidth();
+                let parentHeight = $(canvas).parent().outerHeight();
+                canvas.attr("width", parentWidth + 'px')
+                    .attr("height", parentHeight + 'px');
+                signaturePad_JM = new SignaturePad(canvas[0], {
+                    backgroundColor: 'rgb(255, 255, 255)'
+                });
+            }
         });
         $(document).on('click', '#modal-sign-jm .clear', function () {            
             signaturePad_JM.clear();
@@ -99,7 +108,7 @@ var unitEquipment = {
                 }
                 else {
                     $('.loading').hide();
-                    $('#errorModalMessage').text("กรุณาตรวจสอบข้อมูลให้ถูกต้อง");
+                    $('#errorModalMessage').text("กรุณากรอกข้อมูลให้ครบถ้วน");
                     $('#errorModal').modal('show');
                 }
             },
@@ -152,4 +161,27 @@ var unitEquipment = {
             }
         });
     },
+    cancelForm: () => {
+        var data = {
+            UnitId: $("#UnitId").val(),
+        };
+        $.ajax({
+            url: baseUrl + 'Information/Cancel',
+            type: 'post',
+            dataType: 'json',
+            success: function (resp) {
+                if (resp.success) {
+                    console.log(resp.data);
+                    $('.loading').hide();
+                    window.location.href = baseUrl + 'Information?projectid=' + resp.data.ProjectId + '&unitid=' + (resp.data.UnitId || '') + '&contractno=' + (resp.data.ContractNo || '');
+                }
+            },
+            error: function (xhr, status, error) {
+                // do something
+                alert(" Coding Error ")
+            },
+            data: data
+        });
+        return false;
+    }
 }
