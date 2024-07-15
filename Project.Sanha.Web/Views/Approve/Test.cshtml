@@ -1,0 +1,305 @@
+﻿
+<style>
+    .carousel-inner {
+  padding: 1em;
+}
+.card {
+  margin: 0 0.5em;
+  box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, 0.18);
+  border: none;
+}
+.carousel-control-prev,
+.carousel-control-next {
+  background-color: #e1e1e1;
+  width: 6vh;
+  height: 6vh;
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+@@media (min-width: 768px) {
+  .carousel-item {
+    margin-right: 0;
+    flex: 0 0 33.333333%;
+    display: block;
+  }
+  .carousel-inner {
+    display: flex;
+  }
+}
+.card .img-wrapper {
+    max-width: 100%;
+    height: 13em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.card img {
+    max-height: 100%;
+}
+@@media (max-width: 767px) {
+  .card .img-wrapper {
+    height: 17em;
+  }
+}
+
+
+/*Viewer*/
+    .img-item .card {
+        cursor: pointer;
+    }
+
+        .img-item .card:hover .img-thumb {
+            cursor: pointer;
+            transform: scale(1.4);
+            filter: brightness(1);
+        }
+
+    .img-container {
+        width: calc(100%);
+        height: 40vh;
+        overflow: hidden;
+    }
+
+    .img-thumb {
+        width: calc(100%);
+        height: calc(100%);
+        object-fit: scale-down;
+        object-position: center center;
+        transition: transform .3s ease-in;
+        filter: brightness(0.8);
+    }
+
+    #img-viewer-container {
+        height: 70vh;
+        width: calc(100%);
+        position: relative
+    }
+
+    img#img-viewer {
+        height: calc(100%);
+        width: calc(100%);
+        object-fit: scale-down;
+        object-position: center center;
+    }
+
+    .control-prev,
+    .control-next {
+        cursor: pointer;
+        height: 75px;
+        width: 75px;
+        opacity: .3;
+    }
+
+        .control-prev:hover,
+        .control-next:hover {
+            opacity: 1;
+            background-color: #00000033;
+        }
+
+    .control-prev {
+        left: 0
+    }
+
+    .control-next {
+        right: 0
+    }
+
+    .control-next-container {
+        right: 0
+    }
+
+    .control-prev:before {
+        content: "";
+        height: 50px;
+        border-left: 5px solid white;
+        position: absolute;
+        top: 47%;
+        left: 2em;
+        transform: rotate(-56deg);
+    }
+
+    .control-prev:after {
+        content: "";
+        height: 50px;
+        border-left: 5px solid white;
+        position: absolute;
+        bottom: 47.8%;
+        left: 2em;
+        transform: rotate(56deg);
+    }
+
+    .control-next:before {
+        content: "";
+        height: 50px;
+        border-left: 5px solid white;
+        position: absolute;
+        top: 47%;
+        right: 2em;
+        transform: rotate(56deg);
+    }
+
+    .control-next:after {
+        content: "";
+        height: 50px;
+        border-left: 5px solid white;
+        position: absolute;
+        bottom: 47.8%;
+        right: 2em;
+        transform: rotate(-56deg);
+    }
+</style>
+
+
+<div id="carouselExampleControls" class="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <div class="img-item">
+                 <div class="img-container">
+                <div class="img-wrapper"><img src="~/images/testImg/work1.jpg" class="d-block w-100 img-thumb" alt="Image"> </div>
+                @*<div class="card-body">
+                    <h5 class="card-title">Card title 1</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                        card's content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>*@
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <div class="card img-item">
+                <div class="img-container">
+                <div class="img-wrapper"><img src="~/images/testImg/work2.jpg" class="d-block w-100 img-thumb" alt="Image"> </div>
+                <div class="card-body">
+                    <h5 class="card-title">Card title 2</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                        card's content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <div class="card img-item">
+                <div class="img-container">
+                <div class="img-wrapper"><img src="~/images/testImg/work3.jpg" class="d-block w-100 img-thumb" alt="Image"> </div>
+                <div class="card-body">
+                    <h5 class="card-title">Card title 3</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                        card's content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+                </div>s
+            </div>
+        </div>
+        <div class="carousel-item">
+            <div class="card img-item">
+                <div class="img-wrapper"><img src="~/images/testImg/work4.jpg" class="d-block w-100 img-thumb" alt="Image"> </div>
+               
+            </div>
+        </div>
+
+        
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+
+<!-- Confirmation Modal -->
+    <div class="modal fade" id="imageViewerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="imageViewerModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered rounded-0">
+            <div class="modal-content rounded-0">
+                <div class="modal-header py-1">
+                    <h5 class="modal-title" id="imageViewerModalLabel">Viewer</h5>
+                    <button type="button" style="font-size: .65em;" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body rounded-0">
+                    <div id="img-viewer-container" class="d-flex">
+                        <div class="h-100 d-flex align-items-center position-absolute control-prev-container">
+                            <div class="control-prev"></div>
+                        </div>
+                        <img src="" alt="Viewer" id="img-viewer" class="bg-dark bg-gradient">
+                        <div class="h-100 d-flex align-items-center position-absolute control-next-container">
+                            <div class="control-next"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of Confirmation Modal -->
+
+    @section Scripts{
+    
+    <script>
+        var multipleCardCarousel = document.querySelector(
+  "#carouselExampleControls"
+);
+if (window.matchMedia("(min-width: 768px)").matches) {
+  var carousel = new bootstrap.Carousel(multipleCardCarousel, {
+    interval: false,
+  });
+  var carouselWidth = $(".carousel-inner")[0].scrollWidth;
+  var cardWidth = $(".carousel-item").width();
+  var scrollPosition = 0;
+  $("#carouselExampleControls .carousel-control-next").on("click", function () {
+    if (scrollPosition < carouselWidth - cardWidth * 4) {
+      scrollPosition += cardWidth;
+      $("#carouselExampleControls .carousel-inner").animate(
+        { scrollLeft: scrollPosition },
+        600
+      );
+    }
+  });
+  $("#carouselExampleControls .carousel-control-prev").on("click", function () {
+    if (scrollPosition > 0) {
+      scrollPosition -= cardWidth;
+      $("#carouselExampleControls .carousel-inner").animate(
+        { scrollLeft: scrollPosition },
+        600
+      );
+    }
+  });
+} else {
+  $(multipleCardCarousel).addClass("slide");
+}
+    </script>
+
+
+    <script>
+        var viewer_modal;
+$(function() {
+    viewer_modal = $('#imageViewerModal')
+            $('.img-item').click(function () {
+        viewer_modal.find('#img-viewer').attr('src', $(this).find('.img-thumb').attr('src'))
+        viewer_modal.modal('show')
+    })
+    viewer_modal.on('hidden.bs.modal', function() {
+        viewer_modal.find('#img-viewer').attr('src', '')
+    })
+    $('.control-next').click(function() {
+        //alert("aa");
+        var cur_img = viewer_modal.find('#img-viewer').attr('src');
+                alert(cur_img);
+        var index = $('.img-thumb[src="' + cur_img + '"]').closest('.img-item').index() + 1;
+        alert(index);
+        var next_index = index > ($('.img-thumb').length - 1) ? 0 : index;
+        alert(next_index);
+        viewer_modal.find('#img-viewer').attr('src', $('.img-thumb').eq(next_index).attr('src'))
+    })
+    $('.control-prev').click(function() {
+        var cur_img = viewer_modal.find('#img-viewer').attr('src');
+        var index = $('.img-thumb[src="' + cur_img + '"]').closest('.img-item').index() - 1;
+        var prev_index = index < 0 ? ($('.img-thumb').length - 1) : index;
+        viewer_modal.find('#img-viewer').attr('src', $('.img-thumb').eq(prev_index).attr('src'))
+    })
+})
+    </script>
+    }
