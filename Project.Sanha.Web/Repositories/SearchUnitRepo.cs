@@ -16,7 +16,13 @@ namespace Project.Sanha.Web.Repositories
 		{
 			SearchUnitModel search = null;
 
-			var query = (from i in _context.master_unit.Where(o => o.project_id == projectId && o.addr_no == address)
+			var queryProject = (from mp in _context.master_project.Where(o => o.project_id == projectId)
+								select new
+								{
+									mp.id
+								}).FirstOrDefault();
+
+			var query = (from i in _context.master_unit.Where(o => o.project_id == queryProject.id.ToString() && o.addr_no == address)
 						 select new
 						 {
 							 i.project_id,
@@ -28,7 +34,7 @@ namespace Project.Sanha.Web.Repositories
 			{
                 search = new SearchUnitModel()
                 {
-                    ProjectId = query.project_id,
+                    ProjectId = projectId,
                     UnitId = query.unit_id,
                     ContractNo = query.contract_number
                 };

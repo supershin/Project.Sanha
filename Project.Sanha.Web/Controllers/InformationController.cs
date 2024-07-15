@@ -20,6 +20,7 @@ namespace Project.Sanha.Web.Controllers
         private readonly IServiceUnitSave _serviceUnitSave;
         private readonly ISearchUnitService _searchUnitService;
         private readonly IHostEnvironment _hosting;
+        
         public InformationController(IInformationService informationService,
             IServiceUnitSave serviceUnitSave,
             ISearchUnitService searchUnitService,
@@ -38,22 +39,29 @@ namespace Project.Sanha.Web.Controllers
         {
             InformationDetail informationDetail = null;
             CreateUnitShopModel createUnitShop = null;
-
-            // landing by have account 
-            if (!string.IsNullOrWhiteSpace(unitid) && !string.IsNullOrWhiteSpace(contractno))
+            try
             {
-                // if - first landing to insert data
-                // if - not first to return data 
-                createUnitShop = _informationService.CreateUnitShop(projectid, unitid, contractno);
+                // landing by have account 
+                if (!string.IsNullOrWhiteSpace(unitid) && !string.IsNullOrWhiteSpace(contractno))
+                {
+                    // if - first landing to insert data
+                    // if - not first to return data 
+                    createUnitShop = _informationService.CreateUnitShop(projectid, unitid, contractno);
 
-                // get data detail for return to page
-                informationDetail = _informationService.InfoDetailService(createUnitShop.ProjectId, createUnitShop.UnitId, createUnitShop.ContractNo);
+                    // get data detail for return to page
+                    informationDetail = _informationService.InfoDetailService(createUnitShop.ProjectId, createUnitShop.UnitId, createUnitShop.ContractNo);
+                }
+                // landing by dont have account 
+                else
+                {
+                    informationDetail = _informationService.InfoProjectName(projectid);
+                }
             }
-            // landing by dont have account 
-            else
+            catch( Exception ex)
             {
-                informationDetail = _informationService.InfoProjectName(projectid);
+                return View("ErrorInfo", ex.Message);
             }
+            
 
             return View(informationDetail);
         }
@@ -75,10 +83,14 @@ namespace Project.Sanha.Web.Controllers
                 validateUnitEquipmentSign(model);
                 
                 _serviceUnitSave.SaveUnitEquipmentSign(model);
+
+                SearchUnitModel returnData = _serviceUnitSave.UnitModel(model.UnitId);
+
                 return Json(new
                 {
                     message = "Success Summit Form",
-                    success = true
+                    success = true,
+                    data = returnData
                 });
             }
             catch (Exception ex)
@@ -115,6 +127,32 @@ namespace Project.Sanha.Web.Controllers
                     });
             }
             catch(Exception ex)
+            {
+                return Json(
+                    new
+                    {
+                        success = false,
+                        message = ex.Message
+                    });
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Cancel(CreateTransactionModel model)
+        {
+            try
+            {
+                SearchUnitModel returnData = _serviceUnitSave.UnitModel(model.UnitId);
+                if (returnData == null) throw new Exception("ข้อมูลไม่ถูกต้อง");
+
+                return Json(
+                    new
+                    {
+                        success = true,
+                        data = returnData
+                    });
+            }
+            catch (Exception ex)
             {
                 return Json(
                     new

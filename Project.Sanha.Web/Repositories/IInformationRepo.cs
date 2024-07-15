@@ -11,6 +11,7 @@ namespace Project.Sanha.Web.Repositories
 
 		CreateUnitShopModel createUnitShop(string projectId, string unitId, string contractNo);
 
+		SearchUnitModel ReturnModel(int unitId);
     }
 }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using Project.Sanha.Web.Data;
@@ -35,7 +36,8 @@ namespace Project.Sanha.Web.Repositories
                              u.ContractNumber,
                              u.ShopID,
                              u.EndDate,
-                             u.Used_Quota
+                             u.Quota,
+                             u.UsedQuota
                          }).ToList();
 
             List<ShopService> shopServices = new List<ShopService>();
@@ -58,17 +60,6 @@ namespace Project.Sanha.Web.Repositories
 
                 if(projectShop != null)
                 {
-                    Sanha_tm_ProjectShopservice? update = _context.Sanha_tm_ProjectShopservice.Where(o => o.ID == projectShop.ID).FirstOrDefault();
-                    if(update != null)
-                    {
-                        update.Min_Quota = 1;
-                        update.Max_Quota = unit.Used_Quota;
-                        update.UpdateDate = DateTime.Now;
-                        update.UpdateBy = 2;
-                        _context.Sanha_tm_ProjectShopservice.Update(update);
-                        _context.SaveChanges();
-                    }
-
                     ShopService shop = new ShopService
                     {
                         UnitShopId = unit.ID,
@@ -76,9 +67,8 @@ namespace Project.Sanha.Web.Repositories
                         Name = projectShop.Name,
                         Description = projectShop.Description,
                         Exp = unit.EndDate?.ToString("dd-MM-yyyy"),
-                        Quota = unit.Used_Quota != null ? unit.Used_Quota : projectShop.Quota,
-                        Min_Quota = update.Min_Quota,
-                        Max_Quota = update.Max_Quota
+                        Quota = unit.Quota != null ? unit.Quota : projectShop.Quota,
+                        Used_Quota = unit.UsedQuota
                     };
 
                     shopServices.Add(shop);
@@ -162,6 +152,8 @@ namespace Project.Sanha.Web.Repositories
                                   mu.transfer_date
                               }).FirstOrDefault();
 
+            if (masterUnit == null) throw new Exception("ข้อมูลไม่ถูกต้อง");
+
             var projectShop = (from ps in _context.Sanha_tm_ProjectShopservice
                                .Where(o => o.ProjectID == masterUnit.project_id && o.FlagActive == true)
                                select new
@@ -174,7 +166,7 @@ namespace Project.Sanha.Web.Repositories
                                    ps.DefaultEndDate,
                                    ps.ExpireDate
                                }).ToList();
-
+            
             if (masterUnit != null)
             {
                 foreach( var project in projectShop.ToList())
@@ -217,15 +209,15 @@ namespace Project.Sanha.Web.Repositories
                             createUnitShopservice.StartDate = project.DefaultStartDate;
                             createUnitShopservice.EndDate = project.DefaultEndDate;
                         }
-
                         if(unitMapping != null)
                         {
-                            createUnitShopservice.Used_Quota = createUnitShopservice.EndDate <= DateTime.Now ? 0 : unitMapping.Quota;
+                            createUnitShopservice.Quota = createUnitShopservice.EndDate <= DateTime.Now ? 0 : unitMapping.Quota;
                         }
                         else
                         {
-                            createUnitShopservice.Used_Quota = createUnitShopservice.EndDate <= DateTime.Now ? 0 : project.Quota;
+                            createUnitShopservice.Quota = createUnitShopservice.EndDate <= DateTime.Now ? 0 : project.Quota;
                         }
+                        createUnitShopservice.UsedQuota = 0;
                         createUnitShopservice.FlagActive = true;
                         createUnitShopservice.CreateDate = DateTime.Now;
                         createUnitShopservice.CreateBy = 1;
@@ -253,6 +245,36 @@ namespace Project.Sanha.Web.Repositories
                     }
                 }               
             }
+            return data;
+        }
+
+        public SearchUnitModel ReturnModel(int unitId)
+        {
+            var queryMu = (from mu in _context.master_unit
+                          where mu.id == unitId
+                          select new
+                          {
+                              mu.project_id,
+                              mu.unit_id,
+                              mu.contract_number
+                          }).FirstOrDefault();
+
+            int id = Int32.Parse(queryMu.project_id);
+
+            var queryMp = (from mp in _context.master_project
+                           where mp.id == id
+                           select new
+                           {
+                               mp.project_id
+                           }).FirstOrDefault();
+
+            SearchUnitModel data = new SearchUnitModel()
+            {
+                ProjectId = queryMp.project_id,
+                UnitId = queryMu.unit_id,
+                ContractNo = queryMu.contract_number
+            };
+
             return data;
         }
     }

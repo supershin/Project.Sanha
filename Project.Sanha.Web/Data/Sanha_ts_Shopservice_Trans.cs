@@ -49,5 +49,6 @@ namespace Project.Sanha.Web.Data
         [Column(TypeName = "datetime")]
         public DateTime? AuditDate { get; set; }
         public int? AuditBy { get; set; }
+        public int? UsedQuota { get; set; }
     }
 }

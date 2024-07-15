@@ -9,13 +9,13 @@
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="Views\Information\" />
-    <Folder Include="Upload\" />
+    <Folder Include="Repositories\" />
+    <Folder Include="wwwroot\lib\loading\" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="Views\Information\" />
     <None Remove="Repositories\" />
-    <None Remove="Upload\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,5 +40,8 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="QuestPDF" Version="2023.6.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\lib\loading\" />
   </ItemGroup>
 </Project>
