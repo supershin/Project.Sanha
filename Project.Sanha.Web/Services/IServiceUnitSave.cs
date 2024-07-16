@@ -6,7 +6,7 @@ namespace Project.Sanha.Web.Services
 {
 	public interface IServiceUnitSave
 	{
-        public void SaveUnitEquipmentSign(CreateTransactionModel model);
+        void SaveUnitEquipmentSign(CreateTransactionModel model);
 
         SearchUnitModel UnitModel(int id);
     }

@@ -143,7 +143,7 @@
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <label class="form-label">จำนวนการใช้สิทธิ์</label>
-                                <input class="form-control" type="text" id="UsingQuota" required >
+                                <input class="form-control" type="number" id="UsingQuota" required min="1" max="@Model.Quota">
                                 <input type="hidden" value="@Model.Quota" id="Quota"/>
                                 <div id="error-message" style="color: red; display: none;">กรุณากรอกค่าระหว่าง 1 ถึง @Model.Quota</div>
                             </div>

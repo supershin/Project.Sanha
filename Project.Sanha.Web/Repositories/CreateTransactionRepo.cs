@@ -77,7 +77,7 @@ namespace Project.Sanha.Web.Repositories
                     Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), dirPath));
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
-                    image.CopyToAsync(fileStream);
+                    image.CopyTo(fileStream);
                 }
 
                 Sanha_tr_Shopservice_Resource resourceImage = new Sanha_tr_Shopservice_Resource();
