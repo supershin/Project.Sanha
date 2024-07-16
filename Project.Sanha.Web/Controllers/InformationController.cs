@@ -77,6 +77,7 @@ namespace Project.Sanha.Web.Controllers
         {
             try
             {
+                
                 //model.ApplicationPath = AppDomain.CurrentDomain.BaseDirectory;
                 model.ApplicationPath = _hosting.ContentRootPath;
 

@@ -27,6 +27,38 @@ var unitEquipment = {
             return false;
         });
         $("#btn-save-unit-equipment").click(() => {
+            var usedQuota = $("#UsingQuota").val();
+            var quota = $("#Quota").val();
+
+            var message = "";
+
+            if (usedQuota == 0 || usedQuota > quota || usedQuota === null || isNaN(usedQuota)) {
+                message += "กรุณาตรวจสอบจำนวนสิทธิ์คงเหลือ<br>";
+            }
+            else if ($("#CustomerName").val() === null || $("#CustomerName").val().trim() === "") {
+                message += "กรุณาตรวจสอบชื่อของลูกค้า<br>";
+            }
+            else if ($("#RelationShip").val() === null || $("#RelationShip").val().trim() === "") {
+                message += "กรุณาตรวจสอบความสัมพันธ์ลูกค้า<br>";
+            }
+            else if ($("#CustomerMobile").val() === null || $("#CustomerMobile").val().trim() === "") {
+                message += "กรุณาตรวจสอบเบอร์โทรศัพท์ลูกค้า<br>";
+            }
+            else if ($("#CustomerEmail").val() === null || $("#CustomerEmail").val().trim() === "") {
+                message += "กรุณาตรวจสอบอีเมลล์ลูกค้า<br>";
+            }
+            else if ($("#StaffName").val() === null || $("#StaffName").val().trim() === "") {
+                message += "กรุณาตรวจสอบชื่อพนักงาน<br>";
+            }
+            else if (unitEquipment.getSignatureData() === null || unitEquipment.getSignatureDataJM() === null) {
+                message += "กรุณาตรวจสอบลายเซ็นต์<br>";
+            }
+
+            if (message !== "") {
+                $('#errorModalMessage').html(message);
+                $('#errorModal').modal('show');
+                return false;
+            }
             unitEquipment.saveUnitEquipmentSign();
             $('.loading').show();
             return false;
@@ -145,19 +177,14 @@ var unitEquipment = {
     },
     validateUsingQuota: () => {
         $('#UsingQuota').on('input', function () {
-            var input = $(this);
-            var min = 1;
-            var max = parseInt($("#Quota").val());
-            var value = parseInt(input.val());
-            console.log("input", input);
-            console.log("min" ,min);
-            console.log("max" ,max);
-            console.log("value" ,value);
-            if (value < min || value > max) {
-                console.log("Error");   
-                input.after('<div id="error-message" style="color: red;">กรุณากรอกค่าระหว่าง 1 ถึง ' + max + '</div>');
+            var value = parseInt($(this).val(), 10);
+            var maxQuota = parseInt($('#Quota').val(), 10);
+            var errorMessage = $('#error-message');
+
+            if (value < 1 || value > maxQuota || isNaN(value)) {
+                errorMessage.show();
             } else {
-                $('#error-message').remove();
+                errorMessage.hide();
             }
         });
     },

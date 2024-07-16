@@ -7,7 +7,7 @@ namespace Project.Sanha.Web.Repositories
     {
 		GetTransModel CreateTransaction(CreateTransactionModel create);
 
-		bool UploadImage(List<IFormFile> images, int transId, string appPath);
+        bool UploadImage(List<IFormFile> images, int transId, string appPath);
 
         bool CreateUploadSign(int transId, string fileName, string filePath);
 
