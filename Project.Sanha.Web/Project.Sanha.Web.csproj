@@ -11,11 +11,13 @@
     <Folder Include="Views\Information\" />
     <Folder Include="Repositories\" />
     <Folder Include="wwwroot\lib\loading\" />
+    <Folder Include="Views\Authentication\" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="Views\Information\" />
     <None Remove="Repositories\" />
+    <None Remove="Views\Authentication\" />
   </ItemGroup>
 
   <ItemGroup>

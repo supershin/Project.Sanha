@@ -5,6 +5,7 @@ var unitEquipment = {
     init: () => {
         unitEquipment.initSignaturePad();
         unitEquipment.initSignaturePad_JM();
+        
         $("#btn-sign").click(() => {
             $('#modal-sign').modal();
             return false;
@@ -29,7 +30,7 @@ var unitEquipment = {
         $("#btn-save-unit-equipment").click(() => {
             var usedQuota = $("#UsingQuota").val();
             var quota = $("#Quota").val();
-
+            
             var message = "";
 
             if (usedQuota == 0 || usedQuota > quota || usedQuota === null || isNaN(usedQuota)) {
@@ -50,10 +51,10 @@ var unitEquipment = {
             else if ($("#StaffName").val() === null || $("#StaffName").val().trim() === "") {
                 message += "กรุณาตรวจสอบชื่อพนักงาน<br>";
             }
-            else if (unitEquipment.getSignatureData() === null || unitEquipment.getSignatureDataJM() === null) {
+            else if ( !unitEquipment.getSignatureData() || !unitEquipment.getSignatureDataJM()) {
                 message += "กรุณาตรวจสอบลายเซ็นต์<br>";
             }
-
+            debugger
             if (message !== "") {
                 $('#errorModalMessage').html(message);
                 $('#errorModal').modal('show');
@@ -155,7 +156,7 @@ var unitEquipment = {
         let dataURL;
         let contentType;
         let storage;
-        if (!signaturePad.isEmpty()) {
+        if (signaturePad && !signaturePad.isEmpty()) {
             dataURL = signaturePad.toDataURL();
             var parts = dataURL.split(';base64,');
             contentType = parts[0].split(":")[1];
@@ -167,7 +168,7 @@ var unitEquipment = {
         let dataURL;
         let contentType;
         let storage;
-        if (!signaturePad_JM.isEmpty()) {
+        if (signaturePad_JM && !signaturePad_JM.isEmpty()) {
             dataURL = signaturePad_JM.toDataURL();
             var parts = dataURL.split(';base64,');
             contentType = parts[0].split(":")[1];

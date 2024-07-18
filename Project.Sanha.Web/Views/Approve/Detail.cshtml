@@ -1,53 +1,60 @@
 ﻿<style>
     .carousel-inner {
-  padding: 1em;
-}
-.card {
-  margin: 0 0.5em;
-  box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, 0.18);
- /* border: none;*/
+        padding: 1em;
+    }
+
+    .card {
+        margin: 0 0.5em;
+        box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, 0.18);
+        /* border: none;*/
         border-color: darkseagreen;
-}
-.carousel-control-prev,
-.carousel-control-next {
-  background-color: #e1e1e1;
-  width: 6vh;
-  height: 6vh;
-  border-radius: 50%;
-  top: 50%;
-  transform: translateY(-50%);
-}
-@@media (min-width: 768px) {
-  .carousel-item {
-    margin-right: 0;
-    flex: 0 0 33.333333%;
-    display: block;
-  }
-  .carousel-inner {
-    display: flex;
-  }
-}
-.card .img-wrapper {
-    max-width: 100%;
-    height: 13em;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.card img {
-    max-height: 100%;
-}
-@@media (max-width: 767px) {
-  .card .img-wrapper {
-    height: 17em;
-  }
-}
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        background-color: #e1e1e1;
+        width: 6vh;
+        height: 6vh;
+        border-radius: 50%;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    @@media (min-width: 768px) {
+        .carousel-item {
+            margin-right: 0;
+            flex: 0 0 33.333333%;
+            display: block;
+        }
+
+        .carousel-inner {
+            display: flex;
+        }
+    }
+
+    .card .img-wrapper {
+        max-width: 100%;
+        height: 13em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card img {
+        max-height: 100%;
+    }
+
+    @@media (max-width: 767px) {
+        .card .img-wrapper {
+            height: 17em;
+        }
+    }
 
     #card-header-color {
         background-color: #ffe2d9;
     }
 
-/*    viewer*/
+    /*    viewer*/
     #img-viewer-container {
         height: 70vh;
         width: calc(100%);
@@ -60,11 +67,32 @@
         object-fit: scale-down;
         object-position: center center;
     }
-    .img-item{
+
+    .img-item {
         cursor: pointer;
     }
-
 </style>
+@model Project.Sanha.Web.Models.ReportDetailModel
+@{
+    var baseUrl = @ViewBag.baseUrl;
+
+    string badgeClass = "";
+    switch (@Model.Status)
+    {
+        case 1:
+            badgeClass = "bg-warning";
+            break;
+        case 2:
+            badgeClass = "bg-success";
+            break;
+        case 3:
+            badgeClass = "bg-danger";
+            break;
+        default:
+            badgeClass = "bg-secondary"; // default class if none of the conditions match
+            break;
+    }
+}
 <div class="container-xl">
     <div class="row">
         <div class="col-12">
@@ -72,26 +100,34 @@
                 <div class="card-body">
                     <div class="mb-3 d-flex align-items-center justify-content-between">
                         <span class="fw-bold">
-                            ชื่อโครงการ : xxxx
+                            ชื่อโครงการ : @Model.ProjectName
                         </span>
-                        <span class="badge bg-warning p-2">รออนุมัติ</span>
+                        <span class="badge @badgeClass p-2" style="min-width: 225px; margin-right: 10px;">@Model.StatusDesc</span>
                     </div>
                     <div class="row mb-2 g-3">
                         <div class="col-md-3 col-sm-6">
                             <p class="fw-bold">เลขที่บ้าน</p>
-                            1999/99
+                            @Model.AddrNo
                         </div>
                         <div class="col-md-3 col-sm-6">
                             <p class="fw-bold">วันที่โอน</p>
-                            19-01-2567
+                            @Model.TransferDate
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <p class="fw-bold">สิทธิ์ใช้งานทั้งหมด</p>
+                            @Model.Quota
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <p class="fw-bold">จำนวนสิทธิ์ที่ใช้งาน</p>
+                            @Model.UsedQuota
                         </div>
                         <div class="text-end">
 
                             <button type="button" class="btn btn-danger" style="min-width:100px;"><i class="fa fa-close" style="color:white"></i> ไม่อนุมัติ</button>
-                                &nbsp; &nbsp;
+                            &nbsp; &nbsp;
 
                             <button type="button" class="btn btn-success" style="min-width:100px;margin-right:10px;"><i class="fas fa-check"></i> อนุมัติ</button>
-                           
+
                         </div>
                     </div>
                     <div class="row g-4">
@@ -104,20 +140,19 @@
                                         </div>
                                         <div>
                                             <i class="fas fa-user me-2"></i>
-                                            Tuanjit Tongkaew
+                                            @Model.CustomerDetail.CustomerName
                                         </div>
                                         <div>
-                                            <i class="fas fa-phone me-2"></i> : 408-963-7769
+                                            <i class="fas fa-phone me-2"></i> : @Model.CustomerDetail.CustomerMobile
                                         </div>
                                         <div>
-                                            <i class="fas fa-envelope me-2"></i> <span> example@email.com</span>
+                                            <i class="fas fa-envelope me-2"></i> <span> @Model.CustomerDetail.CustomerEmail</span>
                                         </div>
-                                        <div>ความสัมพันธ์ : ญาติ</div>
+                                        <div>ความสัมพันธ์ : @Model.CustomerDetail.RelationShip</div>
                                     </div>
-
                                     <div class="col-4">
                                         <div>
-                                            <img src="~/images/testImg/signatur1.jpg" class="img-thumbnail" />
+                                            <img src="@baseUrl@Model.CustomerDetail.ImageSignCustomer" class="img-thumbnail" />
                                         </div>
                                     </div>
                                 </div>
@@ -127,7 +162,7 @@
                         <div class="col-md-6 col-sm-12">
                             <div class="card">
                                 @* <div class="card-body d-flex flex-column gap-3">
-                                <div class="d-flex justify-content-between">*@
+                                    <div class="d-flex justify-content-between">*@
                                 <div class="row card-body">
                                     <div class="col-8 d-flex flex-column gap-3">
                                         <div>
@@ -135,23 +170,23 @@
                                         </div>
                                         <div>
                                             <i class="fas fa-user me-2"></i>
-                                            Tuanjit Tongkaew
+                                            @Model.StaffDetail.StaffName
                                         </div>
 
-                                        <div><i class="fa-solid fa-calendar-days"></i> วันปฏิบัติงาน : 01-07-2567 </div>
-                                        <div><i class="fa-solid fa-business-time"></i> เวลาปฏิบัติงาน : 9.00-10.00 น.</div>
+                                        <div><i class="fa-solid fa-calendar-days"></i> วันปฏิบัติงาน : @Model.StaffDetail.WorkDate </div>
+                                        <div><i class="fa-solid fa-business-time"></i> เวลาปฏิบัติงาน : @Model.StaffDetail.WorkTime น.</div>
                                         <div class="text-sm">
-                                            หมายเหตุ : ทดสอบ
+                                            หมายเหตุ : @Model.StaffDetail.Remark
                                         </div>
                                     </div>
-                          
+
                                     <div class="col-4">
                                         <div>
-                                            <img src="~/images/testImg/signatur1.jpg" class="img-thumbnail" />
+                                            <img src="@baseUrl@Model.StaffDetail.ImageSignStaff" class="img-thumbnail" />
                                         </div>
                                     </div>
                                 </div>
-                          </div>
+                            </div>
                         </div>
                     </div>
                     <hr />
@@ -164,15 +199,25 @@
                         <div class="card-body">
                             <div id="carouselExampleControls" class="carousel">
                                 <div class="carousel-inner">
-                                    <div class="carousel-item active">
+                                    @foreach(var item in Model.Images.Select((value, index) => new { value, index }))
+                                    {
+                                        <div class="carousel-item @(item.index == 0 ? "active" : "")">
+                                            <div class="card img-item">
+                                                <div class="img-wrapper"><img src="@baseUrl@item.value.ImagePath" class="d-block w-100 img-thumb" alt="img"> </div>
+                                                <div class="card-body">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    <!--<div class="carousel-item active">
                                         <div class="card img-item">
                                             <div class="img-wrapper"><img src="~/images/testImg/work1.jpg" class="d-block w-100 img-thumb" alt="img"> </div>
-                                            <div class="card-body">
+                                            <div class="card-body">-->
                                                 @*<h5 class="card-title">Card title 1</h5>
-                                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                                                card's content.</p>
-                                                <a href="#" class="btn btn-primary">Go somewhere</a>*@
-                                            </div>
+                                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                                                    card's content.</p>
+                                                    <a href="#" class="btn btn-primary">Go somewhere</a>*@
+                                            <!--</div>
                                         </div>
                                     </div>
                                     <div class="carousel-item">
@@ -195,7 +240,7 @@
                                             <div class="card-body">
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>-->
 
 
                                 </div>
@@ -216,36 +261,35 @@
 
         </div>
     </div>
-   
+
 </div>
 
 <!-- Confirmation Modal -->
-    <div class="modal fade" id="imageViewerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="imageViewerModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered rounded-0">
-            <div class="modal-content rounded-0">
-                <div class="modal-header py-1">
-                    <h5 class="modal-title" id="imageViewerModalLabel">Viewer</h5>
-                    <button type="button" style="font-size: .65em;" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body rounded-0">
-                    <div id="img-viewer-container" class="d-flex">
-                        <div class="h-100 d-flex align-items-center position-absolute control-prev-container">
-                            <div class="control-prev"></div>
-                        </div>
-                        <img src="" alt="Viewer" id="img-viewer" class="bg-dark bg-gradient">
-                        <div class="h-100 d-flex align-items-center position-absolute control-next-container">
-                            <div class="control-next"></div>
-                        </div>
+<div class="modal fade" id="imageViewerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="imageViewerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered rounded-0">
+        <div class="modal-content rounded-0">
+            <div class="modal-header py-1">
+                <h5 class="modal-title" id="imageViewerModalLabel">Viewer</h5>
+                <button type="button" style="font-size: .65em;" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body rounded-0">
+                <div id="img-viewer-container" class="d-flex">
+                    <div class="h-100 d-flex align-items-center position-absolute control-prev-container">
+                        <div class="control-prev"></div>
+                    </div>
+                    <img src="" alt="Viewer" id="img-viewer" class="bg-dark bg-gradient">
+                    <div class="h-100 d-flex align-items-center position-absolute control-next-container">
+                        <div class="control-next"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- End of Confirmation Modal -->
+</div>
+<!-- End of Confirmation Modal -->
 
 @section Scripts{
-    <script>
-        var multipleCardCarousel = document.querySelector(
+    <script>var multipleCardCarousel = document.querySelector(
             "#carouselExampleControls"
         );
         if (window.matchMedia("(min-width: 768px)").matches) {
@@ -275,34 +319,31 @@
             });
         } else {
             $(multipleCardCarousel).addClass("slide");
-        }
-    </script>
+        }</script>
 
-     <script>
-        var viewer_modal;
-$(function() {
-    viewer_modal = $('#imageViewerModal')
+    <script>var viewer_modal;
+        $(function () {
+            viewer_modal = $('#imageViewerModal')
             $('.img-item').click(function () {
-        viewer_modal.find('#img-viewer').attr('src', $(this).find('.img-thumb').attr('src'))
-        viewer_modal.modal('show')
-    })
-    viewer_modal.on('hidden.bs.modal', function() {
-        viewer_modal.find('#img-viewer').attr('src', '')
-    })
-    //$('.control-next').click(function() {
-    //    var cur_img = viewer_modal.find('#img-viewer').attr('src');      
-    //    var index = $('.img-thumb[src="' + cur_img + '"]').closest('.img-item').index() + 1;
-    //    var next_index = index > ($('.img-thumb').length - 1) ? 0 : index;
-    //    viewer_modal.find('#img-viewer').attr('src', $('.img-thumb').eq(next_index).attr('src'))
-    //})
-    //$('.control-prev').click(function() {
-    //    var cur_img = viewer_modal.find('#img-viewer').attr('src');
-    //    var index = $('.img-thumb[src="' + cur_img + '"]').closest('.img-item').index() - 1;
-    //    var prev_index = index < 0 ? ($('.img-thumb').length - 1) : index;
-    //    viewer_modal.find('#img-viewer').attr('src', $('.img-thumb').eq(prev_index).attr('src'))
-    //})
-})
-    </script>
+                viewer_modal.find('#img-viewer').attr('src', $(this).find('.img-thumb').attr('src'))
+                viewer_modal.modal('show')
+            })
+            viewer_modal.on('hidden.bs.modal', function () {
+                viewer_modal.find('#img-viewer').attr('src', '')
+            })
+            //$('.control-next').click(function() {
+            //    var cur_img = viewer_modal.find('#img-viewer').attr('src');
+            //    var index = $('.img-thumb[src="' + cur_img + '"]').closest('.img-item').index() + 1;
+            //    var next_index = index > ($('.img-thumb').length - 1) ? 0 : index;
+            //    viewer_modal.find('#img-viewer').attr('src', $('.img-thumb').eq(next_index).attr('src'))
+            //})
+            //$('.control-prev').click(function() {
+            //    var cur_img = viewer_modal.find('#img-viewer').attr('src');
+            //    var index = $('.img-thumb[src="' + cur_img + '"]').closest('.img-item').index() - 1;
+            //    var prev_index = index < 0 ? ($('.img-thumb').length - 1) : index;
+            //    viewer_modal.find('#img-viewer').attr('src', $('.img-thumb').eq(prev_index).attr('src'))
+            //})
+        })</script>
 }
 
 

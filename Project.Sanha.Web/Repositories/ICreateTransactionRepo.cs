@@ -9,9 +9,9 @@ namespace Project.Sanha.Web.Repositories
 
         bool UploadImage(List<IFormFile> images, int transId, string appPath);
 
-        bool CreateUploadSign(int transId, string fileName, string filePath);
+        bool CreateUploadSign(int transId, string fileName, string filePath, int resourceType);
 
-        Resources UploadSignResource(string model, string appPath, int transId);
+        Resources UploadSignResource(string model, string appPath, int transId, int resourceType);
     }
 }
 

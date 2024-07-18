@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Project.Sanha.Web.Data;
 using Project.Sanha.Web.Repositories;
 using Project.Sanha.Web.Services;
@@ -25,6 +26,9 @@ builder.Services.AddScoped<ISearchUnitRepo, SearchUnitRepo>();
 builder.Services.AddScoped<IApprove, ApproveService>();
 builder.Services.AddScoped<IReport, ReportService>();
 
+builder.Services.AddScoped<IAuthenService, AuthenService>();
+builder.Services.AddScoped<IAuthenRepo, AuthenRepo>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -41,6 +45,14 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+// add for 
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+           Path.Combine(builder.Environment.ContentRootPath, "Upload")),
+    RequestPath = "/Upload"
+});
 
 app.MapControllerRoute(
     name: "default",

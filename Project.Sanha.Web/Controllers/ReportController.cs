@@ -20,6 +20,7 @@ namespace Project.Sanha.Web.Controllers
         {
             var guid = Guid.NewGuid();
             var order_no = "12345";
+            //getReport1();
             getReport2(guid,order_no);
         }
         public void getReport1(Guid uuid, string order_no)

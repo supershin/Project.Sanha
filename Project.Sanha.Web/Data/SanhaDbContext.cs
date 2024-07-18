@@ -24,7 +24,10 @@ namespace Project.Sanha.Web.Data
         public virtual DbSet<Sanha_tr_UnitShopservice> Sanha_tr_UnitShopservice { get; set; } = null!;
         public virtual DbSet<Sanha_ts_Shopservice_Trans> Sanha_ts_Shopservice_Trans { get; set; } = null!;
         public virtual DbSet<master_project> master_project { get; set; } = null!;
+        public virtual DbSet<master_relation> master_relation { get; set; } = null!;
         public virtual DbSet<master_unit> master_unit { get; set; } = null!;
+        public virtual DbSet<user> users { get; set; } = null!;
+        public virtual DbSet<user_projects> user_projects { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -102,7 +105,22 @@ namespace Project.Sanha.Web.Data
                 entity.Property(e => e.id).ValueGeneratedOnAdd();
             });
 
+            modelBuilder.Entity<master_relation>(entity =>
+            {
+                entity.Property(e => e.id).ValueGeneratedOnAdd();
+            });
+
             modelBuilder.Entity<master_unit>(entity =>
+            {
+                entity.Property(e => e.id).ValueGeneratedOnAdd();
+            });
+
+            modelBuilder.Entity<user>(entity =>
+            {
+                entity.Property(e => e.id).ValueGeneratedOnAdd();
+            });
+
+            modelBuilder.Entity<user_projects>(entity =>
             {
                 entity.Property(e => e.id).ValueGeneratedOnAdd();
             });

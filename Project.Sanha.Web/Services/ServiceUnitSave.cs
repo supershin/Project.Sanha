@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Transactions;
 using Microsoft.VisualBasic.FileIO;
+using Project.Sanha.Web.Common;
 using Project.Sanha.Web.Models;
 using Project.Sanha.Web.Repositories;
 
@@ -35,12 +36,12 @@ namespace Project.Sanha.Web.Services
                     //customer sign resource
                     if (!string.IsNullOrEmpty(model.Sign))
                     {
-                        _createTransaction.UploadSignResource(model.Sign, model.ApplicationPath, getTrans.TransId);
+                        _createTransaction.UploadSignResource(model.Sign, model.ApplicationPath, getTrans.TransId, SystemConstant.ResourceType.SIGNCUST);
                     }
                     //jm sign resource
                     if (!string.IsNullOrEmpty(model.SignJM))
                     {
-                        _createTransaction.UploadSignResource(model.SignJM, model.ApplicationPath, getTrans.TransId);
+                        _createTransaction.UploadSignResource(model.SignJM, model.ApplicationPath, getTrans.TransId, SystemConstant.ResourceType.SIGNSTAFF);
                     }
                     
                     scope.Complete();

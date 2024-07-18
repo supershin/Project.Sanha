@@ -21,7 +21,10 @@
     .form-control-rounded {
         border-radius: 10rem
     }
+
 </style>
+
+@model Project.Sanha.Web.Models.GetProjectFromJuristic
 
 <div class="container-xl">
 
@@ -34,13 +37,30 @@
                 </button>*@
                 <div class="card-header bg-white-overlay">
                     <div class="row row-cards">
-                        <div class="col-md-4 col-lg-4">
+                        <div class="col-md-4 col-lg-5">
                             <div class="input-icon">
                                 @*asp-items="@((List<SelectListItem>)ViewBag.ProjectPermissionList)"*@
-                                <select id="select-project" class="form-select form-control-rounded"></select>
+                                <select id="select-project" class="form-select form-control-rounded">
+                                    @if (Model.SelectProjectLists != null)
+                                    {
+                                        @foreach (var item in Model.SelectProjectLists)
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+                                        }
+                                    }
+                                </select>
                             </div>
                         </div>
-
+                        <div class="col-md-4 col-lg-3">
+                            <div class="input-icon">
+                                <select id="select-status" class="form-select form-control-rounded">
+                                    <option value="0">ทั้งหมด</option>
+                                    <option value="1">รออนุมัติ</option>
+                                    <option value="2">อนุมัติ</option>
+                                    <option value="3">ไม่อนุมัติ</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="col-md-4 col-lg-4">
                             <form id="form-search" method="post">
                                 <div class="input-group mb-2">
@@ -166,7 +186,8 @@
     <script src="~/js/approve.js?version=@DateTime.Now.Ticks.ToString()"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            approve.init();
+            var id = "@ViewBag.Id";
+            approve.init(id);
         });
     </script>
 }

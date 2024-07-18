@@ -50,5 +50,8 @@ namespace Project.Sanha.Web.Data
         public DateTime? AuditDate { get; set; }
         public int? AuditBy { get; set; }
         public int? UsedQuota { get; set; }
+        [StringLength(500)]
+        [Unicode(false)]
+        public string? Note { get; set; }
     }
 }
