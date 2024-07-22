@@ -38,7 +38,8 @@ namespace Project.Sanha.Web.Common
         {
             public const int IMAGE = 1;
             public const int SIGNCUST = 2;
-            public const int SIGNSTAFF = 3; 
+            public const int SIGNSTAFF = 3;
+            public const int PDF = 4;
         }
 	}
 }

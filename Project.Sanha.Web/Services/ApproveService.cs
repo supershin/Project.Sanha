@@ -440,5 +440,38 @@ namespace Project.Sanha.Web.Services
             }
             
         }
+
+        public bool SaveFilePDF(Guid guid, int transId, string orderNo, string path)
+        {
+            Sanha_tr_Shopservice_Resource savePDF = new Sanha_tr_Shopservice_Resource();
+            savePDF.ID = guid;
+            savePDF.TransID = transId;
+            savePDF.ResourceType = SystemConstant.ResourceType.PDF;
+            savePDF.FileName = "file - " + orderNo + " - " + guid + ".pdf";
+            savePDF.FilePath = path;
+            savePDF.MimeType = "file/pdf";
+            savePDF.FlagActive = true;
+            savePDF.CreateDate = DateTime.Now;
+            savePDF.CreateBy = 1;
+            savePDF.UpdateBy = 1;
+            savePDF.UpdateDate = DateTime.Now;
+
+            _context.Sanha_tr_Shopservice_Resource.Add(savePDF);
+            _context.SaveChanges();
+
+            savePDF = _context.Sanha_tr_Shopservice_Resource.Where(o => o.TransID == transId).FirstOrDefault();
+            if(savePDF == null) throw new Exception("บันทึกไฟล์ PDF ผิดพลาด");
+            return true;
+        }
+
+        public string GetPathPDF(int transId)
+        {
+            Sanha_tr_Shopservice_Resource? getPath = _context.Sanha_tr_Shopservice_Resource.Where(o =>
+                                                    o.TransID == transId && o.FlagActive == true
+                                                    && o.ResourceType == SystemConstant.ResourceType.PDF).FirstOrDefault();
+            if (getPath == null) throw new Exception("หาข้อมูลไฟล์PDFไม่เจอ");
+
+            return getPath.FilePath;
+        }
     }
 }

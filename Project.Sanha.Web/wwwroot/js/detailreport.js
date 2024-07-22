@@ -12,7 +12,7 @@
 
         $('#confirm-approve').click(() => {
             var status = 2;
-            console.log("state 1")
+            
             detail.approveReport(transId, juristicId, status);
             
             return false;
@@ -34,7 +34,16 @@
         $('#confirm-not-approved').click(() => {
             var status = 3;
             var note = $('#not-arpproved-note').val();
+            var message = "";
+            if (note === null || note.trim() === "") {
+                message += "กรุณากรอกเหตุผลการไม่อนุมัติ";
+            }
             debugger;
+            if (message !== "") {
+                $('#errorModalMessage').html(message);
+                $('#errorModal').modal('show');
+                return false;
+            }
             detail.approveReport(transId, juristicId, status, note);
             return false;
         })
@@ -71,7 +80,7 @@
             dataType: 'json',
             data: data,
             success: function (resp) {
-                console.log("state 3")
+                
                 if (resp.success) {
                     window.open(baseUrl + resp.data.Path, "_blank");
 
@@ -99,7 +108,7 @@
             data: data,
             success: function (resp) {
                 if (resp.success) {
-                    console.log("state 2")
+                   
                     if (resp.data.Status == 2) {
 
                         Swal.fire({

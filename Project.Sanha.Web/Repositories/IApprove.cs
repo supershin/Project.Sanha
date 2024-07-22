@@ -14,5 +14,9 @@ namespace Project.Sanha.Web.Repositories
         ReportDetailForApprove ReportApprove(int transId);
 
         ApproveTransDetail ReportApprove(ApproveTransModel model);
+
+        bool SaveFilePDF(Guid guid, int transId, string orderNo, string path);
+
+        string GetPathPDF(int transId);
     }
 }

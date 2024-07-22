@@ -41,9 +41,11 @@ namespace Project.Sanha.Web.Controllers
             CreateUnitShopModel createUnitShop = null;
             try
             {
-                // landing by have account 
+                // landing by have account
+                
                 if (!string.IsNullOrWhiteSpace(unitid) && !string.IsNullOrWhiteSpace(contractno))
                 {
+                    
                     // if - first landing to insert data
                     // if - not first to return data 
                     createUnitShop = _informationService.CreateUnitShop(projectid, unitid, contractno);

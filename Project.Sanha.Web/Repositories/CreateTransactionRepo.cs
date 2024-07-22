@@ -19,6 +19,10 @@ namespace Project.Sanha.Web.Repositories
 
 		public GetTransModel CreateTransaction(CreateTransactionModel create)
 		{
+
+            Sanha_tr_UnitShopservice? validTrans = _context.Sanha_tr_UnitShopservice.Where(o => o.ID == create.UnitShopId).FirstOrDefault();
+            if (validTrans.Quota <= validTrans.UsedQuota) throw new Exception("โควต้าการใช้งานครบแล้ว");
+
             Sanha_ts_Shopservice_Trans trans = new Sanha_ts_Shopservice_Trans();
             trans.EventID = create.UnitShopId;
             trans.CustomerName = create.CustomerName;

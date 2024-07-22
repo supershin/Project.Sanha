@@ -33,7 +33,7 @@ var unitEquipment = {
             
             var message = "";
 
-            if (usedQuota == 0 || usedQuota > quota || usedQuota === null || isNaN(usedQuota)) {
+            if (usedQuota <= 0 || usedQuota > quota || usedQuota === null || isNaN(usedQuota)) {
                 message += "กรุณาตรวจสอบจำนวนสิทธิ์คงเหลือ<br>";
             }
             else if ($("#CustomerName").val() === null || $("#CustomerName").val().trim() === "") {
@@ -60,6 +60,7 @@ var unitEquipment = {
                 $('#errorModal').modal('show');
                 return false;
             }
+
             unitEquipment.saveUnitEquipmentSign();
             $('.loading').show();
             return false;
@@ -141,7 +142,7 @@ var unitEquipment = {
                 }
                 else {
                     $('.loading').hide();
-                    $('#errorModalMessage').text("กรุณากรอกข้อมูลให้ครบถ้วน");
+                    $('#errorModalMessage').text(resp.message);
                     $('#errorModal').modal('show');
                 }
             },
