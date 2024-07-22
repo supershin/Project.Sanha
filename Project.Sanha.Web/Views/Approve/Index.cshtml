@@ -21,7 +21,6 @@
     .form-control-rounded {
         border-radius: 10rem
     }
-
 </style>
 
 @model Project.Sanha.Web.Models.GetProjectFromJuristic
@@ -33,12 +32,13 @@
         <div class="col-md-12 col-lg-12">
             <div class="card">
                 @* <button type="button" id="btnLoad">
-                test
-                </button>*@
+                    test
+                    </button>*@
                 <div class="card-header bg-white-overlay">
-                    <div class="row row-cards">
+                    <div class="row row-cards mb-3">
                         <div class="col-md-4 col-lg-5">
                             <div class="input-icon">
+                                <label for="input_from">ชื่อโครงการ</label>
                                 @*asp-items="@((List<SelectListItem>)ViewBag.ProjectPermissionList)"*@
                                 <select id="select-project" class="form-select form-control-rounded">
                                     @if (Model.SelectProjectLists != null)
@@ -53,6 +53,7 @@
                         </div>
                         <div class="col-md-4 col-lg-3">
                             <div class="input-icon">
+                                <label for="input_from">สถานะ</label>
                                 <select id="select-status" class="form-select form-control-rounded">
                                     <option value="0">ทั้งหมด</option>
                                     <option value="1">รออนุมัติ</option>
@@ -63,6 +64,7 @@
                         </div>
                         <div class="col-md-4 col-lg-4">
                             <form id="form-search" method="post">
+                                <label for="input_from">ค้นหา</label>
                                 <div class="input-group mb-2">
                                     <input type="text" class="form-control form-control-rounded" placeholder="Search..." autocomplete="off" name="strSearch">
                                     <span class="input-group-text search-rounded">
@@ -75,119 +77,44 @@
                         </div>
 
                     </div>
+                    <div class="row row-cards mb-3">
+                        <div class="container text-left">
+                            <div class="col-lg-7">
+                                <form action="#" class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="input_from">วันที่เริ่ม</label>
+                                            <input class="form-control" type="date" id="date-from" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="input_to">วันที่สิ้นสุด</label>
+                                            <input class="form-control" type="date" id="date-to" required>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <div class="card-table table-responsive">
+                        <partial name="Partial_Trans_List" />
+                    </div>
+
                 </div>
-
-                <div class="card-table table-responsive">
-                    <partial name="Partial_Trans_List" />
-                </div>
-
-
-
-    
-               @* <div class="card-table table-responsive">
-                    <table class=" table table-responsive table-hover table-vcenter card-table text-nowrap" id="tbl-table-view" width="100%">
-                        <thead>
-                            <tr class="table-primary">
-                                <td>เลือก</td>
-                                <td>โครงการ</td>
-                                <td>เลขที่บ้าน</td>
-                                <td>วันที่โอน</td>
-                                <td>ชื่อลูกค้า</td>
-                                <td>วันที่ใช้งาน</td>
-                                <td>จำนวนสิทธิ์</td>
-                                <td>จำนวนที่ใช้</td>
-                                <td>สิทธิ์คงเหลือ</td>
-                                <td>ผู้เข้าปฏิบัติงาน</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="text-center">
-                                    <button data-action="list-ap-detail" class="btn-icon btn-search">
-                                        <i class="fas fa-file text-primary"></i>
-                                    </button>
-                                </td>
-                                <td>
-                                </td>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>a</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <button data-action="list-ap-detail" class="btn bg-indigo-lt btn-icon btn-rounded btn-search">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-ipad-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">< path stroke = "none" d = "M0 0h24v24H0z" fill = "none" ></path ><path d="M11.5 21h-5.5a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v6"></path><path d="M9 18h2"></path><path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path><path d="M20.2 20.2l1.8 1.8"></path></svg>
-                                    </button>
-                                </td>
-                                <td>
-                                </td>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>a</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <button data-action="list-ap-detail" class="btn bg-indigo-lt btn-icon btn-rounded">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-ipad-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">< path stroke = "none" d = "M0 0h24v24H0z" fill = "none" ></path ><path d="M11.5 21h-5.5a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v6"></path><path d="M9 18h2"></path><path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path><path d="M20.2 20.2l1.8 1.8"></path></svg>
-                                    </button>
-                                </td>
-                                <td>
-                                </td>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>a</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="#">
-                                        xx
-                                        <i class="fas fa-file text-primary"></i>
-                                    </a>
-                                </td>
-                                <td>
-                                </td>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>a</td>
-                            </tr>
-                        </tbody>
-
-                    </table>
-                </div>*@
             </div>
         </div>
     </div>
 </div>
-
 @section Scripts{
-
     <script src="~/lib/datatable/jquery.datatables.min.js"></script>
-
     <script src="~/js/approve.js?version=@DateTime.Now.Ticks.ToString()"></script>
+
     <script type="text/javascript">
-        $(document).ready(function () {
-            var id = "@ViewBag.Id";
-            approve.init(id);
-        });
+            $(document).ready(function () {
+                var jId = "@ViewBag.Id";
+                approve.init(jId);
+            });
     </script>
 }

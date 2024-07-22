@@ -42,16 +42,7 @@ namespace Project.Sanha.Web.Data
         [StringLength(250)]
         [Unicode(false)]
         public string? UpdateBy { get; set; }
-        [StringLength(50)]
-        [Unicode(false)]
-        public string? OrderNo { get; set; }
         public int? Status { get; set; }
-        [Column(TypeName = "datetime")]
-        public DateTime? AuditDate { get; set; }
-        public int? AuditBy { get; set; }
         public int? UsedQuota { get; set; }
-        [StringLength(500)]
-        [Unicode(false)]
-        public string? Note { get; set; }
     }
 }

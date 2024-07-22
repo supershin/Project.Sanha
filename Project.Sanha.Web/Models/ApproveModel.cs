@@ -2,7 +2,7 @@
 {
     public class ApproveModel
     {
-        public int JuristicId { get; set; }
+        public string JuristicId { get; set; }
 
         public string? strSearch { get; set; }
 

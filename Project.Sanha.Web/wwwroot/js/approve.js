@@ -1,6 +1,6 @@
 ﻿
 const approve = {
-    init: (id)=> {
+    init: (jId)=> {
         //$("button[data-action='list-ap-detail']").unbind('click').click((e) => {
         //    //alert(baseUrl);
         //    alert("func");
@@ -14,18 +14,18 @@ const approve = {
 
         $('#select-project').change(function () {
             var selectedValue = $(this).val();
-            approve.AjaxGrid(id, selectedValue, "");
+            approve.AjaxGrid(jId, selectedValue, "");
         });
 
         $('#select-status').change(function () {
             var selectedStatus = $(this).val();
-            approve.AjaxGrid(id, selectedValue, selectedStatus);
+            approve.AjaxGrid(jId, selectedValue, selectedStatus);
         });
 
-        approve.AjaxGrid(id,"",""); 
+        approve.AjaxGrid(jId,"",""); 
      },
 
-    AjaxGrid: function (id, selectedValue, selectedStatus) {
+    AjaxGrid: function (jId, selectedValue, selectedStatus) {
         
         tblUnit = $('#tbl-table').dataTable({
             "dom": '<<t>lip>',
@@ -36,7 +36,7 @@ const approve = {
                 type: "POST",
                 data: function (json) {                                        
                     var datastring = $("#form-search").serialize();
-                    json.JuristicId = id;
+                    json.JuristicId = jId;
                     json = datastring + '&' + $.param(json);
 
                     return json;
@@ -48,14 +48,16 @@ const approve = {
                 complete: function (res) {
                     $("button[data-action='list-ap-detail']").unbind('click').click((e) => {
 
-                        let id = $(e.currentTarget).attr('data-id');
+                        let JuristicId = jId;
+                        let TransId = $(e.currentTarget).attr('data-id');
                         
                         //alert("com" + id);
                         //window.location.href = baseUrl + 'Approve/Detail?ID=' + id;
                      
                         // ตัวอย่าง JSON parameter
                         const jsonParam = {
-                            ID: id,
+                            JuristicId: JuristicId,
+                            ID: TransId,
                         };
 
                         // แปลง JSON เป็น string
@@ -76,10 +78,44 @@ const approve = {
                     //    unit.modalConfirmCreateQuotation(id);
                     //    return false;
                     //});
+                    $(document).on('click', "button[data-action='print-report']", function (e) {
+                        e.preventDefault(); // Prevent default action
+
+                        var juristicId = jId;
+                        var transId = $(e.currentTarget).attr('data-id');
+
+                        // Create the data object for the AJAX request
+                        var data = {
+                            transId: transId,
+                            juristicId: juristicId
+                        };
+
+                        // Perform the AJAX request
+                        $.ajax({
+                            url: baseUrl + 'Report/RptShopService',
+                            type: 'post',
+                            dataType: 'json',
+                            data: data,
+                            success: function (response) {
+                                if (response.success) {
+                                    // Open the report in a new tab
+                                    window.open(baseUrl + response.data.Path, "_blank");
+
+                                    // Redirect to another page
+                                    location.reload();
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                // Handle error response
+                                console.error('Error:', error);
+                            }
+                        });
+                    });
+
                 }
             },
             "ordering": true,
-            "order": [[11, "desc"]],
+            "order": [[13, "desc"]],
             "columns": [
                 {
                     'data': 'ID',
@@ -99,26 +135,57 @@ const approve = {
                     'orderable': false,
                     'width': '20px',
                     "className": "text-center",
-                    'mRender': function (ID, type, data, obj) {                       
-                        var html = '<button  data-action="list-ap-detail" data-id="' + data.ID + '" class="btn bg-red-lt btn-icon btn-rounded">';
-                        html += '<i class="fa-solid fa-print"></i>';
-                        html += '</button>';
+                    'mRender': function (ID, type, data, obj) {
+                        if (data.Status == 2) {
+                            
+                            var html = '<button data-action="print-report" data-id ="'+ data.ID + '"class="btn bg-red-lt btn-icon btn-rounded">'
+                            html += '<i class="fa-solid fa-print"></i>';
+                            html += '</button>';
+                            
 
-                        return html;
+                            return html;
+                        }
+                        else {
+                            return "";
+                        }
                     }
-                },  
+                },
+                { 'data': 'OrderNo', "className": "text-center " },
                 { 'data': 'ProjectName', "className": "text-center " },
                 { 'data': 'AddrNo', "className": "text-center " },
                 { 'data': 'CustomerName', "className": "text-center" },
                 { 'data': 'StaffName', "className": "text-center" },
                 { 'data': 'WorkDate', "className": "text-center" },
                 { 'data': 'WorkTime', "className": "text-center" },
-                { 'data': 'Quota', "className": "text-center" },
                 { 'data': 'UsedQuota', "className": "text-center" },
-                { 'data': 'Status', "className": "text-center" },
+                {
+                    'data': 'StatusDesc',
+                    "className": "text-center",
+                    'mRender': function (data, type, row) {
+                        var color;
+                        switch (row.Status) {
+                            case 1:
+                                color = 'orange';
+                                break;
+                            case 2:
+                                color = 'green';
+                                break;
+                            case 3:
+                                color = 'red';
+                                break;
+                            default:
+                                color = 'black'; // Default color if none of the above cases match
+                        }
+
+                        // Apply the color using inline CSS
+                        return '<span style="color:' + color + ';">' + data + '</span>';
+                    }
+                },
+                { 'data': 'ApproveBy', "className": "text-center" },
+                { 'data': 'Note', "className": "text-center" },
                 { 'data': 'CreateDate', "className": "text-center" },
                 
             ]
         });
     },
-} 
+}

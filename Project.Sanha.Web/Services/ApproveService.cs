@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using System.Transactions;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualBasic;
+using Org.BouncyCastle.Crypto;
 using Project.Sanha.Web.Common;
 using Project.Sanha.Web.Data;
 using Project.Sanha.Web.Models;
 using Project.Sanha.Web.Repositories;
+using static Project.Sanha.Web.Common.SystemConstant;
 
 namespace Project.Sanha.Web.Services
 {
@@ -27,28 +30,51 @@ namespace Project.Sanha.Web.Services
             //variable = (condition) ? expressionTrue :  expressionFalse;
             criteria.strSearch = (criteria.strSearch == null) ? string.Empty :  criteria.strSearch.ToString() ?? string.Empty;
 
+            int jtID = Int32.Parse(criteria.JuristicId);
+
             var query = from st in _context.Sanha_ts_Shopservice_Trans
                         join us in _context.Sanha_tr_UnitShopservice on st.EventID equals us.ID
                         join mu in _context.master_unit on us.UnitID equals mu.id
                         join mp in _context.master_project on mu.project_id equals mp.id.ToString()
                         join mr in _context.master_relation on st.CustomerRelationID equals mr.id
-                        join u in _context.users on criteria.JuristicId equals u.id
-                        join up in _context.user_projects on u.id equals up.user_id
-                        where st.FlagActive == true
+                        join u in _context.users on jtID equals u.id
+                        join up in _context.user_projects on mp.id equals up.project_id
+                        join at in _context.Sanha_ts_Approve_Trans on st.ID equals at.TransID into atGroup
+                        from at in atGroup.DefaultIfEmpty()
+                        where st.FlagActive == true && up.user_id == jtID
                         select new
                         {
+                            up.user_id,
                             st.ID,
+                            mp.id,
                             mp.project_name,
                             mu.addr_no,
-                            st.CustomerName,                  
+                            st.CustomerName,
                             st.StaffName,
                             st.WorkDate,
                             st.WorkTime,
-                            us.Quota,
                             st.UsedQuota,
                             st.Status,
-                            st.CreateDate
+                            at.OrderNo,
+                            at.Note,
+                            at.UpdateBy,
+                            st.CreateDate,
                         };
+
+            var query2 = query.ToList();
+            //if (!String.IsNullOrEmpty(criteria.strSearch))
+            //{
+            //    query = query.Where(o => o.ProjectName.Contains(criteria.strSearch)
+            //                        || o.AddrNo.Contains(criteria.strSearch)
+            //                        || o.CustomerName.Contains(criteria.strSearch)
+            //                        || o.StaffName.Contains(criteria.strSearch)
+            //                        || o.WorkDate.Contains(criteria.strSearch)
+            //                        || o.UsedQuota.Equals(criteria.strSearch)
+            //                        || o.Quota.Equals(criteria.strSearch)
+            //                        || o.Status.Equals(criteria.strSearch)
+            //                        );
+            //}
+            //if (criteria.ProjectId > 0)
             //query = query.Where(e => e.LastSaleOrder.QuotationNumber.Contains(criteria.strSearch)
             //                    || e.LastSaleOrder.ContracNumber.Contains(criteria.strSearch)
             //                    || e.LastSaleOrder.BookingNumber.Contains(criteria.strSearch)
@@ -63,16 +89,21 @@ namespace Project.Sanha.Web.Services
             param.TotalRowCount = totalRecord;
             return result.AsEnumerable().Select(e => new
             {
+                AuthID = e.user_id,
                 ID = e.ID,
-                ProjectName =e.project_name,
+                ProjectId = e.id,
+                ProjectName = e.project_name,
                 AddrNo = e.addr_no,
                 CustomerName = e.CustomerName,
                 StaffName = e.StaffName,
                 WorkDate = e.WorkDate.ToStringDate(),
                 WorkTime = e.WorkTime,
-                Quota = e.Quota,
                 UsedQuota = e.UsedQuota,
-                Status = SystemConstant.Status.Get_Desc((int)e.Status),
+                Status = e.Status,
+                StatusDesc = SystemConstant.Status.Get_Desc((int)e.Status),
+                ApproveBy = e.UpdateBy,
+                Note = e.Note,
+                OrderNo = e.OrderNo,
                 CreateDate = e.CreateDate.ToStringDateTime()
 
             }).ToList();
@@ -206,6 +237,208 @@ namespace Project.Sanha.Web.Services
             }
 
             return selectLists;
+        }
+
+        public ReportDetailForApprove ReportApprove(int transId)
+        {
+            ReportDetailForApprove reportDetail = new ReportDetailForApprove();
+
+            var queryReport = (from at in _context.Sanha_ts_Approve_Trans
+                               join st in _context.Sanha_ts_Shopservice_Trans on at.TransID equals st.ID
+                               join mp in _context.master_project on at.ProjectID equals mp.id
+                               join mu in _context.master_unit on at.UnitID equals mu.id
+                               join mr in _context.master_relation on st.CustomerRelationID equals mr.id
+                               join s in _context.Sanha_tm_Shopservice on at.ShopID equals s.ID
+                               where at.TransID == transId && at.FlagActive == true
+                               select new
+                               {
+                                   s.Name,
+                                   at.OrderNo,
+                                   mp.project_name,
+                                   mu.addr_no,
+                                   mu.transfer_date,
+                                   st.CustomerName,
+                                   st.CustomerEmail,
+                                   st.CustomerMobile,
+                                   mr.name,
+                                   st.StaffName,
+                                   st.WorkDate,
+                                   st.WorkTime,
+                                   st.UsedQuota,
+                                   st.Status,
+                                   st.Remark
+                               }).FirstOrDefault();
+                               
+            if (queryReport != null)
+            {
+                var queryImage = (from sr in _context.Sanha_tr_Shopservice_Resource
+                                  where sr.TransID == transId && sr.FlagActive == true
+                                  select new
+                                  {
+                                      sr.FilePath,
+                                      sr.ResourceType,
+                                      sr.CreateDate
+                                  }).ToList();
+
+                CustomerDetail customer = new CustomerDetail()
+                {
+                    CustomerName = queryReport.CustomerName,
+                    CustomerMobile = queryReport.CustomerMobile,
+                    CustomerEmail = queryReport.CustomerEmail,
+                    RelationShip = queryReport.name,
+                };
+
+                StaffDetail staff = new StaffDetail()
+                {
+                    StaffName = queryReport.StaffName,
+                    WorkDate = queryReport.WorkDate.ToStringDate(),
+                    WorkTime = queryReport.WorkTime,
+                    Remark = queryReport.Remark
+                };
+
+                List<Images> images = new List<Images>();
+
+                foreach (var i in queryImage)
+                {
+                    if (i.ResourceType == SystemConstant.ResourceType.IMAGE)
+                    {
+                        Images image = new Images()
+                        {
+                            ImagePath = i.FilePath
+                        };
+                        images.Add(image);
+                    }
+                    if (i.ResourceType == SystemConstant.ResourceType.SIGNCUST)
+                    {
+                        customer.ImageSignCustomer = i.FilePath;
+                        customer.DateSignCustomer = i.CreateDate.ToStringDate();
+                    }
+                    if (i.ResourceType == SystemConstant.ResourceType.SIGNSTAFF)
+                    {
+                        staff.ImageSignStaff = i.FilePath;
+                        staff.DateSignStaff = i.CreateDate.ToStringDate();
+                    }
+                }
+
+                reportDetail = new ReportDetailForApprove()
+                {
+                    ShopName = queryReport.Name,
+                    OrderNO = queryReport.OrderNo,
+                    ProjectName = queryReport.project_name,
+                    AddrNo = queryReport.addr_no,
+                    TransferDate = queryReport.transfer_date?.ToString("dd-MM-yyyy"),
+                    UsedQuota = queryReport.UsedQuota,
+                    Status = queryReport.Status,
+                    StatusDesc = SystemConstant.Status.Get_Desc((int)queryReport.Status),
+                    CustomerDetail = customer,
+                    StaffDetail = staff,
+                    Images = images
+                };
+            }
+
+
+            return reportDetail;
+        }
+
+        public ApproveTransDetail ReportApprove(ApproveTransModel model)
+        {
+            TransactionOptions option = new TransactionOptions();
+            option.Timeout = new TimeSpan(1, 0, 0);
+            using (TransactionScope scope = new TransactionScope(TransactionScopeOption.RequiresNew, option))
+            {
+                try
+                {
+                    ApproveTransDetail transDetail = new ApproveTransDetail();
+
+                    var queryTrans = (from st in _context.Sanha_ts_Shopservice_Trans
+                                      join us in _context.Sanha_tr_UnitShopservice on st.EventID equals us.ID
+                                      where st.ID == model.TransID && st.FlagActive == true
+                                      select new
+                                      {
+                                          st.ID,
+                                          st.EventID,
+                                          us.ProjectID,
+                                          us.UnitID,
+                                          us.ShopID,
+                                          st.Status
+                                      }).FirstOrDefault();
+
+                    Guid guid = Guid.NewGuid();
+
+                    var queryAuth = (from u in _context.users
+                                     where u.id == model.AuthenID && u.is_active == 1
+                                     select new
+                                     {
+                                         u.id,
+                                         u.firstname,
+                                         u.lastname
+                                     }).FirstOrDefault();
+
+                    int num = Int32.Parse(queryTrans.ProjectID);
+                    string projectId = _context.master_project.Where(o => o.id == num && o.is_active == 1).Select(o => o.project_id).FirstOrDefault();
+
+                    string unitId = _context.master_unit.Where(o => o.id == queryTrans.UnitID).Select(o => o.unit_id).FirstOrDefault();
+
+                    int countApprove = _context.Sanha_ts_Approve_Trans.Where(o => o.FlagActive == true && o.OrderNo != null).Count();
+
+                    string result = HashHelper.GenerateApproveNumber(countApprove,projectId,unitId);
+
+                    if (queryTrans != null)
+                    {
+                        // create approve trans
+                        Sanha_ts_Approve_Trans approveTrans = new Sanha_ts_Approve_Trans();
+                        approveTrans.ID = guid;
+                        approveTrans.TransID = queryTrans.ID;
+                        approveTrans.ProjectID = Int32.Parse(queryTrans.ProjectID);
+                        approveTrans.UnitID = queryTrans.UnitID;
+                        approveTrans.ShopID = queryTrans.ShopID;
+                        approveTrans.OrderNo = model.Status == SystemConstant.Status.SUCCESS ? result : null ;
+                        approveTrans.Status = model.Status;
+                        approveTrans.Note = model.Note;
+                        approveTrans.FlagActive = true;
+                        approveTrans.CreateDate = DateTime.Now;
+                        approveTrans.CreateBy = queryAuth.firstname + " " + queryAuth.lastname;
+                        approveTrans.UpdateDate = DateTime.Now;
+                        approveTrans.UpdateBy = queryAuth.firstname+" "+queryAuth.lastname;
+
+                        _context.Sanha_ts_Approve_Trans.Add(approveTrans);
+                        _context.SaveChanges();
+
+                    }
+
+                    // update trans after create approve
+                    Sanha_ts_Shopservice_Trans? shopTrans = _context.Sanha_ts_Shopservice_Trans
+                                                            .Where(o => o.ID == model.TransID && o.FlagActive == true).FirstOrDefault();
+
+                    if (shopTrans == null) throw new Exception("ไม่พบข้อมูล Transaction");
+
+                    shopTrans.Status = model.Status;
+                    shopTrans.UpdateDate = DateTime.Now;
+                    shopTrans.UpdateBy = queryAuth.firstname + " " + queryAuth.lastname;
+
+                    _context.Sanha_ts_Shopservice_Trans.Update(shopTrans);
+                    _context.SaveChanges();
+
+                    transDetail = new ApproveTransDetail()
+                    {
+                        TransID = shopTrans.ID,
+                        JuristicID = queryAuth.id,
+                        Status = (int)shopTrans.Status
+                    };
+
+                    scope.Complete();
+                    return transDetail;
+                }
+                catch ( Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    scope.Dispose();
+                }
+            }
+            
         }
     }
 }

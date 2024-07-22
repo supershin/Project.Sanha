@@ -54,7 +54,7 @@ var unitEquipment = {
             else if ( !unitEquipment.getSignatureData() || !unitEquipment.getSignatureDataJM()) {
                 message += "กรุณาตรวจสอบลายเซ็นต์<br>";
             }
-            debugger
+
             if (message !== "") {
                 $('#errorModalMessage').html(message);
                 $('#errorModal').modal('show');

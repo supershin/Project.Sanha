@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Project.Sanha.Web.Common;
 using Project.Sanha.Web.Models;
 using Project.Sanha.Web.Services;
 
@@ -20,14 +21,16 @@ namespace Project.Sanha.Web.Controllers
         }
 
         // GET: /<controller>/
-        public IActionResult Index(string email)
+        public IActionResult Index(string param)
         {
             int authen;
 
             try
             {
-                if (string.IsNullOrEmpty(email)) throw new Exception("ข้อมูลอีเมลล์ผิดพลาด");
-                authen = _authenService.Authentication(email);
+                string md5Hash = HashHelper.GenerateMD5Hash(param);
+
+                if (string.IsNullOrEmpty(md5Hash)) throw new Exception("ข้อมูลอีเมลล์ผิดพลาด");
+                authen = _authenService.Authentication(md5Hash);
 
             }
             catch (Exception ex)

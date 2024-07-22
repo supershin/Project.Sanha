@@ -41,9 +41,11 @@ namespace Project.Sanha.Web.Controllers
                     var decodedJson = Uri.UnescapeDataString(data);
                     var jsonParam = JsonSerializer.Deserialize<ApproveModel>(decodedJson);
 
+                    int jurId = Int32.Parse(jsonParam.JuristicId);
                     // ใช้ข้อมูล JSON ตามต้องการ
                     reportDetail = _approve.ReportDetail(jsonParam.ID);
-                    
+                    reportDetail.JuristicID = jurId;
+
                    // return Json(jsonParam);
                 }
                 catch (Exception ex)
@@ -92,6 +94,35 @@ namespace Project.Sanha.Web.Controllers
                                 param.draw,
                                 iTotalRecords = 0,
                                 iTotalDisplayRecords = 0
+                            }
+               );
+            }
+        }
+
+        public JsonResult ApproveTrans(ApproveTransModel approve)
+        {
+            try
+            {
+                if (approve == null) throw new Exception();
+
+                ApproveTransDetail transDetail = _approve.ReportApprove(approve);
+
+                return Json(
+                          new
+                          {
+                              success = true,
+                              data = transDetail,
+                          }
+                );
+            }
+            catch(Exception ex)
+            {
+                return Json(
+                            new
+                            {
+                                success = false,
+                                message = ex.Message,
+                                data = new[] { ex.Message },
                             }
                );
             }

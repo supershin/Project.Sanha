@@ -10,5 +10,9 @@ namespace Project.Sanha.Web.Repositories
         ReportDetailModel ReportDetail(string ID);
 
         List<SelectListItem> getProjectList(int id);
+
+        ReportDetailForApprove ReportApprove(int transId);
+
+        ApproveTransDetail ReportApprove(ApproveTransModel model);
     }
 }

@@ -42,7 +42,7 @@ namespace Project.Sanha.Web.Repositories
             Sanha_tr_UnitShopservice? unitShop = _context.Sanha_tr_UnitShopservice.Where(o => o.ID == trans.EventID && o.FlagActive == true).FirstOrDefault();
             if(unitShop != null)
             {
-                if (unitShop.Quota <= create.UsingQuota) throw new Exception("โควต้าเกินจำนวนคงเหลือ");
+                if (unitShop.Quota < create.UsingQuota) throw new Exception("โควต้าเกินจำนวนคงเหลือ");
                 unitShop.UsedQuota = unitShop.UsedQuota + create.UsingQuota;
                 unitShop.UpdateDate = DateTime.Now;
                 unitShop.UpdateBy = 2;

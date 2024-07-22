@@ -114,20 +114,19 @@
                             @Model.TransferDate
                         </div>
                         <div class="col-md-3 col-sm-6">
-                            <p class="fw-bold">สิทธิ์ใช้งานทั้งหมด</p>
-                            @Model.Quota
-                        </div>
-                        <div class="col-md-3 col-sm-6">
                             <p class="fw-bold">จำนวนสิทธิ์ที่ใช้งาน</p>
                             @Model.UsedQuota
                         </div>
-                        <div class="text-end">
-
-                            <button type="button" class="btn btn-danger" style="min-width:100px;"><i class="fa fa-close" style="color:white"></i> ไม่อนุมัติ</button>
-                            &nbsp; &nbsp;
-
-                            <button type="button" class="btn btn-success" style="min-width:100px;margin-right:10px;"><i class="fas fa-check"></i> อนุมัติ</button>
-
+                        <div class="col-md-12 text-end">
+                            @if (Model.Status == 1)
+                            {
+                                <button id="not-approved" type="button" class="btn btn-danger" style="min-width:100px; margin-right:10px;">
+                                    <i class="fa fa-close" style="color:white"></i> ไม่อนุมัติ
+                                </button>
+                                <button id="approve" type="button" class="btn btn-success" style="min-width:100px; margin-right: 10px; ">
+                                    <i class="fas fa-check"></i> อนุมัติ
+                                </button>
+                            }
                         </div>
                     </div>
                     <div class="row g-4">
@@ -199,7 +198,7 @@
                         <div class="card-body">
                             <div id="carouselExampleControls" class="carousel">
                                 <div class="carousel-inner">
-                                    @foreach(var item in Model.Images.Select((value, index) => new { value, index }))
+                                    @foreach (var item in Model.Images.Select((value, index) => new { value, index }))
                                     {
                                         <div class="carousel-item @(item.index == 0 ? "active" : "")">
                                             <div class="card img-item">
@@ -209,39 +208,6 @@
                                             </div>
                                         </div>
                                     }
-                                    <!--<div class="carousel-item active">
-                                        <div class="card img-item">
-                                            <div class="img-wrapper"><img src="~/images/testImg/work1.jpg" class="d-block w-100 img-thumb" alt="img"> </div>
-                                            <div class="card-body">-->
-                                                @*<h5 class="card-title">Card title 1</h5>
-                                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                                                    card's content.</p>
-                                                    <a href="#" class="btn btn-primary">Go somewhere</a>*@
-                                            <!--</div>
-                                        </div>
-                                    </div>
-                                    <div class="carousel-item">
-                                        <div class="card img-item">
-                                            <div class="img-wrapper"><img src="~/images/testImg/work2.jpg" class="d-block w-100 img-thumb" alt="..."> </div>
-                                            <div class="card-body">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="carousel-item">
-                                        <div class="card img-item">
-                                            <div class="img-wrapper"><img src="~/images/testImg/work3.jpg" class="d-block w-100 img-thumb" alt="..."> </div>
-                                            <div class="card-body">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="carousel-item">
-                                        <div class="card img-item">
-                                            <div class="img-wrapper"><img src="~/images/testImg/work1.jpg" class="d-block w-100 img-thumb" alt="..."> </div>
-                                            <div class="card-body">
-                                            </div>
-                                        </div>
-                                    </div>-->
-
 
                                 </div>
                                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
@@ -287,6 +253,42 @@
     </div>
 </div>
 <!-- End of Confirmation Modal -->
+<!-- not approved modal -->
+<div class="modal fade" id="not-approved-modal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="notApprovedModalLabel">การไม่อนุมัติ</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <textarea id="not-arpproved-note" class="form-control" rows="4" placeholder="หมายเหตุ..." ></textarea>
+
+            </div>
+            <div class="modal-footer">
+                <button id="confirm-not-approved" type="button" class="btn btn-danger" data-bs-dismiss="modal">ยืนยัน</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- approve modal -->
+<div class="modal fade" id="approve-modal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="approveModalLabel">การอนุมัติ</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ยืนยันการอนุมัติเอกสาร
+            </div>
+            <div class="modal-footer">
+                <button id="confirm-approve" type="button" class="btn btn-success" data-bs-dismiss="modal">ยืนยัน</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts{
     <script>var multipleCardCarousel = document.querySelector(
@@ -344,6 +346,18 @@
             //    viewer_modal.find('#img-viewer').attr('src', $('.img-thumb').eq(prev_index).attr('src'))
             //})
         })</script>
+    <script src="~/lib/datatable/jquery.datatables.min.js"></script>
+
+    <script src="~/js/detailreport.js?version=@DateTime.Now.Ticks.ToString()"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            detail.init(@Model.ID, @Model.JuristicID);
+        });
+    </script>
 }
 
 
