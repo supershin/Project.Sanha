@@ -143,7 +143,8 @@ namespace Project.Sanha.Web.Repositories
             var masterProeject = _context.master_project.Where(o => o.project_id == projectId).FirstOrDefault();
 
             var masterUnit = (from mu in _context.master_unit
-                             .Where(o => o.project_id == masterProeject.id.ToString() && o.unit_id == unitId && o.contract_number == contractNo)
+                             .Where(o => o.project_id == masterProeject.id.ToString() && o.unit_id == unitId && o.contract_number == contractNo
+                             && o.unit_status_id == "4" && o.transfer_date != null)
                               select new
                               {
                                   mu.project_id,
@@ -152,7 +153,7 @@ namespace Project.Sanha.Web.Repositories
                                   mu.transfer_date
                               }).FirstOrDefault();
 
-            if (masterUnit == null) throw new Exception("ข้อมูลไม่ถูกต้อง");
+            if (masterUnit == null) throw new Exception("ข้อมูลไม่ถูกต้อง หรือ บ้านเลขที่นี้ยังไม่ได้ทำการโอน");
 
             var projectShop = (from ps in _context.Sanha_tm_ProjectShopservice
                                .Where(o => o.ProjectID == masterUnit.project_id && o.FlagActive == true)

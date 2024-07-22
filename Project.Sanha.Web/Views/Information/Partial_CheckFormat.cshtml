@@ -6,12 +6,11 @@
 
 @model Project.Sanha.Web.Models.InformationDetail
 
-<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog" role="document">
         <div id="modal-format" class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">ค้นหายูนิต</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="mb-3">
@@ -26,9 +25,6 @@
                 </div>
             </div>
             <div class="modal-footer">
-                @*<a href="#" id="cancel-unit" class="btn btn-link link-secondary" data-bs-dismiss="modal">
-                    ยกเลิก
-                </a>*@
                 <button id="search-unit" type="button" class="btn btn-primary ms-auto">
                     ค้นหายูนิต
                 </button>

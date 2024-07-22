@@ -9,6 +9,7 @@ using QuestPDF.Infrastructure;
 using QuestPDF.Previewer;
 using System;
 using System.Reflection.PortableExecutable;
+using System.Transactions;
 
 namespace Project.Sanha.Web.Controllers
 {
@@ -60,47 +61,66 @@ namespace Project.Sanha.Web.Controllers
         public string GetDataTransShopService(int transId)
         {
             var guid = Guid.NewGuid();
-
-            ReportDetailForApprove reportDetail = _approve.ReportApprove(transId);
-
-            Report1Model report1 = new Report1Model()
+            TransactionOptions option = new TransactionOptions();
+            option.Timeout = new TimeSpan(1, 0, 0);
+            using (TransactionScope scope = new TransactionScope(TransactionScopeOption.RequiresNew, option))
             {
-                ShopName = reportDetail.ShopName,
-                OrderNO = reportDetail.OrderNO,
-                ProjectName = reportDetail.ProjectName,
-                AddrNO = reportDetail.AddrNo,
-                TransferDate = reportDetail.TransferDate,
-                UsedQuota = (int)reportDetail.UsedQuota,
-                Status = (int)reportDetail.Status,
-                StatusDesc = reportDetail.StatusDesc,
-                CustomerName = reportDetail.CustomerDetail.CustomerName,
-                CustomerMobile = reportDetail.CustomerDetail.CustomerMobile,
-                CustomerEmail = reportDetail.CustomerDetail.CustomerEmail,
-                RelationShip = reportDetail.CustomerDetail.RelationShip,
-                ImageSignCustomer = reportDetail.CustomerDetail.ImageSignCustomer,
-                DateSignCustomer = reportDetail.CustomerDetail.DateSignCustomer,
-                StaffName = reportDetail.StaffDetail.StaffName,
-                WorkDate = reportDetail.StaffDetail.WorkDate,
-                WorkTime = reportDetail.StaffDetail.WorkTime,
-                Remark = reportDetail.StaffDetail.Remark,
-                ImageSignStaff = reportDetail.StaffDetail.ImageSignStaff,
-                DateSignStaff = reportDetail.StaffDetail.DateSignStaff
-                
-            };
+                try
+                {
+                    ReportDetailForApprove reportDetail = _approve.ReportApprove(transId);
 
-            Report2Model report2 = new Report2Model()
-            {
-                ShopName = reportDetail.ShopName,
-                OrderNO = reportDetail.OrderNO,
-                Images = reportDetail.Images.Select(image => image.ImagePath).ToList()
-            };
+                    Report1Model report1 = new Report1Model()
+                    {
+                        ShopName = reportDetail.ShopName,
+                        OrderNO = reportDetail.OrderNO,
+                        ProjectName = reportDetail.ProjectName,
+                        AddrNO = reportDetail.AddrNo,
+                        TransferDate = reportDetail.TransferDate,
+                        UsedQuota = (int)reportDetail.UsedQuota,
+                        Status = (int)reportDetail.Status,
+                        StatusDesc = reportDetail.StatusDesc,
+                        CustomerName = reportDetail.CustomerDetail.CustomerName,
+                        CustomerMobile = reportDetail.CustomerDetail.CustomerMobile,
+                        CustomerEmail = reportDetail.CustomerDetail.CustomerEmail,
+                        RelationShip = reportDetail.CustomerDetail.RelationShip,
+                        ImageSignCustomer = reportDetail.CustomerDetail.ImageSignCustomer,
+                        DateSignCustomer = reportDetail.CustomerDetail.DateSignCustomer,
+                        StaffName = reportDetail.StaffDetail.StaffName,
+                        WorkDate = reportDetail.StaffDetail.WorkDate,
+                        WorkTime = reportDetail.StaffDetail.WorkTime,
+                        Remark = reportDetail.StaffDetail.Remark,
+                        ImageSignStaff = reportDetail.StaffDetail.ImageSignStaff,
+                        DateSignStaff = reportDetail.StaffDetail.DateSignStaff
 
-            getReport1(guid, report1);
-            getReport2(guid, report2);
+                    };
 
-            string path = MegreMyPdfs(guid, reportDetail.OrderNO);
+                    Report2Model report2 = new Report2Model()
+                    {
+                        ShopName = reportDetail.ShopName,
+                        OrderNO = reportDetail.OrderNO,
+                        Images = reportDetail.Images.Select(image => image.ImagePath).ToList()
+                    };
 
-            return path;
+                    getReport1(guid, report1);
+                    getReport2(guid, report2);
+
+                    string path = MegreMyPdfs(guid, reportDetail.OrderNO);
+
+                    _approve.SaveFilePDF(guid, transId, report1.OrderNO, path);
+
+                    scope.Complete();
+                    //service add resource 
+                    return path;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    scope.Dispose();
+                }
+            }
         }
         public void getReport1(Guid uuid, Report1Model report1)
         {
@@ -232,12 +252,12 @@ namespace Project.Sanha.Web.Controllers
                         });
                         table2.Cell().Row(1).Column(1).AlignCenter().PaddingTop(4).PaddingBottom(4).Text("เจ้าหน้าที่ ").SemiBold();
                         table2.Cell().Row(2).Column(1).AlignCenter().Width(60).Image(sign_open);
-                        table2.Cell().Row(3).Column(1).AlignCenter().Text("Tuanjit Tongkaew");
+                        table2.Cell().Row(3).Column(1).AlignCenter().Text(report1.StaffName);
                         table2.Cell().Row(4).Column(1).AlignCenter().Text("วันที่ " + report1.DateSignStaff).Style(TextStyle.Default.FontSize(16));
 
                         table2.Cell().Row(1).Column(2).AlignCenter().PaddingTop(4).PaddingBottom(4).Text("ลูกค้า").SemiBold();
                         table2.Cell().Row(2).Column(2).AlignCenter().Width(60).Image(sign_open2);
-                        table2.Cell().Row(3).Column(2).AlignCenter().Text("Siri Risi");
+                        table2.Cell().Row(3).Column(2).AlignCenter().Text(report1.CustomerName);
                         table2.Cell().Row(4).Column(2).AlignCenter().Text("วันที่ " + report1.DateSignCustomer).Style(TextStyle.Default.FontSize(16));
                     });
 
@@ -390,6 +410,35 @@ namespace Project.Sanha.Web.Controllers
             fs.Close();
             fs.Dispose();
 
+        }
+
+        public JsonResult GetPathPDF(int transID)
+        {
+            try
+            {
+                if (transID == null) throw new Exception();
+
+                string path = _approve.GetPathPDF(transID);
+
+                return Json(
+                          new
+                          {
+                              success = true,
+                              data = path,
+                          }
+                );
+            }
+            catch (Exception ex)
+            {
+                return Json(
+                            new
+                            {
+                                success = false,
+                                message = ex.Message,
+                                data = new[] { ex.Message },
+                            }
+               );
+            }
         }
     }
 }

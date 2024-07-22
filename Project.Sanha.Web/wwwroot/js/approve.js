@@ -79,37 +79,31 @@ const approve = {
                     //    return false;
                     //});
                     $(document).on('click', "button[data-action='print-report']", function (e) {
-                        e.preventDefault(); // Prevent default action
+                        //e.preventDefault(); // Prevent default action
 
-                        var juristicId = jId;
                         var transId = $(e.currentTarget).attr('data-id');
 
-                        // Create the data object for the AJAX request
                         var data = {
                             transId: transId,
-                            juristicId: juristicId
                         };
-
-                        // Perform the AJAX request
                         $.ajax({
-                            url: baseUrl + 'Report/RptShopService',
+                            url: baseUrl + 'Report/GetPathPDF',
                             type: 'post',
                             dataType: 'json',
                             data: data,
-                            success: function (response) {
-                                if (response.success) {
-                                    // Open the report in a new tab
-                                    window.open(baseUrl + response.data.Path, "_blank");
+                            success: function (resp) {
 
-                                    // Redirect to another page
-                                    location.reload();
+                                if (resp.success) {
+                                    window.open(baseUrl + resp.data, "_blank");
+
                                 }
                             },
                             error: function (xhr, status, error) {
-                                // Handle error response
-                                console.error('Error:', error);
-                            }
+                                // do something
+                                alert(" Coding Error ")
+                            },
                         });
+                        return false;
                     });
 
                 }

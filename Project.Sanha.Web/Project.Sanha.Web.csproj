@@ -13,6 +13,8 @@
     <Folder Include="wwwroot\lib\loading\" />
     <Folder Include="Views\Authentication\" />
     <Folder Include="wwwroot\lib\core-ui\" />
+    <Folder Include="Upload\" />
+    <Folder Include="Upload\" />
     <Folder Include="Upload\temp\" />
   </ItemGroup>
 
@@ -20,6 +22,7 @@
     <None Remove="Views\Information\" />
     <None Remove="Repositories\" />
     <None Remove="Views\Authentication\" />
+    <None Remove="Upload\" />
     <None Remove="Upload\temp\" />
   </ItemGroup>
 
