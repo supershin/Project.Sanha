@@ -2,6 +2,7 @@
 using System.Net.Mime;
 using System.Transactions;
 using Microsoft.AspNetCore.Http;
+using Project.Sanha.Web.Common;
 using Project.Sanha.Web.Data;
 using Project.Sanha.Web.Models;
 
@@ -41,7 +42,7 @@ namespace Project.Sanha.Web.Repositories
             Sanha_tr_UnitShopservice? unitShop = _context.Sanha_tr_UnitShopservice.Where(o => o.ID == trans.EventID && o.FlagActive == true).FirstOrDefault();
             if(unitShop != null)
             {
-                if (unitShop.Quota <= create.UsingQuota) throw new Exception("โควต้าเกินจำนวนคงเหลือ");
+                if (unitShop.Quota < create.UsingQuota) throw new Exception("โควต้าเกินจำนวนคงเหลือ");
                 unitShop.UsedQuota = unitShop.UsedQuota + create.UsingQuota;
                 unitShop.UpdateDate = DateTime.Now;
                 unitShop.UpdateBy = 2;
@@ -83,7 +84,7 @@ namespace Project.Sanha.Web.Repositories
                 Sanha_tr_Shopservice_Resource resourceImage = new Sanha_tr_Shopservice_Resource();
                 resourceImage.ID = Guid.NewGuid();
                 resourceImage.TransID = transId;
-                resourceImage.ResourceType = 1;
+                resourceImage.ResourceType = SystemConstant.ResourceType.IMAGE;
                 resourceImage.FileName = fileName;
                 resourceImage.FilePath = filePath;
                 resourceImage.MimeType = contentType;
@@ -100,12 +101,12 @@ namespace Project.Sanha.Web.Repositories
             return true;
         }
 
-        public bool CreateUploadSign(int transId, string fileName, string filePath)
+        public bool CreateUploadSign(int transId, string fileName, string filePath, int resourceType)
         {
             Sanha_tr_Shopservice_Resource resourceImage = new Sanha_tr_Shopservice_Resource();
             resourceImage.ID = Guid.NewGuid();
             resourceImage.TransID = transId;
-            resourceImage.ResourceType = 2;
+            resourceImage.ResourceType = resourceType;
             resourceImage.FileName = fileName;
             resourceImage.FilePath = filePath;
             resourceImage.MimeType = "image/jpg";
@@ -121,7 +122,7 @@ namespace Project.Sanha.Web.Repositories
             return true;
         }
 
-        public Resources UploadSignResource(string model, string appPath, int transId)
+        public Resources UploadSignResource(string model, string appPath, int transId, int resourceType)
         {
             Resources resource = new Resources();
             Guid guidId = Guid.NewGuid();
@@ -141,7 +142,7 @@ namespace Project.Sanha.Web.Repositories
                 resource.Directory = Path.Combine(appPath, dirPath);
                 ConvertByteToImage(resource);
 
-                CreateUploadSign(transId, fileName, filePath);
+                CreateUploadSign(transId, fileName, filePath, resourceType);
             }
 
             return resource;

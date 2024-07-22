@@ -22,9 +22,22 @@ namespace Project.Sanha.Web.Data
         public virtual DbSet<Sanha_tm_UnitQuota_Mapping> Sanha_tm_UnitQuota_Mapping { get; set; } = null!;
         public virtual DbSet<Sanha_tr_Shopservice_Resource> Sanha_tr_Shopservice_Resource { get; set; } = null!;
         public virtual DbSet<Sanha_tr_UnitShopservice> Sanha_tr_UnitShopservice { get; set; } = null!;
+        public virtual DbSet<Sanha_ts_Approve_Trans> Sanha_ts_Approve_Trans { get; set; } = null!;
         public virtual DbSet<Sanha_ts_Shopservice_Trans> Sanha_ts_Shopservice_Trans { get; set; } = null!;
         public virtual DbSet<master_project> master_project { get; set; } = null!;
+        public virtual DbSet<master_relation> master_relation { get; set; } = null!;
         public virtual DbSet<master_unit> master_unit { get; set; } = null!;
+        public virtual DbSet<user> users { get; set; } = null!;
+        public virtual DbSet<user_projects> user_projects { get; set; } = null!;
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Data Source=10.0.20.14;Initial Catalog=AfterSale;User ID=aftersale;Password=aftersale@2022;TrustServerCertificate=True;");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -88,6 +101,17 @@ namespace Project.Sanha.Web.Data
                 entity.Property(e => e.UpdateDate).HasDefaultValueSql("(getdate())");
             });
 
+            modelBuilder.Entity<Sanha_ts_Approve_Trans>(entity =>
+            {
+                entity.Property(e => e.ID).ValueGeneratedNever();
+
+                entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.FlagActive).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.UpdateDate).HasDefaultValueSql("(getdate())");
+            });
+
             modelBuilder.Entity<Sanha_ts_Shopservice_Trans>(entity =>
             {
                 entity.Property(e => e.CreateDate).HasDefaultValueSql("(getdate())");
@@ -102,7 +126,22 @@ namespace Project.Sanha.Web.Data
                 entity.Property(e => e.id).ValueGeneratedOnAdd();
             });
 
+            modelBuilder.Entity<master_relation>(entity =>
+            {
+                entity.Property(e => e.id).ValueGeneratedOnAdd();
+            });
+
             modelBuilder.Entity<master_unit>(entity =>
+            {
+                entity.Property(e => e.id).ValueGeneratedOnAdd();
+            });
+
+            modelBuilder.Entity<user>(entity =>
+            {
+                entity.Property(e => e.id).ValueGeneratedOnAdd();
+            });
+
+            modelBuilder.Entity<user_projects>(entity =>
             {
                 entity.Property(e => e.id).ValueGeneratedOnAdd();
             });

@@ -25,6 +25,7 @@ namespace Project.Sanha.Web.Controllers
             url = url.EndsWith("/") ? url : string.Concat(url, "/");
             
             ViewBag.baseUrl = url;
+            BaseUrl = url;
 
             base.OnActionExecuting(context);
         }

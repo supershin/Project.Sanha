@@ -18,14 +18,22 @@ namespace Project.Sanha.Web.Controllers
             _approve = approve;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int id)
         {
-            return View();
+            ViewBag.Id = id;
+
+            GetProjectFromJuristic getProject = new GetProjectFromJuristic()
+            {
+                SelectProjectLists = _approve.getProjectList(id)
+            };
+
+            return View(getProject);
         }
         [HttpGet]
         public IActionResult Detail(string data)
         {
- if (!string.IsNullOrEmpty(data))
+            ReportDetailModel reportDetail = new ReportDetailModel();
+            if (!string.IsNullOrEmpty(data))
             {
                 try
                 {
@@ -33,9 +41,11 @@ namespace Project.Sanha.Web.Controllers
                     var decodedJson = Uri.UnescapeDataString(data);
                     var jsonParam = JsonSerializer.Deserialize<ApproveModel>(decodedJson);
 
+                    int jurId = Int32.Parse(jsonParam.JuristicId);
                     // ใช้ข้อมูล JSON ตามต้องการ
-                    // ...
-                    
+                    reportDetail = _approve.ReportDetail(jsonParam.ID);
+                    reportDetail.JuristicID = jurId;
+
                    // return Json(jsonParam);
                 }
                 catch (Exception ex)
@@ -44,7 +54,7 @@ namespace Project.Sanha.Web.Controllers
                     return BadRequest("Invalid data parameter");
                 }
             }
-            return View();
+            return View(reportDetail);
         }
         //public IActionResult Detail(ApproveModel param)
         //{
@@ -61,7 +71,6 @@ namespace Project.Sanha.Web.Controllers
         {
             try
             {
-
                 var resultData = _approve.GetTransList(param, criteria);
                 return Json(
                           new
@@ -85,6 +94,35 @@ namespace Project.Sanha.Web.Controllers
                                 param.draw,
                                 iTotalRecords = 0,
                                 iTotalDisplayRecords = 0
+                            }
+               );
+            }
+        }
+
+        public JsonResult ApproveTrans(ApproveTransModel approve)
+        {
+            try
+            {
+                if (approve == null) throw new Exception();
+
+                ApproveTransDetail transDetail = _approve.ReportApprove(approve);
+
+                return Json(
+                          new
+                          {
+                              success = true,
+                              data = transDetail,
+                          }
+                );
+            }
+            catch(Exception ex)
+            {
+                return Json(
+                            new
+                            {
+                                success = false,
+                                message = ex.Message,
+                                data = new[] { ex.Message },
                             }
                );
             }

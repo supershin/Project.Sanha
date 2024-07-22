@@ -20,7 +20,7 @@ namespace Project.Sanha.Web.Controllers
         private readonly IServiceUnitSave _serviceUnitSave;
         private readonly ISearchUnitService _searchUnitService;
         private readonly IHostEnvironment _hosting;
-        
+
         public InformationController(IInformationService informationService,
             IServiceUnitSave serviceUnitSave,
             ISearchUnitService searchUnitService,
@@ -61,7 +61,6 @@ namespace Project.Sanha.Web.Controllers
             {
                 return View("ErrorInfo", ex.Message);
             }
-            
 
             return View(informationDetail);
         }
@@ -164,5 +163,6 @@ namespace Project.Sanha.Web.Controllers
             }
         }
     }
+
 }
 

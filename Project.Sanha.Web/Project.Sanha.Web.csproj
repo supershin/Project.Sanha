@@ -11,11 +11,16 @@
     <Folder Include="Views\Information\" />
     <Folder Include="Repositories\" />
     <Folder Include="wwwroot\lib\loading\" />
+    <Folder Include="Views\Authentication\" />
+    <Folder Include="wwwroot\lib\core-ui\" />
+    <Folder Include="Upload\temp\" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="Views\Information\" />
     <None Remove="Repositories\" />
+    <None Remove="Views\Authentication\" />
+    <None Remove="Upload\temp\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,5 +48,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\lib\loading\" />
+    <Content Remove="wwwroot\lib\core-ui\" />
   </ItemGroup>
 </Project>

@@ -13,8 +13,11 @@ namespace Project.Sanha.Web.Data
         [StringLength(20)]
         [Unicode(false)]
         public string ProjectID { get; set; } = null!;
-        public int UnitID { get; set; }
-        public int? ShopID { get; set; }
+        public int ShopID { get; set; }
+        public int? UnitID { get; set; }
+        [StringLength(20)]
+        [Unicode(false)]
+        public string? UnitCode { get; set; }
         public int Quota { get; set; }
         public bool? FlagActive { get; set; }
         [Column(TypeName = "datetime")]
