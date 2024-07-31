@@ -88,8 +88,8 @@ var unitEquipment = {
         });
        
         $(document).on('click', '#modal-sign .clear', function () {
-            signaturePad.clear();
             $('#success-icon').hide();
+            signaturePad.clear();
         });
 
     },
@@ -107,8 +107,8 @@ var unitEquipment = {
             }
         });
         $(document).on('click', '#modal-sign-jm .clear', function () {            
-            signaturePad_JM.clear();
             $('#success-icon-jm').hide();
+            signaturePad_JM.clear();
         });
     },
     saveUnitEquipmentSign: () => {
