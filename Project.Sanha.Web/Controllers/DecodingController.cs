@@ -22,8 +22,8 @@ namespace Project.Sanha.Web.Controllers
             //var Array = value.Split(':');
 
             string baseUrl = _hosting.ContentRootPath;
-            string url = baseUrl + Url.Action("Index", "Information", new { param = param });
-
+            //string url = BaseUrl + Url.Action("Index", "Information", new { param = param });
+            string url = BaseUrl + "Information?param=" + param;
             string qrUri = genQR(url);
 
             ViewBag.QrUri = qrUri;
