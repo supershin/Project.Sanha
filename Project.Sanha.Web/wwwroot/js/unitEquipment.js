@@ -15,11 +15,13 @@ var unitEquipment = {
             return false;
         });
         $("#btn-save-sign").click(() => {
-            $('#modal-sign').modal('hide');            
+            $('#modal-sign').modal('hide');
+            $('#success-icon').show();
             return false;
         });
         $("#btn-save-sign-jm").click(() => {
             $('#modal-sign-jm').modal('hide');
+            $('#success-icon-jm').show();
             return false;
         });
         $("#btn-cancel-form").click(() => {
@@ -45,14 +47,19 @@ var unitEquipment = {
             else if ($("#CustomerMobile").val() === null || $("#CustomerMobile").val().trim() === "") {
                 message += "กรุณาตรวจสอบเบอร์โทรศัพท์ลูกค้า<br>";
             }
-            else if ($("#CustomerEmail").val() === null || $("#CustomerEmail").val().trim() === "") {
-                message += "กรุณาตรวจสอบอีเมลล์ลูกค้า<br>";
-            }
             else if ($("#StaffName").val() === null || $("#StaffName").val().trim() === "") {
                 message += "กรุณาตรวจสอบชื่อพนักงาน<br>";
             }
-            else if ( !unitEquipment.getSignatureData() || !unitEquipment.getSignatureDataJM()) {
+            else if (!unitEquipment.getSignatureData() || !unitEquipment.getSignatureDataJM()) {
                 message += "กรุณาตรวจสอบลายเซ็นต์<br>";
+            }
+            else {
+                var imageInput = $("#Images")[0];
+                var fileCount = imageInput.files.length;
+
+                if (fileCount === 0) {
+                    message += "กรุณาตรวจสอบจำนวนรูปภาพที่อัปโหลด<br>";
+                }
             }
 
             if (message !== "") {
@@ -137,7 +144,10 @@ var unitEquipment = {
             success: function (resp) {
                 if (resp.success) {
                     $('.loading').hide();
-                    window.location.href = baseUrl + 'Information?projectid=' + resp.data.ProjectId + '&unitid=' + (resp.data.UnitId || '') + '&contractno=' + (resp.data.ContractNo || '');
+
+                    let param = btoa(resp.data.ProjectId + ':' + resp.data.UnitId + ':' + resp.data.ContractNo)
+
+                    window.location.href = baseUrl + 'Information?param=' + param;
                     console.log(window.location.href);
                 }
                 else {
@@ -202,6 +212,7 @@ var unitEquipment = {
                 if (resp.success) {
                     console.log(resp.data);
                     $('.loading').hide();
+
                     window.location.href = baseUrl + 'Information?projectid=' + resp.data.ProjectId + '&unitid=' + (resp.data.UnitId || '') + '&contractno=' + (resp.data.ContractNo || '');
                 }
             },

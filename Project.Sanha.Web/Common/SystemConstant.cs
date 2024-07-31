@@ -9,13 +9,14 @@ namespace Project.Sanha.Web.Common
             public const int WAIT = 1;
             public const int SUCCESS = 2;
 			public const int REJECT = 3;
-
+            public const int DRAFT = 5;
             public class Desc
             {
                 public const String ALL = "ทั้งหมด";
                 public const String WAIT = "รออนุมัติ";
                 public const String SUCCESS = "อนุมัติ";
                 public const String REJECT = "ไม่อนุมัติ";
+                public const String DRAFT = "แบบร่าง";
             }
             public static String Get_Desc(int status)
             {
@@ -29,6 +30,8 @@ namespace Project.Sanha.Web.Common
                         return SystemConstant.Status.Desc.SUCCESS;
                     case SystemConstant.Status.REJECT:
                         return SystemConstant.Status.Desc.REJECT;
+                    case SystemConstant.Status.DRAFT:
+                        return SystemConstant.Status.Desc.DRAFT;
                 }
                 return String.Empty;
             }
@@ -40,6 +43,7 @@ namespace Project.Sanha.Web.Common
             public const int SIGNCUST = 2;
             public const int SIGNSTAFF = 3;
             public const int PDF = 4;
+            public const int CHECKIN = 5;
         }
 	}
 }

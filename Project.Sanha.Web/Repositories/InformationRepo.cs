@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using Microsoft.EntityFrameworkCore;
+using Project.Sanha.Web.Common;
 using Project.Sanha.Web.Data;
 using Project.Sanha.Web.Models;
 using static Microsoft.AspNetCore.Razor.Language.TagHelperMetadata;
@@ -277,6 +278,43 @@ namespace Project.Sanha.Web.Repositories
             };
 
             return data;
+        }
+
+        public bool ValidCheckIn(int infoId, int shopId)
+        {
+            Sanha_ts_Shopservice_Trans? trans = _context.Sanha_ts_Shopservice_Trans.Where(o =>
+                                                o.EventID == infoId && o.Status == SystemConstant.Status.DRAFT && o.FlagActive == true).FirstOrDefault();
+            Sanha_tr_UnitShopservice? unitShop = null;
+            if (trans != null)
+            {
+                unitShop = _context.Sanha_tr_UnitShopservice.Where(o =>
+                            o.ID == trans.EventID && o.ShopID == shopId).FirstOrDefault();
+            }
+            
+            if (trans == null && unitShop == null) return false;
+            return true;
+        }
+
+        public DataTransModel GetTransDraft(int infoId, int shopId)
+        {
+            Sanha_ts_Shopservice_Trans? trans = _context.Sanha_ts_Shopservice_Trans.Where(o =>
+                                                o.EventID == infoId && o.Status == SystemConstant.Status.DRAFT && o.FlagActive == true).FirstOrDefault();
+
+            Sanha_tr_UnitShopservice? unitShop = _context.Sanha_tr_UnitShopservice.Where(o =>
+                                                o.ID == trans.EventID && o.ShopID == shopId).FirstOrDefault();
+
+            DataTransModel model = new DataTransModel();
+
+            if(trans != null && unitShop != null)
+            {
+                model.CustomerName = trans.CustomerName;
+                model.CustomerMobile = trans.CustomerMobile;
+                model.CustomerEmail = trans.CustomerEmail;
+                model.Date = trans.WorkDate.ToStringDate();
+                model.StartTime = trans.WorkDate?.ToString("HH:mm");
+            }
+
+            return model;
         }
     }
 }

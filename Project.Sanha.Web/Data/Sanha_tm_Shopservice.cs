@@ -25,5 +25,6 @@ namespace Project.Sanha.Web.Data
         [Column(TypeName = "datetime")]
         public DateTime? UpdateDate { get; set; }
         public int? UpdateBy { get; set; }
+        public bool? DefaultQuata { get; set; }
     }
 }

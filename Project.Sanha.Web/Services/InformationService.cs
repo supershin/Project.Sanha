@@ -33,6 +33,22 @@ namespace Project.Sanha.Web.Services
 
 			return createUnitShop;
         }
+
+		public DataTransModel GetTransDraft(UsingCodeModel model)
+		{
+			DataTransModel data = _informationRepo.GetTransDraft(model.InfoId, model.ShopId);
+
+			data.ProjectId = model.ProjectId;
+			data.UnitId = model.UnitId;
+			data.ProjectName = model.ProjectName;
+			data.Address = model.Address;
+			data.TransferDate = model.TransferDate;
+			data.InfoId = model.InfoId;
+			data.Quota = model.Quota;
+			data.ShopId = model.ShopId;
+
+			return data;
+		}
     }
 }
 

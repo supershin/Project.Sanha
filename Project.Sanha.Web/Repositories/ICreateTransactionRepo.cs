@@ -12,6 +12,8 @@ namespace Project.Sanha.Web.Repositories
         bool CreateUploadSign(int transId, string fileName, string filePath, int resourceType);
 
         Resources UploadSignResource(string model, string appPath, int transId, int resourceType);
+
+        bool CheckIn(CheckInModel model);
     }
 }
 

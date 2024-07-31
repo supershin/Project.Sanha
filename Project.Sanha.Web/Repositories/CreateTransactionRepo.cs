@@ -23,24 +23,29 @@ namespace Project.Sanha.Web.Repositories
             Sanha_tr_UnitShopservice? validTrans = _context.Sanha_tr_UnitShopservice.Where(o => o.ID == create.UnitShopId).FirstOrDefault();
             if (validTrans.Quota <= validTrans.UsedQuota) throw new Exception("โควต้าการใช้งานครบแล้ว");
 
-            Sanha_ts_Shopservice_Trans trans = new Sanha_ts_Shopservice_Trans();
+            Sanha_ts_Shopservice_Trans? trans = _context.Sanha_ts_Shopservice_Trans.Where(o =>
+                                                o.EventID == create.UnitShopId && o.FlagActive == true &&
+                                                o.Status == SystemConstant.Status.DRAFT).FirstOrDefault();
+            if (trans == null) throw new Exception("ไม่พบข้อมูลธุรกรรม");
+
+            DateTime endDate = DateTime.Now;
+
             trans.EventID = create.UnitShopId;
             trans.CustomerName = create.CustomerName;
             trans.CustomerMobile = create.CustomerMobile;
             trans.CustomerEmail = create.CustomerEmail;
             trans.CustomerRelationID = create.RelationShip;
             trans.StaffName = create.StaffName;
-            trans.WorkDate = DateTime.Parse(create.Date);
-            trans.WorkTime = create.StartTime + "-" + create.EndTime;
+            trans.WorkTime = create.StartTime + "-" + endDate.ToString("HH:mm");
             trans.Remark = create.Remark;
             trans.CreateDate = DateTime.Now;
             trans.CreateBy = "Application";
             trans.UpdateDate = DateTime.Now;
             trans.UpdateBy = "Application";
-            trans.Status = 1;
+            trans.Status = SystemConstant.Status.WAIT;
             trans.UsedQuota = create.UsingQuota;
-
-            _context.Sanha_ts_Shopservice_Trans.Add(trans);
+            trans.EndDate = endDate;
+            _context.Sanha_ts_Shopservice_Trans.Update(trans);
             _context.SaveChanges();
 
             Sanha_tr_UnitShopservice? unitShop = _context.Sanha_tr_UnitShopservice.Where(o => o.ID == trans.EventID && o.FlagActive == true).FirstOrDefault();
@@ -191,6 +196,74 @@ namespace Project.Sanha.Web.Repositories
                 // Error creating stream or writing to it.
                 throw exp;
             }
+        }
+
+        public bool CheckIn(CheckInModel model)
+        {
+            Sanha_tr_UnitShopservice? validTrans = _context.Sanha_tr_UnitShopservice.Where(o => o.ID == model.UnitShopId).FirstOrDefault();
+            if (validTrans.Quota <= validTrans.UsedQuota) throw new Exception("โควต้าการใช้งานครบแล้ว");
+
+            string getDate = DateTime.Now.ToString("HH:mm");
+
+            Sanha_ts_Shopservice_Trans checkIn = new Sanha_ts_Shopservice_Trans();
+            checkIn.EventID = model.UnitShopId;
+            checkIn.CustomerName = model.CustomerName;
+            checkIn.CustomerMobile = model.CustomerMobile;
+            checkIn.CustomerEmail = model.CustomerEmail;
+            checkIn.WorkDate = DateTime.Now;
+            checkIn.WorkTime = getDate + "-" + getDate;
+            checkIn.CreateDate = DateTime.Now;
+            checkIn.CreateBy = "Application";
+            checkIn.UpdateDate = DateTime.Now;
+            checkIn.UpdateBy = "Application";
+            checkIn.Status = SystemConstant.Status.DRAFT;
+
+            _context.Sanha_ts_Shopservice_Trans.Add(checkIn);
+            _context.SaveChanges();
+
+            UploadCheckIn(model.Image, checkIn.ID);
+
+            return true;
+        }
+
+        private void UploadCheckIn(List<IFormFile> images, int transId)
+        {
+            foreach (var image in images)
+            {
+                Guid guidId = Guid.NewGuid();
+
+                string fileType = System.IO.Path.GetExtension(image.FileName);
+                string fileName = guidId + fileType;
+                string contentType = image.ContentType;
+
+                var folder = DateTime.Now.ToString("yyyyMM");
+                var dirPath = $"Upload/document/{folder}/works/";
+                string filePath = dirPath + fileName;
+
+                if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), dirPath)))
+                    Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), dirPath));
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    image.CopyTo(fileStream);
+                }
+
+                Sanha_tr_Shopservice_Resource resourceImage = new Sanha_tr_Shopservice_Resource();
+                resourceImage.ID = Guid.NewGuid();
+                resourceImage.TransID = transId;
+                resourceImage.ResourceType = SystemConstant.ResourceType.CHECKIN;
+                resourceImage.FileName = fileName;
+                resourceImage.FilePath = filePath;
+                resourceImage.MimeType = contentType;
+                resourceImage.FlagActive = true;
+                resourceImage.CreateDate = DateTime.Now;
+                resourceImage.CreateBy = 1;
+                resourceImage.UpdateDate = DateTime.Now;
+                resourceImage.UpdateBy = 1;
+
+                _context.Sanha_tr_Shopservice_Resource.Add(resourceImage);
+                _context.SaveChanges();
+            }
+                
         }
     }
 }

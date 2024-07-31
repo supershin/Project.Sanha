@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 using Microsoft.AspNetCore.Mvc;
 using Project.Sanha.Web.Common;
-using Project.Sanha.Web.Models;
 using Project.Sanha.Web.Services;
+using QRCoder;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -40,7 +37,7 @@ namespace Project.Sanha.Web.Controllers
             }
 
             return RedirectToAction("Index", "Approve", new {id = authen});
-        }
+        }   
     }
 }
 

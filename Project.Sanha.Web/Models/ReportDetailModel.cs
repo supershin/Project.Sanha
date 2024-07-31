@@ -15,6 +15,7 @@ namespace Project.Sanha.Web.Models
 		public CustomerDetail? CustomerDetail { get; set; }
 		public StaffDetail? StaffDetail { get; set; }
 		public List<Images>? Images { get; set; }
+		public List<ImagesCheckIn>? ImagesCheckIn { get; set; }
 	}
 	public class CustomerDetail
 	{
@@ -38,8 +39,12 @@ namespace Project.Sanha.Web.Models
 	{
 		public string ImagePath { get; set; }
 	}
+    public class ImagesCheckIn
+    {
+        public string ImageCIPath { get; set; }
+    }
 
-	public class ReportDetailForApprove
+    public class ReportDetailForApprove
 	{
 		public string ShopName { get; set; }
 		public string OrderNO { get; set; }
@@ -53,6 +58,7 @@ namespace Project.Sanha.Web.Models
         public CustomerDetail? CustomerDetail { get; set; }
         public StaffDetail? StaffDetail { get; set; }
         public List<Images>? Images { get; set; }
+        public List<ImagesCheckIn>? ImagesCheckIn { get; set; }
     }
 }
 

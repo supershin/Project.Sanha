@@ -10,6 +10,7 @@ namespace Project.Sanha.Web.Models
         public string ProjectId { get; set; }
         public int UnitId { get; set; }
         public int ShopId { get; set; }
+        public int TransId { get; set; }
 
         [Required]
         public string CustomerName { get; set; }
@@ -27,12 +28,10 @@ namespace Project.Sanha.Web.Models
         public string Date { get; set; }
         [Required]
         public string StartTime { get; set; }
-        [Required]
-        public string EndTime { get; set; }
-        [Required]
+
         public string Remark { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "กรุณาอัพโหลดรูปภาพ")]
         public List<IFormFile> Images { get; set; }
 
         [Required]

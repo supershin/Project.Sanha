@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "สร้าง QR Code";
+}
+<style>
+    html, body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+    }
+</style>
+@if (ViewBag.QrUri != null)
+{
+
+    <div class="d-flex justify-content-center align-items-center" s>
+        <div class="h-25">
+            <div style="min-height:200px;max-width:200px;">
+                <img src="@ViewBag.QrUri" class="img-thumbnail" />
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <p>No QR code available.</p>
+}

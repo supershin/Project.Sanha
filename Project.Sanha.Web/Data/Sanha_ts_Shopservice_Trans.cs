@@ -44,5 +44,7 @@ namespace Project.Sanha.Web.Data
         public string? UpdateBy { get; set; }
         public int? Status { get; set; }
         public int? UsedQuota { get; set; }
+        [Column(TypeName = "datetime")]
+        public DateTime? EndDate { get; set; }
     }
 }

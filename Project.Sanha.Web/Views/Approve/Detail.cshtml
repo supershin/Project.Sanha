@@ -161,7 +161,7 @@
                         <div class="col-md-6 col-sm-12">
                             <div class="card">
                                 @* <div class="card-body d-flex flex-column gap-3">
-                                    <div class="d-flex justify-content-between">*@
+                    <div class="d-flex justify-content-between">*@
                                 <div class="row card-body">
                                     <div class="col-8 d-flex flex-column gap-3">
                                         <div>
@@ -189,7 +189,36 @@
                         </div>
                     </div>
                     <hr />
+                    <div class="card">
+                        <div class="card-header" id="card-header-color">
+                            <h6 class="card-title">รูปภาพการเช็คอิน</h6>
+                        </div>
+                        <div class="card-body">
+                            <div id="carouselExampleControls-CheckIn" class="carousel">
+                                <div class="carousel-inner">
+                                    @foreach (var item in Model.ImagesCheckIn.Select((value, index) => new { value, index }))
+                                    {
+                                        <div class="carousel-item @(item.index == 0 ? "active" : "")">
+                                            <div class="card img-item">
+                                                <div class="img-wrapper"><img src="@baseUrl@item.value.ImageCIPath" class="d-block w-100 img-thumb" alt="img"> </div>
+                                                <div class="card-body">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
 
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                     <div class="card">
                         <div class="card-header" id="card-header-color">
                             <h6 class="card-title">รูปภาพประกอบผลงาน</h6>
@@ -220,11 +249,11 @@
                                 </button>
                             </div>
                         </div>
+
                     </div>
 
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -291,7 +320,8 @@
 </div>
 
 @section Scripts{
-    <script>var multipleCardCarousel = document.querySelector(
+    <script>
+        var multipleCardCarousel = document.querySelector(
             "#carouselExampleControls"
         );
         if (window.matchMedia("(min-width: 768px)").matches) {
@@ -321,7 +351,39 @@
             });
         } else {
             $(multipleCardCarousel).addClass("slide");
-        }</script>
+        }
+        var multipleCardCarousel = document.querySelector(
+            "#carouselExampleControls-CheckIn"
+        );
+        if (window.matchMedia("(min-width: 768px)").matches) {
+            var carousel = new bootstrap.Carousel(multipleCardCarousel, {
+                interval: false,
+            });
+            var carouselWidth = $(".carousel-inner")[0].scrollWidth;
+            var cardWidth = $(".carousel-item").width();
+            var scrollPosition = 0;
+            $("#carouselExampleControls-CheckIn .carousel-control-next").on("click", function () {
+                if (scrollPosition < carouselWidth - cardWidth * 4) {
+                    scrollPosition += cardWidth;
+                    $("#carouselExampleControls-CheckIn .carousel-inner").animate(
+                        { scrollLeft: scrollPosition },
+                        600
+                    );
+                }
+            });
+            $("#carouselExampleControls-CheckIn .carousel-control-prev").on("click", function () {
+                if (scrollPosition > 0) {
+                    scrollPosition -= cardWidth;
+                    $("#carouselExampleControls-CheckIn .carousel-inner").animate(
+                        { scrollLeft: scrollPosition },
+                        600
+                    );
+                }
+            });
+        } else {
+            $(multipleCardCarousel).addClass("slide");
+        }
+    </script>
 
     <script>var viewer_modal;
         $(function () {
