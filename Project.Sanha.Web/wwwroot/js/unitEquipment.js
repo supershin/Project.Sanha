@@ -16,12 +16,20 @@ var unitEquipment = {
         });
         $("#btn-save-sign").click(() => {
             $('#modal-sign').modal('hide');
-            $('#success-icon').show();
+            if (!unitEquipment.getSignatureData()) {
+                $('#success-icon').hide();
+            } else {
+                $('#success-icon').show();
+            }
             return false;
         });
         $("#btn-save-sign-jm").click(() => {
             $('#modal-sign-jm').modal('hide');
-            $('#success-icon-jm').show();
+            if (!unitEquipment.getSignatureDataJM()) {
+                $('#success-icon-jm').hide();
+            } else {
+                $('#success-icon-jm').show();
+            }
             return false;
         });
         $("#btn-cancel-form").click(() => {
@@ -150,7 +158,6 @@ var unitEquipment = {
                     let param = btoa(resp.data.ProjectId + ':' + resp.data.UnitId + ':' + resp.data.ContractNo)
 
                     window.location.href = baseUrl + 'Information?param=' + param;
-                    console.log(window.location.href);
                 }
                 else {
                     $('.loading').hide();
@@ -212,10 +219,11 @@ var unitEquipment = {
             dataType: 'json',
             success: function (resp) {
                 if (resp.success) {
-                    console.log(resp.data);
                     $('.loading').hide();
 
-                    window.location.href = baseUrl + 'Information?projectid=' + resp.data.ProjectId + '&unitid=' + (resp.data.UnitId || '') + '&contractno=' + (resp.data.ContractNo || '');
+                    let param = btoa(resp.data.ProjectId + ':' + resp.data.UnitId + ':' + resp.data.ContractNo)
+
+                    window.location.href = baseUrl + 'Information?param=' + param;
                 }
             },
             error: function (xhr, status, error) {

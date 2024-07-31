@@ -117,7 +117,12 @@ var information = {
             contentType: false,
             success: function (resp) {
                 if (resp.success) {
-
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'ทำการเช็คอินสำเร็จ',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
                 }
             },
             error: function (xhr, status, error) {
