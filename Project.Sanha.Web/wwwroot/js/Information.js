@@ -48,9 +48,10 @@ var information = {
             dataType: 'json',
             success: function (resp) {
                 if (resp.success) {
-                    console.log(resp.data);
                     $("#infoModal").modal('hide');
-                    window.location.href = baseUrl + 'Information?projectid=' + resp.data.ProjectId + '&unitid=' + (resp.data.UnitId || '') + '&contractno=' + (resp.data.ContractNo || '');
+                    let param = btoa(resp.data.ProjectId + ':' + resp.data.UnitId + ':' + resp.data.ContractNo)
+
+                    window.location.href = baseUrl + 'Information?param=' + param;
                 } else {
                     $("#addressError").text(resp.message);
                 }

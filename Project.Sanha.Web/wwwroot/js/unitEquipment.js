@@ -89,6 +89,7 @@ var unitEquipment = {
        
         $(document).on('click', '#modal-sign .clear', function () {
             signaturePad.clear();
+            $('#success-icon').hide();
         });
 
     },
@@ -107,6 +108,7 @@ var unitEquipment = {
         });
         $(document).on('click', '#modal-sign-jm .clear', function () {            
             signaturePad_JM.clear();
+            $('#success-icon-jm').hide();
         });
     },
     saveUnitEquipmentSign: () => {
