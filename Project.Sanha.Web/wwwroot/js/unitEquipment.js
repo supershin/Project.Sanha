@@ -144,7 +144,10 @@ var unitEquipment = {
             success: function (resp) {
                 if (resp.success) {
                     $('.loading').hide();
-                    window.location.href = baseUrl + 'Information?projectid=' + resp.data.ProjectId + '&unitid=' + (resp.data.UnitId || '') + '&contractno=' + (resp.data.ContractNo || '');
+
+                    let param = btoa(resp.data.ProjectId + ':' + resp.data.UnitId + ':' + resp.data.ContractNo)
+
+                    window.location.href = baseUrl + 'Information?param=' + param;
                     console.log(window.location.href);
                 }
                 else {
@@ -209,6 +212,7 @@ var unitEquipment = {
                 if (resp.success) {
                     console.log(resp.data);
                     $('.loading').hide();
+
                     window.location.href = baseUrl + 'Information?projectid=' + resp.data.ProjectId + '&unitid=' + (resp.data.UnitId || '') + '&contractno=' + (resp.data.ContractNo || '');
                 }
             },

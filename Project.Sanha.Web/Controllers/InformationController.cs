@@ -7,6 +7,7 @@ using System.Transactions;
 using Humanizer.Localisation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Project.Sanha.Web.Common;
 using Project.Sanha.Web.Models;
 using Project.Sanha.Web.Services;
 
@@ -35,21 +36,26 @@ namespace Project.Sanha.Web.Controllers
 
         // GET
         [HttpGet]
-        public IActionResult Index(string projectid, string? unitid, string? contractno)
+        public IActionResult Index(string param)
         {
             InformationDetail informationDetail = null;
             CreateUnitShopModel createUnitShop = null;
             try
             {
-
+                string value = HashHelper.DecodeFrom64(param);
+                var Array = value.Split(':');
                 // landing by have account
-                
-                if (!string.IsNullOrWhiteSpace(unitid) && !string.IsNullOrWhiteSpace(contractno))
+
+                string projectId = Array[0];
+                string unitId = Array[1];
+                string contractno = Array[2];
+
+                if (!string.IsNullOrWhiteSpace(unitId) && !string.IsNullOrWhiteSpace(contractno))
                 {
                     
                     // if - first landing to insert data
                     // if - not first to return data 
-                    createUnitShop = _informationService.CreateUnitShop(projectid, unitid, contractno);
+                    createUnitShop = _informationService.CreateUnitShop(projectId, unitId, contractno);
 
                     // get data detail for return to page
                     informationDetail = _informationService.InfoDetailService(createUnitShop.ProjectId, createUnitShop.UnitId, createUnitShop.ContractNo);
@@ -57,7 +63,7 @@ namespace Project.Sanha.Web.Controllers
                 // landing by dont have account 
                 else
                 {
-                    informationDetail = _informationService.InfoProjectName(projectid);
+                    informationDetail = _informationService.InfoProjectName(projectId);
                 }
             }
             catch( Exception ex)

@@ -6,8 +6,27 @@ var information = {
             return false;
         });
 
-        $("#UsingCoupon").click(() => {
-            information.checkIn();
+        $(document).on('click', '.using-coupon-btn', function () {
+            var shopId = $(this).data('shop-id');
+            var shopData = $('.shop-data[data-shop-id="' + shopId + '"]');
+
+            var data = {
+                InfoId: shopData.data('info-id'),
+                ProjectId: shopData.data('project-id'),
+                UnitId: shopData.data('unit-id'),
+                ProjectName: shopData.data('project-name'),
+                Address: shopData.data('address'),
+                TransferDate: shopData.data('transfer-date'),
+                CustomerName: shopData.data('customer-name'),
+                CustomerMobile: shopData.data('customer-mobile'),
+                CustomerEmail: shopData.data('customer-email'),
+                ShopId: shopId,
+                Exp: shopData.data('exp'),
+                Quota: shopData.data('quota'),
+                UsedQuota: shopData.data('used-quota')
+            };
+
+            information.checkIn(data);
             return false;
         });
 
@@ -88,7 +107,7 @@ var information = {
         for (var i = 0; i < files.length; i++) {
             formData.append('Image', files[i]);
         }
-        debugger;
+
         $.ajax({
             url: baseUrl + "Information/CreateCheckIn",
             type: 'post',
@@ -107,21 +126,7 @@ var information = {
         });
         return false;
     },
-    checkIn: () => {
-        var data = {
-            InfoId: $("#InfoId").val(),
-            ProjectId: $("#ProjectId").val(),
-            UnitId: $("#UnitId").val(),
-            ProjectName: $("#ProjectName").val(),
-            Address: $("#Address").val(),
-            TransferDate: $("#TransferDate").val(),
-            CustomerName: $("#CustomerName").val(),
-            CustomerMobile: $("#CustomerMobile").val(),
-            CustomerEmail: $("#CustomerEmail").val(),
-            ShopId: $("#ShopId").val(),
-            Exp: $("#Exp").val(),
-            Quota: $("#Quota").val()
-        };
+    checkIn: (data) => {
         $.ajax({
             url: baseUrl + "Information/CheckIn",
             type: 'POST',
