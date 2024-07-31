@@ -41,6 +41,7 @@ namespace Project.Sanha.Web.Controllers
             CreateUnitShopModel createUnitShop = null;
             try
             {
+
                 // landing by have account
                 
                 if (!string.IsNullOrWhiteSpace(unitid) && !string.IsNullOrWhiteSpace(contractno))
@@ -67,18 +68,19 @@ namespace Project.Sanha.Web.Controllers
             return View(informationDetail);
         }
 
-        [HttpPost]
         public IActionResult UsingCode(UsingCodeModel request)
         {
-            //coupon
-            return View(request);
+            // get data in trans status draft
+            DataTransModel getTrans = _informationService.GetTransDraft(request);
+            
+            // valid check out
+            return View(getTrans);
         }
 
         public ActionResult SaveUnitEquipmentSign(CreateTransactionModel model)
         {
             try
             {
-                
                 //model.ApplicationPath = AppDomain.CurrentDomain.BaseDirectory;
                 model.ApplicationPath = _hosting.ContentRootPath;
 
@@ -164,7 +166,63 @@ namespace Project.Sanha.Web.Controllers
                     });
             }
         }
-    }
 
+        public IActionResult CheckIn(UsingCodeModel model)
+        {
+            try
+            {
+                bool returnData = _serviceUnitSave.ValidCheckIn(model);
+                if (!returnData)
+                {
+                    return Json(
+                    new
+                    {
+                        success = false,
+                        data = returnData
+                    });
+                }
+                return Json(
+                    new
+                    {
+                        success = true,
+                        data = returnData
+                    });
+            }
+            catch (Exception ex)
+            {
+                return Json(
+                    new
+                    {
+                        success = false,
+                        message = ex.Message
+                    });
+            }
+        }
+
+        public IActionResult CreateCheckIn(CheckInModel model)
+        {
+            try
+            {
+                bool returnData = _serviceUnitSave.CheckIn(model);
+                if (!returnData) throw new Exception("ข้อมูลผิดพลาด ทำการเช็คอินไม่สำเร็จ");
+
+                return Json(
+                    new
+                    {
+                        success = true,
+                        data = returnData
+                    });
+            }
+            catch (Exception ex)
+            {
+                return Json(
+                    new
+                    {
+                        success = false,
+                        message = ex.Message
+                    });
+            }
+        }
+    }
 }
 

@@ -16,7 +16,7 @@ namespace Project.Sanha.Web.Data
         public int ShopID { get; set; }
         [StringLength(50)]
         [Unicode(false)]
-        public string OrderNo { get; set; } = null!;
+        public string? OrderNo { get; set; }
         public int Status { get; set; }
         [StringLength(500)]
         [Unicode(false)]

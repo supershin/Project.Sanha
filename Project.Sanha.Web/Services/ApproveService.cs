@@ -167,6 +167,7 @@ namespace Project.Sanha.Web.Services
                 };
 
                 List<Images> images = new List<Images>();
+                List<ImagesCheckIn> imagesCheckIn = new List<ImagesCheckIn>();
 
                 foreach( var i in queryImage)
                 {               
@@ -186,6 +187,14 @@ namespace Project.Sanha.Web.Services
                     {
                         staff.ImageSignStaff = i.FilePath;
                     }
+                    if(i.ResourceType == SystemConstant.ResourceType.CHECKIN)
+                    {
+                        ImagesCheckIn imageCI = new ImagesCheckIn()
+                        {
+                            ImageCIPath = i.FilePath
+                        };
+                        imagesCheckIn.Add(imageCI);
+                    }
                 }
 
                 detail = new ReportDetailModel()
@@ -200,10 +209,10 @@ namespace Project.Sanha.Web.Services
                     StatusDesc = SystemConstant.Status.Get_Desc((int)query.Status),
                     CustomerDetail = customer,
                     StaffDetail = staff,
-                    Images = images
+                    Images = images,
+                    ImagesCheckIn = imagesCheckIn
                 };
             }
-            
             
             return detail;
         }
@@ -239,7 +248,7 @@ namespace Project.Sanha.Web.Services
             return selectLists;
         }
 
-        public ReportDetailForApprove ReportApprove(int transId)
+        public ReportDetailForApprove DetailGenReport(int transId)
         {
             ReportDetailForApprove reportDetail = new ReportDetailForApprove();
 
@@ -297,6 +306,7 @@ namespace Project.Sanha.Web.Services
                 };
 
                 List<Images> images = new List<Images>();
+                List<ImagesCheckIn> imagesCheckIn = new List<ImagesCheckIn>();
 
                 foreach (var i in queryImage)
                 {
@@ -318,6 +328,14 @@ namespace Project.Sanha.Web.Services
                         staff.ImageSignStaff = i.FilePath;
                         staff.DateSignStaff = i.CreateDate.ToStringDate();
                     }
+                    if (i.ResourceType == SystemConstant.ResourceType.CHECKIN)
+                    {
+                        ImagesCheckIn imageCI = new ImagesCheckIn()
+                        {
+                            ImageCIPath = i.FilePath
+                        };
+                        imagesCheckIn.Add(imageCI);
+                    }
                 }
 
                 reportDetail = new ReportDetailForApprove()
@@ -332,7 +350,8 @@ namespace Project.Sanha.Web.Services
                     StatusDesc = SystemConstant.Status.Get_Desc((int)queryReport.Status),
                     CustomerDetail = customer,
                     StaffDetail = staff,
-                    Images = images
+                    Images = images,
+                    ImagesCheckIn = imagesCheckIn
                 };
             }
 
@@ -418,6 +437,18 @@ namespace Project.Sanha.Web.Services
 
                     _context.Sanha_ts_Shopservice_Trans.Update(shopTrans);
                     _context.SaveChanges();
+
+                    if (model.Status == SystemConstant.Status.REJECT)
+                    {
+                        Sanha_tr_UnitShopservice? unitShop = _context.Sanha_tr_UnitShopservice
+                                                            .Where(o => o.ID == shopTrans.EventID && o.FlagActive == true).FirstOrDefault();
+
+                        unitShop.UsedQuota = unitShop.UsedQuota - shopTrans.UsedQuota;
+                        unitShop.UpdateDate = DateTime.Now;
+
+                        _context.Sanha_tr_UnitShopservice.Update(unitShop);
+                        _context.SaveChanges();
+                    }
 
                     transDetail = new ApproveTransDetail()
                     {

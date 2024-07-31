@@ -67,7 +67,7 @@ namespace Project.Sanha.Web.Controllers
             {
                 try
                 {
-                    ReportDetailForApprove reportDetail = _approve.ReportApprove(transId);
+                    ReportDetailForApprove reportDetail = _approve.DetailGenReport(transId);
 
                     Report1Model report1 = new Report1Model()
                     {
@@ -98,7 +98,8 @@ namespace Project.Sanha.Web.Controllers
                     {
                         ShopName = reportDetail.ShopName,
                         OrderNO = reportDetail.OrderNO,
-                        Images = reportDetail.Images.Select(image => image.ImagePath).ToList()
+                        Images = reportDetail.Images.Select(image => image.ImagePath).ToList(),
+                        ImageCheckIn = reportDetail.ImagesCheckIn.Select(image => image.ImageCIPath).ToList(),
                     };
 
                     getReport1(guid, report1);
@@ -109,7 +110,7 @@ namespace Project.Sanha.Web.Controllers
                     _approve.SaveFilePDF(guid, transId, report1.OrderNO, path);
 
                     scope.Complete();
-                    //service add resource 
+                    //service add resource  
                     return path;
                 }
                 catch (Exception ex)
@@ -323,6 +324,20 @@ namespace Project.Sanha.Web.Controllers
                            grid.AlignLeft();
                            grid.Columns(12);
 
+                           grid.Item(12).Text("ภาพถ่ายเช็คอิน").FontSize(18).Bold().Underline();
+
+                           for (int i = 0; i < report2.ImageCheckIn.Count; i++)
+                           {
+                               //var imgPath = Directory.GetCurrentDirectory() + "/images/works" + i + ".jpg";
+                               var imgPath = _hosting.ContentRootPath + "/" + report2.ImageCheckIn[i];
+                               if (System.IO.File.Exists(imgPath))
+                               {
+                                   using var img = new FileStream(imgPath, FileMode.Open);
+
+                                   grid.Item(6).Border(0.5f).Width(250).Image(img);
+                               }
+                           }
+
                            grid.Item(12).Text("รูปภาพประกอบผลงาน").FontSize(18).Bold().Underline();
 
                            for (int i = 0; i < report2.Images.Count ; i++)
@@ -333,9 +348,11 @@ namespace Project.Sanha.Web.Controllers
                                {
                                    using var img = new FileStream(imgPath, FileMode.Open);
 
-                                   grid.Item(6).Border(0.5f).Image(img);
+                                   grid.Item(6).Border(0.5f).Width(250).Image(img);
                                }
                            }
+
+                           
                        });
                 });
             });

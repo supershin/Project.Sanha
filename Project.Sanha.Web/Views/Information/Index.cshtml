@@ -27,7 +27,7 @@
                             var remainingQuota = shop.Quota - shop.Used_Quota;
                             var isVisible = shop.Quota <= shop.Used_Quota || expDate <= DateTime.Now;
                             var isExp = expDate <= DateTime.Now ? "คูปองหมดอายุ" : null;
-
+                        
                         <input type="hidden" id="shop" value="@shop" />
                         <div class="row mb-4">
                             <div class=" col-lg-12 col-md-12 col-sm-12">
@@ -43,28 +43,26 @@
                                                 <p class="card-text" >หมดอายุ: @shop.Exp</p>
                                                 <p class="card-text">จำนวนคงเหลือ: @(remainingQuota < 0 ? 0 : remainingQuota)</p>
                                                 <div class="d-flex justify-content-end">
-                                                    <form asp-controller="Information" asp-action="UsingCode" method="post">
-                                                        <input type="hidden" name="InfoId" value="@shop.UnitShopId" />
-                                                        <input type="hidden" name="ProjectId" value="@Model.ProjectId" />
-                                                        <input type="hidden" name="UnitId" value="@Model.UnitId" />
-                                                        <input type="hidden" name="ProjectName" value="@Model.ProjectName" />
-                                                        <input type="hidden" name="Address" value="@Model.AddressNo" />
-                                                        <input type="hidden" name="TransferDate" value="@Model.TransferDate" />
-                                                        <input type="hidden" name="CustomerName" value="@Model.CustomerName" />
-                                                        <input type="hidden" name="CustomerMobile" value="@Model.CustomerMobile" />
-                                                        <input type="hidden" name="CustomerEmail" value="@Model.CustomerEmail" />
-                                                        <input type="hidden" name="ShopId" value="@shop.ShopID" />
-                                                        <input type="hidden" name="Exp" value="@shop.Exp" />
-                                                        <input type="hidden" name="Quota" value="@(shop.Quota - shop.Used_Quota)" />
-                                                        <input type="hidden" name="Used_Quota" vale="@shop.Used_Quota" />
+                                                    <input type="hidden" id="InfoId" value="@shop.UnitShopId" />
+                                                    <input type="hidden" id="ProjectId" value="@Model.ProjectId" />
+                                                    <input type="hidden" id="UnitId" value="@Model.UnitId" />
+                                                    <input type="hidden" id="ProjectName" value="@Model.ProjectName" />
+                                                    <input type="hidden" id="Address" value="@Model.AddressNo" />
+                                                    <input type="hidden" id="TransferDate" value="@Model.TransferDate" />
+                                                    <input type="hidden" id="CustomerName" value="@Model.CustomerName" />
+                                                    <input type="hidden" id="CustomerMobile" value="@Model.CustomerMobile" />
+                                                    <input type="hidden" id="CustomerEmail" value="@Model.CustomerEmail" />
+                                                    <input type="hidden" id="ShopId" value="@shop.ShopID" />
+                                                    <input type="hidden" id="Exp" value="@shop.Exp" />
+                                                    <input type="hidden" id="Quota" value="@(shop.Quota - shop.Used_Quota)" />
+                                                    <input type="hidden" id="UsedQuota" vale="@shop.Used_Quota" />
 
-                                                        @if (!isVisible)
-                                                        {
-                                                            <button type="submit" class="btn btn-primary" >ใช้คูปอง</button>
-                                                        }
-                                                        
-                                                        <div id="IsExp" class="text-danger mt-2">@isExp</div>
-                                                    </form>
+                                                    @if (!isVisible)
+                                                    {
+                                                        <button id="UsingCoupon" type="submit" class="btn btn-primary">ใช้คูปอง</button>
+                                                    }
+
+                                                    <div id="IsExp" class="text-danger mt-2">@isExp</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -79,7 +77,7 @@
     </div>
 </div>
 <partial name="Partial_CheckFormat" />
-
+<partial name="Partial_Modal_CheckIn"/>
 <style>
     .profile-view-info {
     }

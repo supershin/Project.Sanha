@@ -11,7 +11,7 @@ namespace Project.Sanha.Web.Repositories
 
         List<SelectListItem> getProjectList(int id);
 
-        ReportDetailForApprove ReportApprove(int transId);
+        ReportDetailForApprove DetailGenReport(int transId);
 
         ApproveTransDetail ReportApprove(ApproveTransModel model);
 

@@ -63,6 +63,45 @@ namespace Project.Sanha.Web.Services
 
             return unitModel;
         }
+
+        public bool CheckIn(CheckInModel model)
+        {
+            TransactionOptions option = new TransactionOptions();
+            option.Timeout = new TimeSpan(1, 0, 0);
+            using (TransactionScope scope = new TransactionScope(TransactionScopeOption.RequiresNew, option))
+            {
+                try
+                {
+                    bool statusCheckIn = _createTransaction.CheckIn(model);
+                    if (!statusCheckIn) throw new Exception("ข้อมูลผิดพลาด เช็คอินไม่สำเร็จ");
+
+                    scope.Complete();
+
+                    return statusCheckIn;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    scope.Dispose();
+                }
+            }
+        }
+
+        public bool ValidCheckIn(UsingCodeModel model)
+        {
+            try
+            {
+                bool validCheckIn = _information.ValidCheckIn(model.InfoId, model.ShopId);
+                return validCheckIn;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
 

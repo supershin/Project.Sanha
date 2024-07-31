@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewBag.Title = "สร้าง QR Code";
+}
+
+@if (ViewBag.QrUri != null)
+{
+    <img src="@ViewBag.QrUri" />
+}
+else
+{
+    <p>No QR code available.</p>
+}

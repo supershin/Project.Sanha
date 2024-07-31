@@ -11,6 +11,7 @@ namespace Project.Sanha.Web.Services
 
         CreateUnitShopModel CreateUnitShop(string projectId, string unitId, string contractNo);
 
+        DataTransModel GetTransDraft(UsingCodeModel model);
     }
 }
 

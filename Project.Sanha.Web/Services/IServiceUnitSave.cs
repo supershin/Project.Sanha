@@ -9,6 +9,10 @@ namespace Project.Sanha.Web.Services
         void SaveUnitEquipmentSign(CreateTransactionModel model);
 
         SearchUnitModel UnitModel(int id);
+
+        bool CheckIn(CheckInModel model);
+
+        bool ValidCheckIn(UsingCodeModel model);
     }
 }
 
