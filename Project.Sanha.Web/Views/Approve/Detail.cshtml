@@ -98,7 +98,12 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="mb-3 d-flex align-items-center justify-content-between">
+                    <div class="mb-3">
+                        <button type="button" class="btn btn-secondary" onclick="window.history.back();">
+                            <i class="fas fa-angle-left me-2"></i>ย้อนกลับ
+                        </button>
+                    </div>
+                    <div class="mb-3 d-flex align-items-center justify-content-between flex-wrap">
                         <span class="fw-bold">
                             ชื่อโครงการ : @Model.ProjectName
                         </span>
@@ -123,7 +128,7 @@
                                 <button id="not-approved" type="button" class="btn btn-danger" style="min-width:100px; margin-right:10px;">
                                     <i class="fa fa-close" style="color:white"></i> ไม่อนุมัติ
                                 </button>
-                                <button id="approve" type="button" class="btn btn-success" style="min-width:100px; margin-right: 10px; ">
+                                <button id="approve" type="button" class="btn btn-success" style="min-width:100px; margin-right: 10px;">
                                     <i class="fas fa-check"></i> อนุมัติ
                                 </button>
                             }
@@ -155,13 +160,10 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-12">
                             <div class="card">
-                                @* <div class="card-body d-flex flex-column gap-3">
-                    <div class="d-flex justify-content-between">*@
                                 <div class="row card-body">
                                     <div class="col-8 d-flex flex-column gap-3">
                                         <div>
@@ -171,14 +173,12 @@
                                             <i class="fas fa-user me-2"></i>
                                             @Model.StaffDetail.StaffName
                                         </div>
-
                                         <div><i class="fa-solid fa-calendar-days"></i> วันปฏิบัติงาน : @Model.StaffDetail.WorkDate </div>
                                         <div><i class="fa-solid fa-business-time"></i> เวลาปฏิบัติงาน : @Model.StaffDetail.WorkTime น.</div>
                                         <div class="text-sm">
                                             หมายเหตุ : @Model.StaffDetail.Remark
                                         </div>
                                     </div>
-
                                     <div class="col-4">
                                         <div>
                                             <img src="@baseUrl@Model.StaffDetail.ImageSignStaff" class="img-thumbnail" />
@@ -194,7 +194,7 @@
                             <h6 class="card-title">รูปภาพการเช็คอิน</h6>
                         </div>
                         <div class="card-body">
-                            <div id="carouselExampleControls-CheckIn" class="carousel">
+                            <div id="carouselExampleControls-CheckIn" class="carousel slide">
                                 <div class="carousel-inner">
                                     @foreach (var item in Model.ImagesCheckIn.Select((value, index) => new { value, index }))
                                     {
@@ -206,13 +206,12 @@
                                             </div>
                                         </div>
                                     }
-
                                 </div>
-                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls-CheckIn" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Previous</span>
                                 </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls-CheckIn" data-bs-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Next</span>
                                 </button>
@@ -223,9 +222,8 @@
                         <div class="card-header" id="card-header-color">
                             <h6 class="card-title">รูปภาพประกอบผลงาน</h6>
                         </div>
-
                         <div class="card-body">
-                            <div id="carouselExampleControls" class="carousel">
+                            <div id="carouselExampleControls" class="carousel slide">
                                 <div class="carousel-inner">
                                     @foreach (var item in Model.Images.Select((value, index) => new { value, index }))
                                     {
@@ -237,7 +235,6 @@
                                             </div>
                                         </div>
                                     }
-
                                 </div>
                                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -249,15 +246,13 @@
                                 </button>
                             </div>
                         </div>
-
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
-
 </div>
+
 <partial name="Partial_Valid_Form" />
 <!-- Confirmation Modal -->
 <div class="modal fade" id="imageViewerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="imageViewerModalLabel" aria-hidden="true">
@@ -291,7 +286,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <textarea id="not-arpproved-note" class="form-control" rows="4" placeholder="หมายเหตุ..." ></textarea>
+                <textarea id="not-arpproved-note" class="form-control" rows="4" placeholder="หมายเหตุ..."></textarea>
 
             </div>
             <div class="modal-footer">
@@ -320,8 +315,7 @@
 </div>
 
 @section Scripts{
-    <script>
-        var multipleCardCarousel = document.querySelector(
+    <script>var multipleCardCarousel = document.querySelector(
             "#carouselExampleControls"
         );
         if (window.matchMedia("(min-width: 768px)").matches) {
@@ -382,8 +376,7 @@
             });
         } else {
             $(multipleCardCarousel).addClass("slide");
-        }
-    </script>
+        }</script>
 
     <script>var viewer_modal;
         $(function () {
@@ -413,7 +406,7 @@
     <script src="~/js/detailreport.js?version=@DateTime.Now.Ticks.ToString()"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    
+
     <script type="text/javascript">
 
         $(document).ready(function () {

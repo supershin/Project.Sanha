@@ -8,24 +8,90 @@ const approve = {
         //    alert(id);
         //    window.location.href = baseUrl + 'Approve/Detail';
         //});
+        if ($.fn.DataTable.isDataTable('#tbl-table')) {
+            $('#tbl-table').DataTable().clear().destroy();
+        }
+
         $('#btnLoad').unbind('click').click((e) => {
             alert("a");
         });
 
+
+        $("#btn-search").click(() => {
+            if ($.fn.DataTable.isDataTable('#tbl-table')) {
+                $('#tbl-table').DataTable().clear().destroy();
+            }
+            var selectedValue = $('#select-project').val();
+            var selectedStatus = $('#select-status').val();
+            var selectFrom = $('#date-from').val();
+            var selectTo = $('#date-to').val();
+
+            approve.AjaxGrid(jId, selectedValue, selectedStatus, selectFrom, selectTo);
+
+            return false;
+        });
+
         $('#select-project').change(function () {
-            var selectedValue = $(this).val();
-            approve.AjaxGrid(jId, selectedValue, "");
+            if ($.fn.DataTable.isDataTable('#tbl-table')) {
+                $('#tbl-table').DataTable().clear().destroy();
+            }
+            var selectedValue = $('#select-project').val();
+            var selectedStatus = $('#select-status').val();
+            var selectFrom = $('#date-from').val();
+            var selectTo = $('#date-to').val();
+
+            approve.AjaxGrid(jId, selectedValue, selectedStatus, selectFrom, selectTo);
+            return false;
         });
 
         $('#select-status').change(function () {
-            var selectedStatus = $(this).val();
-            approve.AjaxGrid(jId, selectedValue, selectedStatus);
+            if ($.fn.DataTable.isDataTable('#tbl-table')) {
+                $('#tbl-table').DataTable().clear().destroy();
+            }
+            var selectedValue = $('#select-project').val();
+            var selectedStatus = $('#select-status').val();
+            var selectFrom = $('#date-from').val();
+            var selectTo = $('#date-to').val();
+
+            approve.AjaxGrid(jId, selectedValue, selectedStatus, selectFrom, selectTo);
+            return false;
         });
 
-        approve.AjaxGrid(jId,"",""); 
+        $('#date-from').change(function () {
+            if ($.fn.DataTable.isDataTable('#tbl-table')) {
+                $('#tbl-table').DataTable().clear().destroy();
+            }
+            var selectedValue = $('#select-project').val();
+            var selectedStatus = $('#select-status').val();
+            var selectFrom = $('#date-from').val();
+            var selectTo = $('#date-to').val();
+
+            approve.AjaxGrid(jId, selectedValue, selectedStatus, selectFrom, selectTo);
+            return false;
+        });
+
+        $('#date-to').change(function () {
+            if ($.fn.DataTable.isDataTable('#tbl-table')) {
+                $('#tbl-table').DataTable().clear().destroy();
+            }
+            var selectedValue = $('#select-project').val();
+            var selectedStatus = $('#select-status').val();
+            var selectFrom = $('#date-from').val();
+            var selectTo = $('#date-to').val();
+
+            approve.AjaxGrid(jId, selectedValue, selectedStatus, selectFrom, selectTo);
+            return false;
+        });
+
+        
+        var selectedValue = $('#select-project').val();
+        var selectedStatus = $('#select-status').val();
+        var selectFrom = $('#date-from').val();
+        var selectTo = $('#date-to').val();
+        approve.AjaxGrid(jId, selectedValue, selectedStatus, selectFrom, selectTo); 
      },
 
-    AjaxGrid: function (jId, selectedValue, selectedStatus) {
+    AjaxGrid: function (jId, selectedValue, selectedStatus, selectFrom, selectTo) {
         
         tblUnit = $('#tbl-table').dataTable({
             "dom": '<<t>lip>',
@@ -37,6 +103,10 @@ const approve = {
                 data: function (json) {                                        
                     var datastring = $("#form-search").serialize();
                     json.JuristicId = jId;
+                    json.ProjectId = selectedValue;
+                    json.Status = selectedStatus;
+                    json.ValidForm = selectFrom;
+                    json.ValidThrough = selectTo;
                     json = datastring + '&' + $.param(json);
 
                     return json;
