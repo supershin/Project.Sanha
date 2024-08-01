@@ -194,7 +194,7 @@
                             <h6 class="card-title">รูปภาพการเช็คอิน</h6>
                         </div>
                         <div class="card-body">
-                            <div id="carouselExampleControls-CheckIn" class="carousel slide">
+                            <div id="carouselExampleControlsCheckIn" class="carousel slide">
                                 <div class="carousel-inner">
                                     @foreach (var item in Model.ImagesCheckIn.Select((value, index) => new { value, index }))
                                     {
@@ -207,11 +207,11 @@
                                         </div>
                                     }
                                 </div>
-                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls-CheckIn" data-bs-slide="prev">
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControlsCheckIn" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Previous</span>
                                 </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls-CheckIn" data-bs-slide="next">
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControlsCheckIn" data-bs-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Next</span>
                                 </button>
@@ -315,69 +315,48 @@
 </div>
 
 @section Scripts{
-    <script>var multipleCardCarousel = document.querySelector(
-            "#carouselExampleControls"
-        );
-        if (window.matchMedia("(min-width: 768px)").matches) {
-            var carousel = new bootstrap.Carousel(multipleCardCarousel, {
-                interval: false,
-            });
-            var carouselWidth = $(".carousel-inner")[0].scrollWidth;
-            var cardWidth = $(".carousel-item").width();
-            var scrollPosition = 0;
-            $("#carouselExampleControls .carousel-control-next").on("click", function () {
-                if (scrollPosition < carouselWidth - cardWidth * 4) {
-                    scrollPosition += cardWidth;
-                    $("#carouselExampleControls .carousel-inner").animate(
-                        { scrollLeft: scrollPosition },
-                        600
-                    );
-                }
-            });
-            $("#carouselExampleControls .carousel-control-prev").on("click", function () {
-                if (scrollPosition > 0) {
-                    scrollPosition -= cardWidth;
-                    $("#carouselExampleControls .carousel-inner").animate(
-                        { scrollLeft: scrollPosition },
-                        600
-                    );
-                }
-            });
-        } else {
-            $(multipleCardCarousel).addClass("slide");
-        }
-        var multipleCardCarousel = document.querySelector(
-            "#carouselExampleControls-CheckIn"
-        );
-        if (window.matchMedia("(min-width: 768px)").matches) {
-            var carousel = new bootstrap.Carousel(multipleCardCarousel, {
-                interval: false,
-            });
-            var carouselWidth = $(".carousel-inner")[0].scrollWidth;
-            var cardWidth = $(".carousel-item").width();
-            var scrollPosition = 0;
-            $("#carouselExampleControls-CheckIn .carousel-control-next").on("click", function () {
-                if (scrollPosition < carouselWidth - cardWidth * 4) {
-                    scrollPosition += cardWidth;
-                    $("#carouselExampleControls-CheckIn .carousel-inner").animate(
-                        { scrollLeft: scrollPosition },
-                        600
-                    );
-                }
-            });
-            $("#carouselExampleControls-CheckIn .carousel-control-prev").on("click", function () {
-                if (scrollPosition > 0) {
-                    scrollPosition -= cardWidth;
-                    $("#carouselExampleControls-CheckIn .carousel-inner").animate(
-                        { scrollLeft: scrollPosition },
-                        600
-                    );
-                }
-            });
-        } else {
-            $(multipleCardCarousel).addClass("slide");
-        }</script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            function setupCarousel(selector) {
+                var carouselElement = document.querySelector(selector);
+                if (window.matchMedia("(min-width: 768px)").matches) {
+                    var carousel = new bootstrap.Carousel(carouselElement, {
+                        interval: false,
+                    });
+                    var carouselInner = $(selector + " .carousel-inner");
+                    var carouselWidth = carouselInner[0].scrollWidth;
+                    var cardWidth = $(selector + " .carousel-item").width();
+                    var scrollPosition = 0;
 
+                    $(selector + " .carousel-control-next").on("click", function () {
+                        if (scrollPosition < carouselWidth - cardWidth * 4) {
+                            scrollPosition += cardWidth;
+                            carouselInner.animate(
+                                { scrollLeft: scrollPosition },
+                                600
+                            );
+                        }
+                    });
+
+                    $(selector + " .carousel-control-prev").on("click", function () {
+                        if (scrollPosition > 0) {
+                            scrollPosition -= cardWidth;
+                            carouselInner.animate(
+                                { scrollLeft: scrollPosition },
+                                600
+                            );
+                        }
+                    });
+                } else {
+                    $(carouselElement).addClass("slide");
+                }
+            }
+
+            // Initialize carousels
+            setupCarousel("#carouselExampleControls");
+            setupCarousel("#carouselExampleControlsCheckIn");
+        });
+    </script>
     <script>var viewer_modal;
         $(function () {
             viewer_modal = $('#imageViewerModal')
