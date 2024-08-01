@@ -61,29 +61,37 @@ namespace Project.Sanha.Web.Services
                             st.CreateDate,
                         };
 
-            var query2 = query.ToList();
-            //if (!String.IsNullOrEmpty(criteria.strSearch))
-            //{
-            //    query = query.Where(o => o.ProjectName.Contains(criteria.strSearch)
-            //                        || o.AddrNo.Contains(criteria.strSearch)
-            //                        || o.CustomerName.Contains(criteria.strSearch)
-            //                        || o.StaffName.Contains(criteria.strSearch)
-            //                        || o.WorkDate.Contains(criteria.strSearch)
-            //                        || o.UsedQuota.Equals(criteria.strSearch)
-            //                        || o.Quota.Equals(criteria.strSearch)
-            //                        || o.Status.Equals(criteria.strSearch)
-            //                        );
-            //}
-            //if (criteria.ProjectId > 0)
-            //query = query.Where(e => e.LastSaleOrder.QuotationNumber.Contains(criteria.strSearch)
-            //                    || e.LastSaleOrder.ContracNumber.Contains(criteria.strSearch)
-            //                    || e.LastSaleOrder.BookingNumber.Contains(criteria.strSearch)
-            //                    || e.UnitCode.Contains(criteria.strSearch)
-            //                    || e.AddrNo.Contains(criteria.strSearch)
-            //                    || e.Build.Contains(criteria.strSearch)
-            //                    || e.Floor.Contains(criteria.strSearch)
-            //                    || criteria.strSearch == string.Empty
-            //                    || criteria.strSearch == null || criteria.strSearch == string.Empty);
+            if (!string.IsNullOrEmpty(criteria.strSearch))
+            {
+                query = query.Where(o =>
+                    o.project_name.Contains(criteria.strSearch) ||
+                    o.CustomerName.Contains(criteria.strSearch) ||
+                    o.addr_no.Contains(criteria.strSearch) ||
+                    o.StaffName.Contains(criteria.strSearch) ||
+                    (o.UpdateBy != null && o.UpdateBy.Contains(criteria.strSearch)) ||
+                    (o.OrderNo != null && o.OrderNo.Contains(criteria.strSearch))
+                );
+            }
+
+            if (criteria.ProjectId > 0)
+            {
+                query = query.Where(x => x.id == criteria.ProjectId);
+            }
+
+            if (criteria.Status > 0)
+            {
+                query = query.Where(x => x.Status == criteria.Status);
+            }
+
+            if (!string.IsNullOrEmpty(criteria.ValidForm) && DateTime.TryParse(criteria.ValidForm, out DateTime validFrom))
+            {
+                query = query.Where(x => x.WorkDate >= validFrom);
+            }
+
+            if (!string.IsNullOrEmpty(criteria.ValidThrough) && DateTime.TryParse(criteria.ValidThrough, out DateTime validThrough))
+            {
+                query = query.Where(x => x.WorkDate <= validThrough);
+            }
 
             var result = query.Page(param.start, param.length, i => i.CreateDate, param.SortColumnName, asc, out totalRecord);
             param.TotalRowCount = totalRecord;
