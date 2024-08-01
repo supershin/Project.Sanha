@@ -38,7 +38,7 @@
             if (note === null || note.trim() === "") {
                 message += "กรุณากรอกเหตุผลการไม่อนุมัติ";
             }
-            debugger;
+            //debugger;
             if (message !== "") {
                 $('#errorModalMessage').html(message);
                 $('#errorModal').modal('show');
