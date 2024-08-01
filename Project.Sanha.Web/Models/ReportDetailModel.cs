@@ -29,6 +29,7 @@ namespace Project.Sanha.Web.Models
 	public class StaffDetail
 	{
 		public string StaffName { get; set; }
+		public string StaffMobile { get; set; }
 		public string WorkDate { get; set; }
 		public string WorkTime { get; set; }
 		public string Remark { get; set; }

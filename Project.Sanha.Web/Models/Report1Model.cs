@@ -18,6 +18,7 @@ namespace Project.Sanha.Web.Models
         public string ImageSignCustomer { get; set; }
         public string DateSignCustomer { get; set; }
         public string StaffName { get; set; }
+        public string StaffMobile { get; set; }
         public string WorkDate { get; set; }
         public string WorkTime { get; set; }
         public string Remark { get; set; }
