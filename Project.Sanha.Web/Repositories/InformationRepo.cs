@@ -310,6 +310,7 @@ namespace Project.Sanha.Web.Repositories
                 model.CustomerName = trans.CustomerName;
                 model.CustomerMobile = trans.CustomerMobile;
                 model.CustomerEmail = trans.CustomerEmail;
+                model.RelationShip = (int)trans.CustomerRelationID;
                 model.Date = trans.WorkDate.ToStringDate();
                 model.StartTime = trans.WorkDate?.ToString("HH:mm");
             }

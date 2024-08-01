@@ -88,6 +88,9 @@
         case 3:
             badgeClass = "bg-danger";
             break;
+        case 5:
+            badgeClass = "bg-info";
+            break;
         default:
             badgeClass = "bg-secondary"; // default class if none of the conditions match
             break;
@@ -155,9 +158,12 @@
                                         <div>ความสัมพันธ์ : @Model.CustomerDetail.RelationShip</div>
                                     </div>
                                     <div class="col-4">
-                                        <div>
-                                            <img src="@baseUrl@Model.CustomerDetail.ImageSignCustomer" class="img-thumbnail" />
-                                        </div>
+                                        @if (Model.CustomerDetail.ImageSignCustomer != null)
+                                        {
+                                            <div>
+                                                <img src="@baseUrl@Model.CustomerDetail.ImageSignCustomer" class="img-thumbnail" />
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -180,9 +186,13 @@
                                         </div>
                                     </div>
                                     <div class="col-4">
-                                        <div>
-                                            <img src="@baseUrl@Model.StaffDetail.ImageSignStaff" class="img-thumbnail" />
-                                        </div>
+                                        @if (Model.StaffDetail.ImageSignStaff != null)
+                                        {
+                                            <div>
+                                                <img src="@baseUrl@Model.StaffDetail.ImageSignStaff" class="img-thumbnail" />
+                                            </div>
+                                            
+                                        }
                                     </div>
                                 </div>
                             </div>

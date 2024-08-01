@@ -16,7 +16,7 @@ namespace Project.Sanha.Web.Common
                 public const String WAIT = "รออนุมัติ";
                 public const String SUCCESS = "อนุมัติ";
                 public const String REJECT = "ไม่อนุมัติ";
-                public const String DRAFT = "แบบร่าง";
+                public const String DRAFT = "เช็คอิน";
             }
             public static String Get_Desc(int status)
             {
@@ -44,6 +44,11 @@ namespace Project.Sanha.Web.Common
             public const int SIGNSTAFF = 3;
             public const int PDF = 4;
             public const int CHECKIN = 5;
+        }
+
+        public class RelationId
+        {
+            public const int OWNER = 5;
         }
 	}
 }

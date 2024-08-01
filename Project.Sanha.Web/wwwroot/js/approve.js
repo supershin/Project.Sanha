@@ -237,6 +237,9 @@ const approve = {
                             case 3:
                                 color = 'red';
                                 break;
+                            case 5:
+                                color = 'skyblue';
+                                break;
                             default:
                                 color = 'black'; // Default color if none of the above cases match
                         }
