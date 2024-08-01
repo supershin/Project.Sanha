@@ -15,7 +15,7 @@ namespace Project.Sanha.Web.Models
 		public string CustomerName { get; set; }
 		public string CustomerEmail { get; set; }
 		public string CustomerMobile { get; set; }
-        //public int RelationShip { get; set; }
+        public int RelationShip { get; set; }
         //public string StaffName { get; set; }
         public int Quota { get; set; }
         public string Date { get; set; }

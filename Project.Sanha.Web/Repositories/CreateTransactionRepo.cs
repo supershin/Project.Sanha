@@ -210,6 +210,7 @@ namespace Project.Sanha.Web.Repositories
             checkIn.CustomerName = model.CustomerName;
             checkIn.CustomerMobile = model.CustomerMobile;
             checkIn.CustomerEmail = model.CustomerEmail;
+            checkIn.CustomerRelationID = SystemConstant.RelationId.OWNER;
             checkIn.WorkDate = DateTime.Now;
             checkIn.WorkTime = getDate + "-" + getDate;
             checkIn.CreateDate = DateTime.Now;

@@ -13,7 +13,7 @@ namespace Project.Sanha.Web.Models
         public string CustomerName { get; set; }
         public string CustomerMobile { get; set; }
         public string CustomerEmail { get; set; }
-
+        public int Relation { get; set; }
         public List<IFormFile> Image { get; set; }
     }
 }
