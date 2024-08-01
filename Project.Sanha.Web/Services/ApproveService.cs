@@ -140,6 +140,7 @@ namespace Project.Sanha.Web.Services
                             st.CustomerMobile,
                             mr.name,
                             st.StaffName,
+                            st.StaffMobile,
                             st.WorkDate,
                             st.WorkTime,
                             us.Quota,
@@ -169,6 +170,7 @@ namespace Project.Sanha.Web.Services
                 StaffDetail staff = new StaffDetail()
                 {
                     StaffName = query.StaffName,
+                    StaffMobile = query.StaffMobile,
                     WorkDate = query.WorkDate.ToStringDate(),
                     WorkTime = query.WorkTime,
                     Remark = query.Remark
@@ -279,6 +281,7 @@ namespace Project.Sanha.Web.Services
                                    st.CustomerMobile,
                                    mr.name,
                                    st.StaffName,
+                                   st.StaffMobile,
                                    st.WorkDate,
                                    st.WorkTime,
                                    st.UsedQuota,
@@ -308,6 +311,7 @@ namespace Project.Sanha.Web.Services
                 StaffDetail staff = new StaffDetail()
                 {
                     StaffName = queryReport.StaffName,
+                    StaffMobile = queryReport.StaffMobile,
                     WorkDate = queryReport.WorkDate.ToStringDate(),
                     WorkTime = queryReport.WorkTime,
                     Remark = queryReport.Remark

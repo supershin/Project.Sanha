@@ -36,6 +36,7 @@ namespace Project.Sanha.Web.Repositories
             trans.CustomerEmail = create.CustomerEmail;
             trans.CustomerRelationID = create.RelationShip;
             trans.StaffName = create.StaffName;
+            trans.StaffMobile = create.StaffMobile;
             trans.WorkTime = create.StartTime + "-" + endDate.ToString("HH:mm");
             trans.Remark = create.Remark;
             trans.CreateDate = DateTime.Now;

@@ -140,7 +140,7 @@
                     <div class="row g-4">
                         <div class="col-md-6 col-sm-12">
                             <div class="card">
-                                <div class="row card-body">
+                                <div class="row card-body ">
                                     <div class="col-8 d-flex flex-column gap-3">
                                         <div>
                                             <h5 class="mb-0">ข้อมูลลูกค้า</h5>
@@ -150,12 +150,15 @@
                                             @Model.CustomerDetail.CustomerName
                                         </div>
                                         <div>
-                                            <i class="fas fa-phone me-2"></i> : @Model.CustomerDetail.CustomerMobile
+                                            <i class="fas fa-phone me-2"></i> @Model.CustomerDetail.CustomerMobile
                                         </div>
                                         <div>
                                             <i class="fas fa-envelope me-2"></i> <span> @Model.CustomerDetail.CustomerEmail</span>
                                         </div>
                                         <div>ความสัมพันธ์ : @Model.CustomerDetail.RelationShip</div>
+                                        <div class="mb-5">
+                                            
+                                        </div>
                                     </div>
                                     <div class="col-4">
                                         @if (Model.CustomerDetail.ImageSignCustomer != null)
@@ -178,6 +181,9 @@
                                         <div>
                                             <i class="fas fa-user me-2"></i>
                                             @Model.StaffDetail.StaffName
+                                        </div>
+                                        <div>
+                                            <i class="fas fa-phone me-2"></i> @Model.StaffDetail.StaffMobile
                                         </div>
                                         <div><i class="fa-solid fa-calendar-days"></i> วันปฏิบัติงาน : @Model.StaffDetail.WorkDate </div>
                                         <div><i class="fa-solid fa-business-time"></i> เวลาปฏิบัติงาน : @Model.StaffDetail.WorkTime น.</div>
@@ -215,7 +221,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    }
+                                    }   
                                 </div>
                                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControlsCheckIn" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>

@@ -86,6 +86,7 @@ namespace Project.Sanha.Web.Controllers
                         ImageSignCustomer = reportDetail.CustomerDetail.ImageSignCustomer,
                         DateSignCustomer = reportDetail.CustomerDetail.DateSignCustomer,
                         StaffName = reportDetail.StaffDetail.StaffName,
+                        StaffMobile = reportDetail.StaffDetail.StaffMobile,
                         WorkDate = reportDetail.StaffDetail.WorkDate,
                         WorkTime = reportDetail.StaffDetail.WorkTime,
                         Remark = reportDetail.StaffDetail.Remark,
@@ -228,12 +229,14 @@ namespace Project.Sanha.Web.Controllers
                             });
                             table.Cell().Row(1).Column(1).Padding(2).PaddingLeft(4).Text("ชื่อ-นามสกุล");
                             table.Cell().Row(1).Column(2).Padding(2).PaddingLeft(4).Text(report1.StaffName);
-                            table.Cell().Row(2).Column(1).Padding(2).PaddingLeft(4).Text("วันที่เข้าทำงาน");
-                            table.Cell().Row(2).Column(2).Padding(2).PaddingLeft(4).Text(report1.WorkDate);
-                            table.Cell().Row(3).Column(1).Padding(2).PaddingLeft(4).Text("เวลาเข้าทำงาน");
-                            table.Cell().Row(3).Column(2).Padding(2).PaddingLeft(4).Text(report1.WorkTime+" น.");
-                            table.Cell().Row(4).Column(1).Padding(2).PaddingLeft(4).Text("หมายเหตุ");
-                            table.Cell().Row(4).Column(2).Padding(2).PaddingLeft(4).Text(report1.Remark);
+                            table.Cell().Row(2).Column(1).Padding(2).PaddingLeft(4).Text("เบอร์โทรศัพท์");
+                            table.Cell().Row(2).Column(2).Padding(2).PaddingLeft(4).Text(report1.StaffMobile);
+                            table.Cell().Row(3).Column(1).Padding(2).PaddingLeft(4).Text("วันที่เข้าทำงาน");
+                            table.Cell().Row(3).Column(2).Padding(2).PaddingLeft(4).Text(report1.WorkDate);
+                            table.Cell().Row(4).Column(1).Padding(2).PaddingLeft(4).Text("เวลาเข้าทำงาน");
+                            table.Cell().Row(4).Column(2).Padding(2).PaddingLeft(4).Text(report1.WorkTime+" น.");
+                            table.Cell().Row(5).Column(1).Padding(2).PaddingLeft(4).Text("หมายเหตุ");
+                            table.Cell().Row(5).Column(2).Padding(2).PaddingLeft(4).Text(report1.Remark);
                         });
                         col1.Item().PaddingTop(20).LineHorizontal(1).LineColor(Colors.Grey.Medium);
 
@@ -324,7 +327,7 @@ namespace Project.Sanha.Web.Controllers
                            grid.AlignLeft();
                            grid.Columns(12);
 
-                           grid.Item(12).Text("ภาพถ่ายเช็คอิน").FontSize(18).Bold().Underline();
+                           grid.Item(12).Text("รูปภาพการเช็คอิน").FontSize(18).Bold().Underline();
 
                            for (int i = 0; i < report2.ImageCheckIn.Count; i++)
                            {

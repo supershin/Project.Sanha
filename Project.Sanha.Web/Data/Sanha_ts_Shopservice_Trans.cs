@@ -24,6 +24,9 @@ namespace Project.Sanha.Web.Data
         [StringLength(250)]
         [Unicode(false)]
         public string? StaffName { get; set; }
+        [StringLength(50)]
+        [Unicode(false)]
+        public string? StaffMobile { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? WorkDate { get; set; }
         [StringLength(50)]

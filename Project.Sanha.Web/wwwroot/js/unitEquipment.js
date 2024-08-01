@@ -58,6 +58,9 @@ var unitEquipment = {
             else if ($("#StaffName").val() === null || $("#StaffName").val().trim() === "") {
                 message += "กรุณาตรวจสอบชื่อพนักงาน<br>";
             }
+            else if ($("#StaffMobile").val() === null || $("#StaffMobile").val().trim() === "") {
+                message += "กรุณาตรวจสอบเบอร์โทรศัพท์พนักงาน<br>";
+            }
             else if (!unitEquipment.getSignatureData() || !unitEquipment.getSignatureDataJM()) {
                 message += "กรุณาตรวจสอบลายเซ็นต์<br>";
             }
@@ -131,6 +134,7 @@ var unitEquipment = {
         formData.append('CustomerMobile', $("#CustomerMobile").val());
         formData.append('CustomerEmail', $("#CustomerEmail").val());
         formData.append('StaffName', $("#StaffName").val());
+        formData.append('StaffMobile', $("#StaffMobile").val());
         formData.append('UsingQuota', $("#UsingQuota").val());
         formData.append('Date', $("#Date").val());
         formData.append('StartTime', $("#StartTime").val());

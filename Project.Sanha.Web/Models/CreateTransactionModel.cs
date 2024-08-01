@@ -23,6 +23,8 @@ namespace Project.Sanha.Web.Models
         [Required]
         public string StaffName { get; set; }
         [Required]
+        public string StaffMobile { get; set; }
+        [Required]
         public int UsingQuota { get; set; }
         [Required]
         public string Date { get; set; }
