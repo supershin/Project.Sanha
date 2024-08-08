@@ -245,8 +245,8 @@ namespace Project.Sanha.Web.Controllers
                     page.Footer().Border(0.5f).Table(table2 =>
                     {
 
-                        var sign_open = new FileStream(_hosting.ContentRootPath + "/" + report1.ImageSignCustomer, FileMode.Open);
-                        var sign_open2 = new FileStream(_hosting.ContentRootPath + "/" + report1.ImageSignStaff, FileMode.Open);
+                        var sign_open = new FileStream(_hosting.ContentRootPath + "/" + report1.ImageSignStaff, FileMode.Open);
+                        var sign_open2 = new FileStream(_hosting.ContentRootPath + "/" + report1.ImageSignCustomer, FileMode.Open);
 
                         table2.ColumnsDefinition(columns =>
                         {
