@@ -510,14 +510,14 @@ namespace Project.Sanha.Web.Services
             return true;
         }
 
-        public string GetPathPDF(int transId)
+        public string? GetPathPDF(int transId)
         {
             Sanha_tr_Shopservice_Resource? getPath = _context.Sanha_tr_Shopservice_Resource.Where(o =>
                                                     o.TransID == transId && o.FlagActive == true
                                                     && o.ResourceType == SystemConstant.ResourceType.PDF).FirstOrDefault();
-            if (getPath == null) throw new Exception("หาข้อมูลไฟล์PDFไม่เจอ");
 
-            return getPath.FilePath;
+            string? filePath = getPath != null ? getPath.FilePath : null;
+            return filePath;
         }
     }
 }
