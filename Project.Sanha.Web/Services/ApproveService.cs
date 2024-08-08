@@ -232,12 +232,15 @@ namespace Project.Sanha.Web.Services
             var queryProjects = (from u in _context.users
                                  join up in _context.user_projects on u.id equals up.user_id
                                  join mp in _context.master_project on up.project_id equals mp.id
+                                 join ps in _context.Sanha_tm_ProjectShopservice on mp.id.ToString() equals ps.ProjectID // Convert to matching types
                                  where u.id == id
                                  select new
                                  {
                                      mp.id,
                                      mp.project_name,
-                                 }).ToList();
+                                 })
+                     .Distinct()
+                     .ToList();
 
             var selectLists = new List<SelectListItem>();
             selectLists.Add(new SelectListItem
