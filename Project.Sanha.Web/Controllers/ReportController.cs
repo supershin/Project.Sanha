@@ -440,6 +440,11 @@ namespace Project.Sanha.Web.Controllers
 
                 string path = _approve.GetPathPDF(transID);
 
+                if (String.IsNullOrWhiteSpace(path))
+                {
+                    path = GetDataTransShopService(transID);
+                }
+                
                 return Json(
                           new
                           {

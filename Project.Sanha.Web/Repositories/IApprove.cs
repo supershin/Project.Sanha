@@ -17,6 +17,6 @@ namespace Project.Sanha.Web.Repositories
 
         bool SaveFilePDF(Guid guid, int transId, string orderNo, string path);
 
-        string GetPathPDF(int transId);
+        string? GetPathPDF(int transId);
     }
 }
