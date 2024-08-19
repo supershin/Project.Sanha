@@ -25,7 +25,15 @@ namespace Project.Sanha.Web.Repositories
 
             int ProjectId = Int32.Parse(projectId);
             int UnitId = Int32.Parse(unitId);
-        
+
+            var unitCode = (from mu in _context.master_unit
+                            where mu.id == UnitId
+                            select new
+                            {
+                                mu.unit_code
+                            }
+                            ).FirstOrDefault();
+
             // 1. Query Shopservice
             var unitShops = (from u in _context.Sanha_tr_UnitShopservice
                          where u.ProjectID == projectId && u.ContractNumber == contractNo && u.UnitID == UnitId
@@ -48,7 +56,7 @@ namespace Project.Sanha.Web.Repositories
                 var projectShop = (from p in _context.Sanha_tm_ProjectShopservice
                                    join s in _context.Sanha_tm_Shopservice on p.ShopID equals s.ID
                                    join m in _context.Sanha_tm_UnitQuota_Mapping on p.ProjectID equals m.ProjectID
-                                   where p.ProjectID == projectId && m.UnitID == UnitId
+                                   where p.ProjectID == projectId && ( m.UnitID == UnitId || m.UnitCode == unitCode.unit_code )
                                    && p.ShopID == unit.ShopID && p.FlagActive == true
                                    select new
                                    {
