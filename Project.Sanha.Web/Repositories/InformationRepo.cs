@@ -156,6 +156,7 @@ namespace Project.Sanha.Web.Repositories
                              && o.unit_status_id == "4" && o.transfer_date != null)
                               select new
                               {
+                                  mu.unit_code,
                                   mu.project_id,
                                   mu.id,
                                   mu.contract_number,
@@ -193,7 +194,7 @@ namespace Project.Sanha.Web.Repositories
                                            }).FirstOrDefault();
 
                     var unitMapping = (from um in _context.Sanha_tm_UnitQuota_Mapping
-                                       where um.ProjectID == masterUnit.project_id && um.UnitID == masterUnit.id
+                                       where um.ProjectID == masterUnit.project_id && (um.UnitID == masterUnit.id || um.UnitCode == masterUnit.unit_code)
                                        && um.ShopID == project.ShopID && um.FlagActive == true
                                        select new
                                        {
