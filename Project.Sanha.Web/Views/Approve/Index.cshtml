@@ -79,7 +79,7 @@
 
                     </div>
                     <div class="row row-cards mb-3">
-                        <div class="container text-left">
+                        <div class="container text-left d-flex justify-content-between">
                             <div class="col-lg-7">
                                 <form action="#" class="row">
                                     <div class="col-md-6">
@@ -96,9 +96,13 @@
                                     </div>
                                 </form>
                             </div>
+                            <div class="col-lg-4 d-flex align-items-end justify-content-end">
+                                <button id="export-excel" type="button" class="btn btn-primary">Export Excel</button>
+                            </div>
                         </div>
                     </div>
-                   
+
+
                     <div class="card-table table-responsive">
                         <partial name="Partial_Trans_List" />
                     </div>
@@ -110,6 +114,7 @@
 </div>
 @section Scripts{
     <script src="~/lib/datatable/jquery.datatables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="~/js/approve.js?version=@DateTime.Now.Ticks.ToString()"></script>
 
     <script type="text/javascript">

@@ -17,6 +17,55 @@ const approve = {
         });
 
 
+        $('#export-excel').click(() => {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Confirm to Export Excel",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Confirm"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var selectedProject = $('#select-project').val();
+                    var selectedStatus = $('#select-status').val();
+                    var selectFrom = $('#date-from').val();
+                    var selectTo = $('#date-to').val();
+
+                    debugger;
+                    var data = {
+                        juristicID: jId,
+                        projectID: selectedProject,
+                        status: selectedStatus,
+                        validFrom: selectFrom,
+                        validThrough: selectTo
+                    }
+
+                    
+                    $.ajax({
+                        url: baseUrl + `Approve/ExcelUnitMaster`,
+                        type: "GET",
+                        dataType: 'json',
+                        data: data,
+                        success: function (resp) {
+                            if (resp.success) {
+                                // Redirect to download the file
+                                //window.open(baseUrl + resp.fileUrl, "_blank");
+                                window.location = baseUrl + resp.fileUrl;
+                                //Swal.fire("Exported!", "Your Excel file is being downloaded.", "success");
+                            } else {
+                                Swal.fire("Error!", "Failed to generate Excel file.", "error");
+                            }
+                        },
+                        error: () => {
+                            Swal.fire("Error!", "There was an issue exporting the Excel file.", "error");
+                        }
+                    });
+                }
+            });
+        });
+
         $("#btn-search").click(() => {
             if ($.fn.DataTable.isDataTable('#tbl-table')) {
                 $('#tbl-table').DataTable().clear().destroy();

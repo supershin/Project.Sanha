@@ -85,12 +85,18 @@ namespace Project.Sanha.Web.Services
 
             if (!string.IsNullOrEmpty(criteria.ValidForm) && DateTime.TryParse(criteria.ValidForm, out DateTime validFrom))
             {
-                query = query.Where(x => x.WorkDate >= validFrom);
+                DateTime originalDateTime = DateTime.Parse(criteria.ValidForm);
+                DateTime newDate = new DateTime(originalDateTime.Year, originalDateTime.Month, originalDateTime.Day, 0,0,0);
+
+                query = query.Where(x => x.WorkDate >= newDate);
             }
 
             if (!string.IsNullOrEmpty(criteria.ValidThrough) && DateTime.TryParse(criteria.ValidThrough, out DateTime validThrough))
             {
-                query = query.Where(x => x.WorkDate <= validThrough);
+                DateTime originalDateTime = DateTime.Parse(criteria.ValidThrough);
+                DateTime newDate = new DateTime(originalDateTime.Year, originalDateTime.Month, originalDateTime.Day,23,59,59);
+
+                query = query.Where(x => x.WorkDate <= newDate);
             }
 
             var result = query.Page(param.start, param.length, i => i.CreateDate, param.SortColumnName, asc, out totalRecord);
