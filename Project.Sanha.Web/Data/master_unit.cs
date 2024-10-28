@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Project.Sanha.Web.Data
 {
-    [Keyless]
     public partial class master_unit
     {
+        [Key]
         public int id { get; set; }
         [StringLength(20)]
         [Unicode(false)]
@@ -64,5 +64,20 @@ namespace Project.Sanha.Web.Data
         [Column(TypeName = "datetime")]
         public DateTime update_on { get; set; }
         public int update_by { get; set; }
+        [StringLength(255)]
+        [Unicode(false)]
+        public string? address { get; set; }
+        [StringLength(50)]
+        [Unicode(false)]
+        public string? province { get; set; }
+        [StringLength(50)]
+        [Unicode(false)]
+        public string? district { get; set; }
+        [StringLength(50)]
+        [Unicode(false)]
+        public string? subdistrict { get; set; }
+        [StringLength(20)]
+        [Unicode(false)]
+        public string? zipcode { get; set; }
     }
 }

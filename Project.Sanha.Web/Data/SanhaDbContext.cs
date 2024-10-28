@@ -30,15 +30,6 @@ namespace Project.Sanha.Web.Data
         public virtual DbSet<user> users { get; set; } = null!;
         public virtual DbSet<user_projects> user_projects { get; set; } = null!;
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=10.0.20.14;Initial Catalog=AfterSale;User ID=aftersale;Password=aftersale@2022;TrustServerCertificate=True;");
-            }
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.UseCollation("Thai_CI_AS");
@@ -127,11 +118,6 @@ namespace Project.Sanha.Web.Data
             });
 
             modelBuilder.Entity<master_relation>(entity =>
-            {
-                entity.Property(e => e.id).ValueGeneratedOnAdd();
-            });
-
-            modelBuilder.Entity<master_unit>(entity =>
             {
                 entity.Property(e => e.id).ValueGeneratedOnAdd();
             });

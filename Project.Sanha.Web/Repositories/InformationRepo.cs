@@ -46,7 +46,8 @@ namespace Project.Sanha.Web.Repositories
                              u.ShopID,
                              u.EndDate,
                              u.Quota,
-                             u.UsedQuota
+                             u.UsedQuota,
+                             u.ExtraDate
                          }).ToList();
 
             List<ShopService> shopServices = new List<ShopService>();
@@ -67,6 +68,10 @@ namespace Project.Sanha.Web.Repositories
                                        m.Quota
                                    }).FirstOrDefault();
 
+                DateTime newExpDate = (DateTime)(unit.EndDate != null ? unit.EndDate : null);
+                if (unit.ExtraDate != null)
+                    newExpDate = newExpDate.AddDays((int)unit.ExtraDate);
+
                 if(projectShop != null)
                 {
                     ShopService shop = new ShopService
@@ -75,7 +80,7 @@ namespace Project.Sanha.Web.Repositories
                         ShopID = projectShop.ShopID,
                         Name = projectShop.Name,
                         Description = projectShop.Description,
-                        Exp = unit.EndDate?.ToString("dd-MM-yyyy"),
+                        Exp = unit.ExtraDate == null ? unit.EndDate?.ToString("dd-MM-yyyy") : newExpDate.ToString("dd-MM-yyyy"),
                         Quota = unit.Quota != null ? unit.Quota : projectShop.Quota,
                         Used_Quota = unit.UsedQuota
                     };
