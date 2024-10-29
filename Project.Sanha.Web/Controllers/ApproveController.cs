@@ -11,6 +11,7 @@ using System.Globalization;
 using ClosedXML.Excel;
 using System.Text;
 using Project.Sanha.Web.Filters;
+using DocumentFormat.OpenXml.InkML;
 
 namespace Project.Sanha.Web.Controllers
 {
@@ -30,7 +31,7 @@ namespace Project.Sanha.Web.Controllers
 
         public IActionResult Index()
         {
-            int ID = Int32.Parse(Request.Cookies["SAN.ID"]);
+            int ID = Int32.Parse(HttpContext.Session.GetString("SAN.ID"));
             ViewBag.Id = ID;
 
             GetProjectFromJuristic getProject = new GetProjectFromJuristic()
