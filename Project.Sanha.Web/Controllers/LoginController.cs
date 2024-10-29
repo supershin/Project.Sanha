@@ -89,7 +89,7 @@ namespace Project.Sanha.Web.Controllers
             HttpContext.Session.SetString("SAN.Email", "");
             HttpContext.Session.SetString("SAN.FullName", "");
 
-            return Redirect("/Login");
+            return RedirectToAction("Index","Login");
         }
     }
 }
