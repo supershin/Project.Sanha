@@ -1,5 +1,6 @@
 ﻿@section Styles{
     <link href="~/lib/datatable/jquery.datatables.min.css?ver=@DateTime.Now.Ticks.ToString()" rel="stylesheet" />
+    
 }
 <style>
     .btn-search {
@@ -23,8 +24,10 @@
     }
 </style>
 
-@model Project.Sanha.Web.Models.GetProjectFromJuristic
-
+@model GetProjectFromJuristic
+@{
+    Layout = "~/Views/Shared/_LayoutUsingLogin.cshtml";
+}
 <div class="container-xl">
 
     <h5>ข้อมูลการบริการ</h5>

@@ -18,13 +18,11 @@ namespace Project.Sanha.Web.Services
         public ApproveService( SanhaDbContext context)
         {
             _context = context;
-          
-           
         }
 
         public dynamic GetTransList(DTParamModel param, ApproveModel criteria)
         {
-            //throw new NotImplementedException();
+             //throw new NotImplementedException();
             var totalRecord = 0;
             bool asc = param.sortDirection.ToUpper().Contains("ASC");
             //variable = (condition) ? expressionTrue :  expressionFalse;

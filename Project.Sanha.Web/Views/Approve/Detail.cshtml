@@ -95,17 +95,19 @@
             badgeClass = "bg-secondary"; // default class if none of the conditions match
             break;
     }
+
+    Layout = "~/Views/Shared/_LayoutUsingLogin.cshtml";
 }
 <div class="container-xl">
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="mb-3">
+                    @*<div class="mb-3">
                         <button type="button" class="btn btn-secondary" onclick="window.history.back();">
                             <i class="fas fa-angle-left me-2"></i>ย้อนกลับ
                         </button>
-                    </div>
+                    </div>*@
                     <div class="mb-3 d-flex align-items-center justify-content-between flex-wrap">
                         <span class="fw-bold">
                             ชื่อโครงการ : @Model.ProjectName

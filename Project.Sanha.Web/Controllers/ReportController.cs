@@ -1,5 +1,6 @@
 ﻿using iTextSharp.text.pdf;
 using Microsoft.AspNetCore.Mvc;
+using Project.Sanha.Web.Filters;
 using Project.Sanha.Web.Models;
 using Project.Sanha.Web.Repositories;
 using QuestPDF.Drawing;
@@ -13,6 +14,7 @@ using System.Transactions;
 
 namespace Project.Sanha.Web.Controllers
 {
+    [TypeFilter(typeof(CustomAuthorizationFilterAttribute))]
     public class ReportController : BaseController
     {
         private readonly IApprove _approve;

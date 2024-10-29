@@ -7,7 +7,7 @@ namespace Project.Sanha.Web.Services
 	public interface IAuthenService
     {
         int Authentication(string email);
-
+        LoginResp VerifyLogin(string userName, string password);
     }
     public class AuthenService : IAuthenService
     {
@@ -23,6 +23,13 @@ namespace Project.Sanha.Web.Services
             var authen = _authen.Authentication(email);
 
             return authen;
+        }
+
+        public LoginResp VerifyLogin(string userName, string password)
+        {
+            LoginResp login = _authen.VerifyLogin(userName, password);
+
+            return login;
         }
     }
 }
