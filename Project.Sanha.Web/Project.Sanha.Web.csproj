@@ -11,23 +11,25 @@
     <Folder Include="Views\Information\" />
     <Folder Include="Repositories\" />
     <Folder Include="wwwroot\lib\loading\" />
-    <Folder Include="Views\Authentication\" />
     <Folder Include="wwwroot\lib\core-ui\" />
     <Folder Include="Upload\" />
     <Folder Include="Upload\" />
     <Folder Include="Upload\temp\" />
     <Folder Include="Views\Decoding\" />
     <Folder Include="Upload\unit\" />
+    <Folder Include="Views\Login\" />
+    <Folder Include="Filters\" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="Views\Information\" />
     <None Remove="Repositories\" />
-    <None Remove="Views\Authentication\" />
     <None Remove="Upload\" />
     <None Remove="Upload\temp\" />
     <None Remove="Views\Decoding\" />
     <None Remove="Upload\unit\" />
+    <None Remove="Views\Login\" />
+    <None Remove="Filters\" />
   </ItemGroup>
 
   <ItemGroup>

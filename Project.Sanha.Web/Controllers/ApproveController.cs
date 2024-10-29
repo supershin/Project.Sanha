@@ -10,9 +10,11 @@ using Microsoft.Data.SqlClient;
 using System.Globalization;
 using ClosedXML.Excel;
 using System.Text;
+using Project.Sanha.Web.Filters;
 
 namespace Project.Sanha.Web.Controllers
 {
+    [TypeFilter(typeof(CustomAuthorizationFilterAttribute))]
     public class ApproveController : BaseController
     {
         private readonly IApprove _approve;
@@ -26,13 +28,14 @@ namespace Project.Sanha.Web.Controllers
             _hosting = hostEnvironment;
         }
 
-        public IActionResult Index(int id)
+        public IActionResult Index()
         {
-            ViewBag.Id = id;
+            int ID = Int32.Parse(Request.Cookies["SAN.ID"]);
+            ViewBag.Id = ID;
 
             GetProjectFromJuristic getProject = new GetProjectFromJuristic()
             {
-                SelectProjectLists = _approve.getProjectList(id)
+                SelectProjectLists = _approve.getProjectList(ID)
             };
 
             return View(getProject);
@@ -283,7 +286,9 @@ namespace Project.Sanha.Web.Controllers
                         }
                         conn.Close();
                     }
-                    string filename = "export_" + myuuidAsString + ".xlsx";
+                    DateTime date = DateTime.Now;
+                    string dateFormat = date.ToString("ddMMyyyy");
+                    string filename = "export_สรุปข้อมูลการให้บริการ_" + dateFormat + ".xlsx";
                     string filefull = _hosting.ContentRootPath + "/Upload/unit/" + filename;
                     workbook.SaveAs(filefull);
                     HttpContext.Response.ContentType = "application/vnd.ms-excel";

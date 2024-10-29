@@ -1,11 +1,13 @@
 ﻿using System;
 using Project.Sanha.Web.Data;
+using Project.Sanha.Web.Models;
 
 namespace Project.Sanha.Web.Repositories
 {
 	public interface IAuthenRepo
 	{
 		int Authentication(string email);
+		LoginResp VerifyLogin(string userName, string password);
     }
 
 	public class AuthenRepo : IAuthenRepo
@@ -30,6 +32,28 @@ namespace Project.Sanha.Web.Repositories
 
 			return queryUser.id;
 		}
+
+		public LoginResp VerifyLogin(string userName, string password)
+		{
+			user? user = _context.users
+				.Where(o => o.username == userName && o.password == password && o.is_active == 1)
+				.FirstOrDefault();
+
+			LoginResp resp = new LoginResp();
+
+            if (user == null) throw new Exception("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง");
+			else
+			{
+				resp = new LoginResp()
+				{
+					UserID = user.id,
+					UserName = user.username,
+					Email = user.email,
+					FullName = user.firstname + " " + user.lastname
+				};
+			}
+			return resp;
+        }
 	}
 }
 

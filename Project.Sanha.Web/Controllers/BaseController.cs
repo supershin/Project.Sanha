@@ -27,9 +27,21 @@ namespace Project.Sanha.Web.Controllers
             ViewBag.baseUrl = url;
             BaseUrl = url;
 
+            setUserProfile();
             base.OnActionExecuting(context);
         }
 
+        private void setUserProfile()
+        {
+            var userName = HttpContext.Session.GetString("SAN.UserName");
+            var email = HttpContext.Session.GetString("SAN.Email");
+            var id = HttpContext.Session.GetString("SAN.ID");
+            var fullName = HttpContext.Session.GetString("SAN.FullName");
+            ViewBag.ID = id;
+            ViewBag.Name = email;
+            ViewBag.UserName = userName;
+            ViewBag.FullName = fullName;
+        }
     }
 }
 

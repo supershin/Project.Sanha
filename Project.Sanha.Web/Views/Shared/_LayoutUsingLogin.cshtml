@@ -17,15 +17,35 @@
 <body>
     <script>
         let baseUrl = '@ViewBag.baseUrl';
+        let id = '@ViewBag.ID';
     </script>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand">
-                    <img src="~/images/img1.png" style="max-width:175px; height:auto;" />
+                    <img src="~/images/img1.png" style="max-width:175px; height:auto;" alt="Brand Logo" />
                 </a>
-                <span class="ml-auto navbar-text">E Coupon</span>
+
+                <!-- Aligned to the end of the navbar -->
+                <div class="d-flex align-items-center ms-auto">
+                    <span class="navbar-text me-3">E Coupon</span>
+
+                    <!-- Logout Dropdown -->
+                    <div class="dropdown">
+                        <button class="btn text-dark dropdown-toggle" id="logoutDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user-circle">
+                                <span>@ViewBag.FullName</span>
+                            </i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="logoutDropdown">
+                            <li>
+                                <a class="dropdown-item" asp-controller="Login" asp-action="Logout">Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
+
         </nav>
     </header>
     <div class="container">

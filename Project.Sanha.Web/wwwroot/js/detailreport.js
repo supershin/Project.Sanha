@@ -84,7 +84,8 @@
                 if (resp.success) {
                     window.open(baseUrl + resp.data.Path, "_blank");
 
-                    window.location.href = baseUrl + 'Approve/Index/' + resp.data.JuristicID;
+                    //window.location.href = baseUrl + 'Approve/Index/' + resp.data.JuristicID;
+                    window.location.reload();
                 }
             },
             error: function (xhr, status, error) {
@@ -121,7 +122,8 @@
                         detail.createReport(resp.data.TransID, resp.data.JuristicID);
                     }
                     else {
-                        window.location.href = baseUrl + 'Approve/Index/' + resp.data.JuristicID;
+                        //window.location.href = baseUrl + 'Approve/Index/' + resp.data.JuristicID;
+                        window.location.reload();
                     }
                 }
             },

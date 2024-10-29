@@ -16,7 +16,6 @@ const approve = {
             alert("a");
         });
 
-
         $('#export-excel').click(() => {
             Swal.fire({
                 title: "Are you sure?",
@@ -137,6 +136,7 @@ const approve = {
         var selectedStatus = $('#select-status').val();
         var selectFrom = $('#date-from').val();
         var selectTo = $('#date-to').val();
+        debugger;
         approve.AjaxGrid(jId, selectedValue, selectedStatus, selectFrom, selectTo); 
      },
 
@@ -186,9 +186,9 @@ const approve = {
                         const encodedParam = encodeURIComponent(jsonString);
 
                         // สร้าง URL ใหม่พร้อมกับพารามิเตอร์ที่เข้ารหัส
-                        const newUrl = baseUrl + 'Approve/Detail?data=' + encodedParam;  //`http://example.com/your-endpoint?data=${encodedParam}`;
+                        const newUrl = baseUrl + 'Approve/Detail?data=' + encodedParam;
                         // Redirect ไปยัง URL ใหม่
-                        window.location.href = newUrl;
+                        window.open(newUrl, '_blank');
 
                         return false;
                     });
@@ -255,7 +255,6 @@ const approve = {
                             html += '<i class="fa-solid fa-print"></i>';
                             html += '</button>';
                             
-
                             return html;
                         }
                         else {
