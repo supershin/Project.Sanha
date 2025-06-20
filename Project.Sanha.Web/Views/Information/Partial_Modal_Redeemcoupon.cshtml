@@ -1,0 +1,112 @@
+﻿<style>
+    #redeemCouponModalContent {
+        overflow: hidden;
+        border-radius: 1.5rem;
+    }
+
+    #coffeeImage {
+        border-bottom: 5px solid #ffc107;
+    }
+
+    #btnRedeemNow {
+        font-size: 1.1rem;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+</style>
+
+
+<!-- Modal -->
+<div class="modal fade" id="redeemCouponModal" tabindex="-1" aria-labelledby="redeemCouponLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4 shadow" id="redeemCouponModalContent">
+            <div class="modal-body text-center p-0">
+                <!-- Hidden fields -->
+                <input type="hidden" id="hd_UnitShopId" />
+                <input type="hidden" id="hd_projectId" />
+                <input type="hidden" id="hd_unitId" />
+                <input type="hidden" id="hd_customerName" />
+                <input type="hidden" id="hd_customerMobile" />
+                <input type="hidden" id="hd_customerEmail" />
+                <input type="hidden" id="hd_shopId" />
+                <input type="hidden" id="hd_quota" />
+                <input type="hidden" id="hd_usedQuota" />
+
+                <!-- Coffee Image -->
+                <div class="rounded-top-4 overflow-hidden">
+                    <img src="/images/BANRAI.jpg" alt="Coffee Cup" class="img-fluid w-100" id="coffeeImage" style="max-height: 250px; object-fit: cover;">
+                </div>
+
+                <!-- Info Content -->
+                <div class="p-4 text-start">
+                    <h6 class="text-muted mb-1">บ้านไร่กาแฟ (Baan Rai Cafe)</h6>
+                    <h4 class="fw-bold">Free Coffee Coupon</h4>
+                    <p class="text-muted small mb-4">Enjoy a free drink as a warm welcome to your new home!</p>
+
+                    <ul class="list-unstyled mb-4">
+                        <li><strong>🏘️ Project:</strong> <span id="projectName"></span></li>
+                        <li><strong>🏠 Address:</strong> <span id="address"></span></li>
+                        <li><strong>👤 Customer:</strong> <span id="customerName"></span></li>
+                    </ul>
+
+                    <!-- Redeem Button -->
+                    <button class="btn btn-warning w-100 rounded-pill fw-bold py-2" onclick="redeemCouponNow()">
+                        🎁 Redeem Coupon
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function redeemCouponNow() {
+        const formData = new FormData();
+        formData.append("UnitShopId", $('#hd_UnitShopId').val());
+        formData.append("ProjectId", $('#hd_projectId').val());
+        formData.append("UnitId", $('#hd_unitId').val());
+        formData.append("ShopId", $('#hd_shopId').val());
+
+        formData.append("CustomerName", $('#hd_customerName').val());
+        formData.append("CustomerMobile", $('#hd_customerMobile').val());
+        formData.append("CustomerEmail", $('#hd_customerEmail').val());
+        formData.append("UsingQuota", $('#hd_usedQuota').val());
+
+        $.ajax({
+            url: baseUrl + "Information/SaveEcouponBaanrai",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (res) {
+                if (res.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'สำเร็จ!',
+                        text: res.message
+                    }).then(() => {
+                        $('#redeemCouponModal').modal('hide');
+                        location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'ล้มเหลว!',
+                        text: res.message
+                    });
+                }
+            },
+            error: function (xhr) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาด!',
+                    text: 'Status: ' + xhr.status
+                });
+            }
+        });
+    }
+</script>
+
+
+

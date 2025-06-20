@@ -229,6 +229,42 @@ namespace Project.Sanha.Web.Controllers
                     });
             }
         }
+
+
+        public ActionResult SaveEcouponBaanrai(CreateTransactionModel model)
+        {
+            try
+            {
+                bool Result = _serviceUnitSave.CreateTransactionEcouponBaanRai(model);
+
+                if (Result == true)
+                {
+                    return Json(new
+                    {
+                        message = "Success",
+                        success = true
+                    });
+                }
+                else
+                {
+                    return Json(new
+                    {
+                        message = "Fail",
+                        success = false
+                    }); ;
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = ex.Message
+                });
+            }
+
+        }
+
     }
 }
 

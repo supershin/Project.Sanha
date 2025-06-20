@@ -102,6 +102,12 @@ namespace Project.Sanha.Web.Services
                 throw ex;
             }
         }
+
+        public bool CreateTransactionEcouponBaanRai(CreateTransactionModel model)
+        {
+            bool result = _createTransaction.CreateTransactionEcouponBaanRai(model);
+            return result;
+        }
     }
 }
 

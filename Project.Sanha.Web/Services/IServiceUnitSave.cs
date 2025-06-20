@@ -13,6 +13,8 @@ namespace Project.Sanha.Web.Services
         bool CheckIn(CheckInModel model);
 
         bool ValidCheckIn(UsingCodeModel model);
+
+        bool CreateTransactionEcouponBaanRai(CreateTransactionModel model);
     }
 }
 

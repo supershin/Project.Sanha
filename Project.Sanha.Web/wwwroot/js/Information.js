@@ -142,8 +142,33 @@ var information = {
                 if (resp.data === true) {
                     var queryString = $.param(data);
                     window.location.href = baseUrl + "Information/UsingCode?" + queryString;
-                } else {
-                    $("#checkInModal").data('checkInData', data).modal('show');
+                }
+                else
+                {
+                    if (data.ShopId == 3) {
+                        // Fill visible info
+                        console.log(data);  
+                        $('#projectName').text(data.ProjectName);
+                        $('#address').text(data.AddressNo);
+                        $('#customerName').text(data.CustomerName);
+
+                        // Fill hidden fields
+                        $('#hd_UnitShopId').val(data.InfoId);
+                        $('#hd_projectId').val(data.ProjectId);
+                        $('#hd_unitId').val(data.UnitId);
+                        $('#hd_customerName').val(data.CustomerName);
+                        $('#hd_customerMobile').val(data.CustomerMobile);
+                        $('#hd_customerEmail').val(data.CustomerEmail);
+                        $('#hd_shopId').val(data.ShopId);
+                        $('#hd_usedQuota').val(data.Quota);
+
+                        // Show modal
+                        $("#redeemCouponModal").data('checkInData', data).modal('show');
+                    }
+                    else
+                    {
+                        $("#checkInModal").data('checkInData', data).modal('show');
+                    }
                 }
             },
             error: function (xhr, status, error) {

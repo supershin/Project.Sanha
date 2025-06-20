@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Data\" />
-    <Folder Include="Views\Information\" />
     <Folder Include="Repositories\" />
     <Folder Include="wwwroot\lib\loading\" />
     <Folder Include="wwwroot\lib\core-ui\" />

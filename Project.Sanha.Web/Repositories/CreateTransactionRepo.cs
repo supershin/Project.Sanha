@@ -267,6 +267,124 @@ namespace Project.Sanha.Web.Repositories
             }
                 
         }
+
+        public bool CreateTransactionEcouponBaanRai(CreateTransactionModel create)
+        {
+            using var transaction = _context.Database.BeginTransaction();
+            try
+            {
+                var validTrans = _context.Sanha_tr_UnitShopservice.FirstOrDefault(o => o.ID == create.UnitShopId);
+                if (validTrans == null)
+                {
+                    throw new Exception("ไม่พบข้อมูลโควต้า");
+                }
+                if (validTrans.Quota <= validTrans.UsedQuota)
+                { 
+                    throw new Exception("โควต้าการใช้งานครบแล้ว"); 
+                }
+
+                string getDate = DateTime.Now.ToString("HH:mm");
+                var checkIn = new Sanha_ts_Shopservice_Trans
+                {
+                    EventID = create.UnitShopId,
+                    CustomerName = create.CustomerName,
+                    CustomerMobile = create.CustomerMobile,
+                    CustomerEmail = create.CustomerEmail,
+                    StaffName = "พนักงานบ้านไร่กาแฟ",
+                    CustomerRelationID = SystemConstant.RelationId.OWNER,
+                    WorkDate = DateTime.Now,
+                    WorkTime = getDate,
+                    CreateDate = DateTime.Now,
+                    CreateBy = "Application",
+                    UpdateDate = DateTime.Now,
+                    UpdateBy = "Application",
+                    Status = SystemConstant.Status.SUCCESS,
+                    UsedQuota = create.UsingQuota,
+                    EndDate = DateTime.Now
+                };
+
+                _context.Sanha_ts_Shopservice_Trans.Add(checkIn);
+                _context.SaveChanges();
+
+                var trans = checkIn;
+                var unitShop = _context.Sanha_tr_UnitShopservice.FirstOrDefault(o => o.ID == trans.EventID && o.FlagActive == true);
+                if (unitShop == null)
+                {
+                    throw new Exception("ไม่พบข้อมูล UnitShop");
+                }
+                if (unitShop.Quota < create.UsingQuota)
+                {
+                    throw new Exception("โควต้าเกินจำนวนคงเหลือ");
+                }
+
+                unitShop.Quota -= create.UsingQuota;
+                unitShop.UsedQuota += create.UsingQuota;
+                unitShop.UpdateDate = DateTime.Now;
+                unitShop.UpdateBy = 2;
+
+                _context.Sanha_tr_UnitShopservice.Update(unitShop);
+                _context.SaveChanges();
+
+                transaction.Commit();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                throw new Exception("เกิดข้อผิดพลาดในการทำธุรกรรม: " + ex.Message);
+            }
+        }
+
+
+        //public bool CreateTransactionEcouponBaanRai(CreateTransactionModel create)
+        //{
+
+        //    Sanha_tr_UnitShopservice? validTrans = _context.Sanha_tr_UnitShopservice.Where(o => o.ID == create.UnitShopId).FirstOrDefault();
+        //    if (validTrans.Quota <= validTrans.UsedQuota) throw new Exception("โควต้าการใช้งานครบแล้ว");
+
+        //    Sanha_ts_Shopservice_Trans? trans = _context.Sanha_ts_Shopservice_Trans.Where(o =>
+        //                                        o.EventID == create.UnitShopId && o.FlagActive == true &&
+        //                                        o.Status == SystemConstant.Status.DRAFT).FirstOrDefault();
+        //    if (trans == null) throw new Exception("ไม่พบข้อมูลธุรกรรม");
+
+        //    DateTime endDate = DateTime.Now;
+
+        //    trans.EventID = create.UnitShopId;
+        //    trans.CustomerName = create.CustomerName;
+        //    trans.CustomerMobile = create.CustomerMobile;
+        //    trans.CustomerEmail = create.CustomerEmail;
+        //    trans.StaffName = create.StaffName;
+        //    trans.WorkTime = create.StartTime + "-" + endDate.ToString("HH:mm");
+        //    trans.CreateDate = DateTime.Now;
+        //    trans.CreateBy = "Application";
+        //    trans.UpdateDate = DateTime.Now;
+        //    trans.UpdateBy = "Application";
+        //    trans.Status = SystemConstant.Status.SUCCESS;
+        //    trans.UsedQuota = create.UsingQuota;
+        //    trans.EndDate = endDate;
+        //    _context.Sanha_ts_Shopservice_Trans.Update(trans);
+        //    _context.SaveChanges();
+
+        //    Sanha_tr_UnitShopservice? unitShop = _context.Sanha_tr_UnitShopservice.Where(o => o.ID == trans.EventID && o.FlagActive == true).FirstOrDefault();
+        //    if (unitShop != null)
+        //    {
+        //        if (unitShop.Quota < create.UsingQuota) throw new Exception("โควต้าเกินจำนวนคงเหลือ");
+        //        unitShop.UsedQuota = unitShop.UsedQuota + create.UsingQuota;
+        //        unitShop.UpdateDate = DateTime.Now;
+        //        unitShop.UpdateBy = 2;
+
+        //        _context.Sanha_tr_UnitShopservice.Update(unitShop);
+        //        _context.SaveChanges();
+        //    }
+
+        //    GetTransModel createTrans = new GetTransModel()
+        //    {
+        //        TransId = trans.ID,
+        //        EventId = (int)trans.EventID,
+        //    };
+
+        //    return true;
+        //}
     }
 }
 
