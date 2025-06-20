@@ -147,9 +147,9 @@ var information = {
                 {
                     if (data.ShopId == 3) {
                         // Fill visible info
-                        console.log(data);  
+                        /*console.log(data);  */
                         $('#projectName').text(data.ProjectName);
-                        $('#address').text(data.AddressNo);
+                        $('#address').text(data.Address);
                         $('#customerName').text(data.CustomerName);
 
                         // Fill hidden fields
