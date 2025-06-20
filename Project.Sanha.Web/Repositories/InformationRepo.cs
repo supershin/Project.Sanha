@@ -10,18 +10,18 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Project.Sanha.Web.Repositories
 {
-	public class InformationRepo : IInformationRepo
+    public class InformationRepo : IInformationRepo
     {
-		private readonly SanhaDbContext _context;
-		
-		public InformationRepo(SanhaDbContext context)
-		{
-			_context = context;
-		}
+        private readonly SanhaDbContext _context;
 
-		public InformationDetail InfoDetail(string projectId, string? unitId, string? contractNo)
-		{
-			InformationDetail result = new InformationDetail();
+        public InformationRepo(SanhaDbContext context)
+        {
+            _context = context;
+        }
+
+        public InformationDetail InfoDetail(string projectId, string? unitId, string? contractNo)
+        {
+            InformationDetail result = new InformationDetail();
 
             int ProjectId = Int32.Parse(projectId);
             int UnitId = Int32.Parse(unitId);
@@ -36,33 +36,34 @@ namespace Project.Sanha.Web.Repositories
 
             // 1. Query Shopservice
             var unitShops = (from u in _context.Sanha_tr_UnitShopservice
-                         where u.ProjectID == projectId && u.ContractNumber == contractNo && u.UnitID == UnitId
-                         select new
-                         {
-                             u.ID,
-                             u.ProjectID,
-                             u.UnitID,
-                             u.ContractNumber,
-                             u.ShopID,
-                             u.EndDate,
-                             u.Quota,
-                             u.UsedQuota,
-                             u.ExtraDate
-                         }).ToList();
+                             where u.ProjectID == projectId && u.ContractNumber == contractNo && u.UnitID == UnitId
+                             select new
+                             {
+                                 u.ID,
+                                 u.ProjectID,
+                                 u.UnitID,
+                                 u.ContractNumber,
+                                 u.ShopID,
+                                 u.EndDate,
+                                 u.Quota,
+                                 u.UsedQuota,
+                                 u.ExtraDate
+                             }).ToList();
 
             List<ShopService> shopServices = new List<ShopService>();
 
-            foreach ( var unit in unitShops)
+            foreach (var unit in unitShops)
             {
                 var projectShop = (from p in _context.Sanha_tm_ProjectShopservice
                                    join s in _context.Sanha_tm_Shopservice on p.ShopID equals s.ID
                                    join m in _context.Sanha_tm_UnitQuota_Mapping on p.ProjectID equals m.ProjectID
-                                   where p.ProjectID == projectId && ( m.UnitID == UnitId || m.UnitCode == unitCode.unit_code )
+                                   where p.ProjectID == projectId && (m.UnitID == UnitId || m.UnitCode == unitCode.unit_code)
                                    && p.ShopID == unit.ShopID && p.FlagActive == true
                                    select new
                                    {
                                        p.ID,
                                        p.ShopID,
+                                       MappingShopID = m.ShopID,
                                        s.Name,
                                        s.Description,
                                        m.Quota
@@ -72,7 +73,15 @@ namespace Project.Sanha.Web.Repositories
                 if (unit.ExtraDate != null)
                     newExpDate = newExpDate.AddDays((int)unit.ExtraDate);
 
-                if(projectShop != null)
+                //add by siripoj check baanrai
+                if (unit.ShopID == SystemConstant.Shop.BAAN_RAI)
+                {
+                    if (!_context.Sanha_tm_UnitQuota_Mapping.Any(e => e.ShopID == SystemConstant.Shop.BAAN_RAI
+                          && e.UnitID == unit.UnitID))
+                        continue;
+                }
+
+                if (projectShop != null)
                 {
                     ShopService shop = new ShopService
                     {
@@ -90,20 +99,20 @@ namespace Project.Sanha.Web.Repositories
             }
 
             var info = (from mu in _context.master_unit
-                       join mp in _context.master_project on ProjectId equals mp.id
-                       where mu.project_id == projectId && mu.id == UnitId && mu.contract_number == contractNo
-                       select new
-                       {
-                           mu.project_id,
-                           mu.id,
-                           mu.contract_number,
-                           mu.customer_name,
-                           mu.customer_mobile,
-                           mu.customer_email,
-                           mu.addr_no,
-                           mu.transfer_date,
-                           mp.project_name
-                       }).FirstOrDefault();
+                        join mp in _context.master_project on ProjectId equals mp.id
+                        where mu.project_id == projectId && mu.id == UnitId && mu.contract_number == contractNo
+                        select new
+                        {
+                            mu.project_id,
+                            mu.id,
+                            mu.contract_number,
+                            mu.customer_name,
+                            mu.customer_mobile,
+                            mu.customer_email,
+                            mu.addr_no,
+                            mu.transfer_date,
+                            mp.project_name
+                        }).FirstOrDefault();
 
             if (info != null)
             {
@@ -132,12 +141,12 @@ namespace Project.Sanha.Web.Repositories
             InformationDetail information = new InformationDetail();
 
             var query = (from i in _context.master_project.Where(o => o.project_id == projectId)
-                        select new
-                        {
-                            i.id,
-                            i.project_id,
-                            i.project_name
-                        }).FirstOrDefault();
+                         select new
+                         {
+                             i.id,
+                             i.project_id,
+                             i.project_name
+                         }).FirstOrDefault();
 
             information = new InformationDetail()
             {
@@ -182,10 +191,10 @@ namespace Project.Sanha.Web.Repositories
                                    ps.DefaultEndDate,
                                    ps.ExpireDate
                                }).ToList();
-            
+
             if (masterUnit != null)
             {
-                foreach( var project in projectShop.ToList())
+                foreach (var project in projectShop.ToList())
                 {
 
                     var unitShopservice = (from us in _context.Sanha_tr_UnitShopservice
@@ -204,8 +213,7 @@ namespace Project.Sanha.Web.Repositories
                                        select new
                                        {
                                            um.ID,
-                                           um.Quota,
-
+                                           um.Quota
                                        }).FirstOrDefault();
 
                     if (unitShopservice == null)
@@ -225,7 +233,7 @@ namespace Project.Sanha.Web.Repositories
                             createUnitShopservice.StartDate = project.DefaultStartDate;
                             createUnitShopservice.EndDate = project.DefaultEndDate;
                         }
-                        if(unitMapping != null)
+                        if (unitMapping != null)
                         {
                             createUnitShopservice.Quota = createUnitShopservice.EndDate <= DateTime.Now ? 0 : unitMapping.Quota;
                         }
@@ -259,7 +267,7 @@ namespace Project.Sanha.Web.Repositories
                             ContractNo = unitShopservice.ContractNumber
                         };
                     }
-                }               
+                }
             }
             return data;
         }
@@ -267,13 +275,13 @@ namespace Project.Sanha.Web.Repositories
         public SearchUnitModel ReturnModel(int unitId)
         {
             var queryMu = (from mu in _context.master_unit
-                          where mu.id == unitId
-                          select new
-                          {
-                              mu.project_id,
-                              mu.unit_id,
-                              mu.contract_number
-                          }).FirstOrDefault();
+                           where mu.id == unitId
+                           select new
+                           {
+                               mu.project_id,
+                               mu.unit_id,
+                               mu.contract_number
+                           }).FirstOrDefault();
 
             int id = Int32.Parse(queryMu.project_id);
 
@@ -304,7 +312,7 @@ namespace Project.Sanha.Web.Repositories
                 unitShop = _context.Sanha_tr_UnitShopservice.Where(o =>
                             o.ID == trans.EventID && o.ShopID == shopId).FirstOrDefault();
             }
-            
+
             if (trans == null && unitShop == null) return false;
             return true;
         }
@@ -319,7 +327,7 @@ namespace Project.Sanha.Web.Repositories
 
             DataTransModel model = new DataTransModel();
 
-            if(trans != null && unitShop != null)
+            if (trans != null && unitShop != null)
             {
                 model.CustomerName = trans.CustomerName;
                 model.CustomerMobile = trans.CustomerMobile;

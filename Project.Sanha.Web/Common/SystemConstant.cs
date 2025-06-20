@@ -50,6 +50,10 @@ namespace Project.Sanha.Web.Common
         {
             public const int OWNER = 5;
         }
-	}
+        public class Shop
+        {
+            public const int BAAN_RAI = 3;
+        }
+    }
 }
 
